@@ -80,7 +80,7 @@ export default function HomeScreen() {
           <ImageBackground
             source={require('@/assets/images/image.png')}
             style={styles.heroBackground}
-            resizeMode="contain"
+            resizeMode="cover"
           >
             <View style={styles.heroContent}>
               <Text style={styles.heroTitle}>
