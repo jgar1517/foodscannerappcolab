@@ -90,13 +90,15 @@ export default function HomeScreen() {
               </Text>
               
               <TouchableOpacity 
-                style={styles.ctaButton}
+                style={styles.imageButton}
                 onPress={handleScanPress}
                 activeOpacity={0.9}
               >
-                <Camera size={20} color="#10b981" />
-                <Text style={styles.ctaButtonText}>Start Scanning</Text>
-                <ChevronRight size={20} color="#10b981" />
+                <Image 
+                  source={require('../../../assets/images/image.png')} 
+                  style={styles.heroImage}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
             </View>
           </LinearGradient>
@@ -268,6 +270,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#10b981',
+  },
+  imageButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroImage: {
+    width: 200,
+    height: 60,
   },
   section: {
     paddingHorizontal: 24,
