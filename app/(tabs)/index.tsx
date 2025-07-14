@@ -79,33 +79,28 @@ export default function HomeScreen() {
         <View style={styles.heroSection}>
           <ImageBackground
             source={require('@/assets/images/image.png')}
-            style={styles.heroGradient}
+            style={styles.heroBackground}
             resizeMode="cover"
           >
-            <LinearGradient
-              colors={['rgba(16, 185, 129, 0.8)', 'rgba(5, 150, 105, 0.8)']}
-              style={styles.heroGradient}
-            >
-              <View style={styles.heroContent}>
-                <Text style={styles.heroTitle}>
-                  Scan with{'\n'}
-                  <Text style={styles.heroTitleAccent}>Confidence</Text>
-                </Text>
-                <Text style={styles.heroSubtitle}>
-                  AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
-                </Text>
-                
-                <TouchableOpacity 
-                  style={styles.ctaButton}
-                  onPress={handleScanPress}
-                  activeOpacity={0.9}
-                >
-                  <Camera size={20} color="#10b981" />
-                  <Text style={styles.ctaButtonText}>Start Scanning</Text>
-                  <ChevronRight size={20} color="#10b981" />
-                </TouchableOpacity>
-              </View>
-            </LinearGradient>
+            <View style={styles.heroContent}>
+              <Text style={styles.heroTitle}>
+                Scan with{'\n'}
+                <Text style={styles.heroTitleAccent}>Confidence</Text>
+              </Text>
+              <Text style={styles.heroSubtitle}>
+                AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
+              </Text>
+              
+              <TouchableOpacity 
+                style={styles.ctaButton}
+                onPress={handleScanPress}
+                activeOpacity={0.9}
+              >
+                <Camera size={20} color="#10b981" />
+                <Text style={styles.ctaButtonText}>Start Scanning</Text>
+                <ChevronRight size={20} color="#10b981" />
+              </TouchableOpacity>
+            </View>
           </ImageBackground>
         </View>
 
@@ -229,7 +224,7 @@ const styles = StyleSheet.create({
     height: 400,
     marginBottom: 32,
   },
-  heroGradient: {
+  heroBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
