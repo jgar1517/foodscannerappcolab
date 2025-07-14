@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -76,30 +77,36 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {/* Hero Section */}
         <View style={styles.heroSection}>
-          <LinearGradient
-            colors={['#10b981', '#059669']}
+          <ImageBackground
+            source={require('@/assets/images/image.png')}
             style={styles.heroGradient}
+            resizeMode="cover"
           >
-            <View style={styles.heroContent}>
-              <Text style={styles.heroTitle}>
-                Scan with{'\n'}
-                <Text style={styles.heroTitleAccent}>Confidence</Text>
-              </Text>
-              <Text style={styles.heroSubtitle}>
-                AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
-              </Text>
-              
-              <TouchableOpacity 
-                style={styles.ctaButton}
-                onPress={handleScanPress}
-                activeOpacity={0.9}
-              >
-                <Camera size={20} color="#10b981" />
-                <Text style={styles.ctaButtonText}>Start Scanning</Text>
-                <ChevronRight size={20} color="#10b981" />
-              </TouchableOpacity>
-            </View>
-          </LinearGradient>
+            <LinearGradient
+              colors={['rgba(16, 185, 129, 0.8)', 'rgba(5, 150, 105, 0.8)']}
+              style={styles.heroGradient}
+            >
+              <View style={styles.heroContent}>
+                <Text style={styles.heroTitle}>
+                  Scan with{'\n'}
+                  <Text style={styles.heroTitleAccent}>Confidence</Text>
+                </Text>
+                <Text style={styles.heroSubtitle}>
+                  AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
+                </Text>
+                
+                <TouchableOpacity 
+                  style={styles.ctaButton}
+                  onPress={handleScanPress}
+                  activeOpacity={0.9}
+                >
+                  <Camera size={20} color="#10b981" />
+                  <Text style={styles.ctaButtonText}>Start Scanning</Text>
+                  <ChevronRight size={20} color="#10b981" />
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
         </View>
 
         {/* Features Section */}
