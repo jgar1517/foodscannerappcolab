@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     lineHeight: 44,
   },
   heroTitleAccent: {
-    color: '#fbbf24',
+    color: '#10b981',
   },
   heroSubtitle: {
     fontSize: 16,
