@@ -314,7 +314,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0fdf4',
+    backgroundColor: '#2E8B57',
   },
   scrollView: {
     flex: 1,
