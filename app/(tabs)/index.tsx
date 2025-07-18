@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#000000',
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -346,13 +346,13 @@ const styles = StyleSheet.create({
   stepTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#000000',
     marginBottom: 4,
     flex: 1,
   },
   stepDescription: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#000000',
     lineHeight: 20,
     flex: 1,
   },
