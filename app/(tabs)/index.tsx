@@ -77,31 +77,25 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {/* Hero Section */}
         <View style={styles.heroSection}>
-          <ImageBackground
-            source={require('@/assets/images/image.png')}
-            style={styles.heroBackground}
-            resizeMode="cover"
-          >
-            <View style={styles.heroContent}>
-              <Text style={styles.heroTitle}>
-                Scan with{'\n'}
-                <Text style={styles.heroTitleAccent}>Confidence</Text>
-              </Text>
-              <Text style={styles.heroSubtitle}>
-                AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
-              </Text>
-              
-              <TouchableOpacity 
-                style={styles.ctaButton}
-                onPress={handleScanPress}
-                activeOpacity={0.9}
-              >
-                <Camera size={20} color="#10b981" />
-                <Text style={styles.ctaButtonText}>Start Scanning</Text>
-                <ChevronRight size={20} color="#10b981" />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
+          <View style={styles.heroContent}>
+            <Text style={styles.heroTitle}>
+              Scan with{'\n'}
+              <Text style={styles.heroTitleAccent}>Confidence</Text>
+            </Text>
+            <Text style={styles.heroSubtitle}>
+              AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
+            </Text>
+            
+            <TouchableOpacity 
+              style={styles.ctaButton}
+              onPress={handleScanPress}
+              activeOpacity={0.9}
+            >
+              <Camera size={20} color="#10b981" />
+              <Text style={styles.ctaButtonText}>Start Scanning</Text>
+              <ChevronRight size={20} color="#10b981" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Features Section */}
@@ -223,9 +217,7 @@ const styles = StyleSheet.create({
   heroSection: {
     height: 400,
     marginBottom: 32,
-  },
-  heroBackground: {
-    flex: 1,
+    backgroundColor: '#2E8B57',
     justifyContent: 'center',
     alignItems: 'center',
   },
