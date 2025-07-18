@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f0fdf4',
   },
   permissionTitle: {
     fontSize: 24,
