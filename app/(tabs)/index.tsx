@@ -60,9 +60,30 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#22C55E', '#16A34A', '#15803D']}
+        colors={['#0F172A', '#1E293B', '#334155']}
         style={styles.backgroundGradient}
       />
+
+      {/* Floating particles */}
+      <View style={styles.particlesContainer}>
+        {[...Array(20)].map((_, i) => (
+          <Animated.View
+            key={i}
+            style={[
+              styles.particle,
+              {
+                left: Math.random() * 400,
+                top: Math.random() * 800,
+                transform: [
+                  {
+                    translateY: floatingTransform,
+                  },
+                ],
+              },
+            ]}
+          />
+        ))}
+      </View>
 
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -95,8 +116,13 @@ export default function HomeScreen() {
                   onPress={() => router.push('/scan')}
                   activeOpacity={0.9}
                 >
-                  <Camera size={20} color="#22C55E" />
-                  <Text style={styles.startButtonText}>Start Scanning</Text>
+                  <LinearGradient
+                    colors={['#3B82F6', '#1D4ED8']}
+                    style={styles.startButtonGradient}
+                  >
+                    <Camera size={20} color="#ffffff" />
+                    <Text style={styles.startButtonText}>Start Scanning</Text>
+                  </LinearGradient>
                 </TouchableOpacity>
               </Animated.View>
             </Animated.View>
@@ -239,7 +265,7 @@ export default function HomeScreen() {
                 activeOpacity={0.9}
               >
                 <LinearGradient
-                  colors={['#ffffff', '#f8fafc']}
+                  colors={['#3B82F6', '#1D4ED8']}
                   style={styles.ctaButtonGradient}
                 >
                   <Text style={styles.ctaButtonText}>Start Your First Scan</Text>
@@ -313,25 +339,40 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   startButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
     borderRadius: 25,
-    gap: 8,
+    overflow: 'hidden',
     elevation: 8,
-    shadowColor: '#000000',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
+  },
+  startButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    gap: 8,
   },
   startButtonText: {
     fontSize: 18,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
-    color: '#22C55E',
+    color: '#ffffff',
     letterSpacing: 0.5,
+  },
+  particlesContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  particle: {
+    position: 'absolute',
+    width: 3,
+    height: 3,
+    backgroundColor: '#60A5FA',
+    borderRadius: 1.5,
+    opacity: 0.7,
   },
   whyChooseSection: {
     marginHorizontal: 24,
@@ -471,7 +512,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
-    color: '#22C55E',
+    color: '#ffffff',
     letterSpacing: 0.5,
   },
   bottomSpacing: {
