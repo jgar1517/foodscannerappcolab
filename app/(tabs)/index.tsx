@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera, Shield, Zap, Users, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -65,7 +66,7 @@ const faqs = [
 export default function HomeScreen() {
   const router = useRouter();
   const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
-  const [darkMode, setDarkMode] = React.useState(false);
+  const { darkMode } = useTheme();
 
   const handleScanPress = () => {
     router.push('/scan');
@@ -214,17 +215,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Dark Mode Toggle (for testing) */}
-        <View style={[styles.section, dynamicStyles.section]}>
-          <TouchableOpacity 
-            style={styles.darkModeToggle}
-            onPress={() => setDarkMode(!darkMode)}
-          >
-           <Text style={styles.darkModeText}>
-              Toggle Dark Mode (Current: {darkMode ? 'Dark' : 'Light'})
-            </Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -370,16 +360,5 @@ const styles = StyleSheet.create({
   faqAnswerText: {
     fontSize: 15,
     lineHeight: 22,
-  },
-  darkModeToggle: {
-    padding: 16,
-    backgroundColor: '#15803D',
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  darkModeText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
   },
 });

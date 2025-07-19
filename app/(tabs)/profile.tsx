@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Sun, Moon, Calendar, Target, History } from 'lucide-react-native';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function ProfileScreen() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme();
   
   const userProfile = {
     "id": "user_001",
@@ -35,7 +36,6 @@ export default function ProfileScreen() {
     }
   };
   
-  const toggleTheme = () => setDarkMode(!darkMode);
 
   // Dynamic styles based on dark mode
   const dynamicStyles = {
@@ -156,7 +156,7 @@ export default function ProfileScreen() {
           <View style={styles.toggleContainer}>
             <Switch 
               value={darkMode} 
-              onValueChange={toggleTheme}
+              onValueChange={toggleDarkMode}
               trackColor={{ false: darkMode ? '#4b5563' : '#e5e7eb', true: '#15803D' }}
               thumbColor={darkMode ? '#ffffff' : '#ffffff'}
             />
