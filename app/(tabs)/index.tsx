@@ -71,7 +71,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0F172A', '#1E293B', '#334155']}
+        colors={['#2A1A3E', '#3D2A52', '#503A66']}
         style={styles.backgroundGradient}
       />
 
@@ -128,7 +128,7 @@ export default function HomeScreen() {
                   activeOpacity={0.9}
                 >
                   <LinearGradient
-                    colors={['#3B82F6', '#1D4ED8']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.startButtonGradient}
                   >
                     <Camera size={20} color="#ffffff" />
@@ -276,7 +276,7 @@ export default function HomeScreen() {
                 activeOpacity={0.9}
               >
                 <LinearGradient
-                  colors={['#3B82F6', '#1D4ED8']}
+                  colors={['#8B5CF6', '#7C3AED']}
                   style={styles.ctaButtonGradient}
                 >
                   <Text style={styles.ctaButtonText}>Start Your First Scan</Text>
