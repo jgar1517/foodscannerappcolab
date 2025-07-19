@@ -77,9 +77,6 @@ export default function HomeScreen() {
     container: {
       backgroundColor: darkMode ? '#1f2937' : '#15803D',
     },
-    heroSection: {
-      backgroundColor: darkMode ? '#374151' : '#15803D',
-    },
     section: {
       backgroundColor: darkMode ? '#374151' : '#DCFCE7',
     },
@@ -101,7 +98,7 @@ export default function HomeScreen() {
       borderTopColor: darkMode ? '#6b7280' : '#e5e7eb',
     },
     heroTitle: {
-      color: darkMode ? '#f9fafb' : '#ffffff',
+      color: darkMode ? '#f9fafb' : '#15803D',
     },
     sectionTitle: {
       color: darkMode ? '#f9fafb' : '#15803D',
@@ -127,12 +124,12 @@ export default function HomeScreen() {
     <SafeAreaView style={[styles.container, dynamicStyles.container]}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {/* Hero Section */}
-        <View style={[styles.heroSection, dynamicStyles.heroSection]}>
+        <View style={[styles.heroSection, dynamicStyles.section]}>
           <View style={styles.heroContent}>
             <Text style={[styles.heroTitle, dynamicStyles.heroTitle]}>
               Food Scanner App
             </Text>
-            <Text style={[styles.heroSubtitle, dynamicStyles.secondaryText]}>
+            <Text style={[styles.heroSubtitle, dynamicStyles.featureDescription]}>
               AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
             </Text>
             
@@ -152,19 +149,19 @@ export default function HomeScreen() {
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>1</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Take a photo of the ingredient label</Text>
+                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Take a photo of the ingredient label</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>2</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Get instant safety ratings for each ingredient</Text>
+                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Get instant safety ratings for each ingredient</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>3</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Discover healthier alternatives and recipes</Text>
+                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Discover healthier alternatives and recipes</Text>
                 </View>
               </View>
             </View>
