@@ -462,7 +462,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  summaryCount: {
     fontSize: 16,
     fontWeight: '700',
     color: '#ffffff',
