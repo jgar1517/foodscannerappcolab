@@ -277,6 +277,7 @@ export default function ScanScreen() {
               
               {/* Apple illustration in center */}
               <View style={styles.appleContainer}>
+                <Animated.View
                   style={[
                     styles.apple,
                     {
