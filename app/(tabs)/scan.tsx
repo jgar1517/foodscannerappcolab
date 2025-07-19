@@ -77,7 +77,7 @@ export default function ScanScreen() {
     return (
       <View style={styles.container}>
         <LinearGradient
-          colors={['#0F172A', '#1E293B', '#334155']}
+          colors={['#2A1A3E', '#3D2A52', '#503A66']}
           style={styles.backgroundGradient}
         />
         <Text style={styles.message}>Camera permissions are loading...</Text>
@@ -89,7 +89,7 @@ export default function ScanScreen() {
     return (
       <View style={styles.container}>
         <LinearGradient
-          colors={['#0F172A', '#1E293B', '#334155']}
+          colors={['#2A1A3E', '#3D2A52', '#503A66']}
           style={styles.backgroundGradient}
         />
         <SafeAreaView style={styles.permissionContainer}>
@@ -110,7 +110,7 @@ export default function ScanScreen() {
               ]}
             >
               <LinearGradient
-                colors={['#3B82F6', '#1D4ED8']}
+                colors={['#8B5CF6', '#7C3AED']}
                 style={styles.permissionIconContainer}
               >
                 <Camera size={40} color="#ffffff" />
@@ -124,7 +124,7 @@ export default function ScanScreen() {
                 onPress={requestPermission}
               >
                 <LinearGradient
-                  colors={['#3B82F6', '#1D4ED8']}
+                  colors={['#8B5CF6', '#7C3AED']}
                   style={styles.permissionButtonGradient}
                 >
                   <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
@@ -183,7 +183,7 @@ export default function ScanScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0F172A', '#1E293B', '#334155']}
+        colors={['#2A1A3E', '#3D2A52', '#503A66']}
         style={styles.backgroundGradient}
       />
 
@@ -278,7 +278,7 @@ export default function ScanScreen() {
               disabled={isProcessing}
             >
               <LinearGradient
-                colors={isProcessing ? ['#6B7280', '#4B5563'] : ['#3B82F6', '#1D4ED8']}
+                colors={isProcessing ? ['#6B7280', '#4B5563'] : ['#8B5CF6', '#7C3AED']}
                 style={styles.captureButtonGradient}
               >
                 {isProcessing ? (
@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     overflow: 'hidden',
     elevation: 8,
-    shadowColor: '#3B82F6',
+    shadowColor: '#8B5CF6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

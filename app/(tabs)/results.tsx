@@ -146,7 +146,7 @@ export default function ResultsScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0F172A', '#1E293B', '#334155']}
+        colors={['#2A1A3E', '#3D2A52', '#503A66']}
         style={styles.backgroundGradient}
       />
 
@@ -244,7 +244,7 @@ export default function ResultsScreen() {
               {/* Summary Stats */}
               <Text style={styles.label}>Safety Summary</Text>
               <LinearGradient
-                colors={['#60A5FA', '#3B82F6']}
+                colors={['#A78BFA', '#8B5CF6']}
                 style={styles.divider}
               />
               <View style={styles.summaryContainer}>
