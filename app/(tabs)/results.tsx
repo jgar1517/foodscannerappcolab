@@ -21,40 +21,52 @@ import StaggeredList from '@/components/StaggeredList';
 
 const ingredientResults = [
   {
-    name: "Tomato Puree",
-    rating: "safe",
-    explanation: "Natural tomato product with no safety concerns",
-    confidence: 98
-  },
-  {
     name: "Water",
-    rating: "safe", 
+    rating: "safe",
     explanation: "Essential for life and poses no safety concerns",
     confidence: 100
   },
   {
-    name: "Salt",
-    rating: "caution",
-    explanation: "High sodium content may contribute to hypertension",
-    confidence: 85
+    name: "Enriched Wheat Flour",
+    rating: "safe", 
+    explanation: "Standard flour fortified with vitamins and minerals",
+    confidence: 95
   },
   {
-    name: "Citric Acid",
-    rating: "safe",
-    explanation: "Natural preservative, generally recognized as safe",
+    name: "Sugar",
+    rating: "caution",
+    explanation: "High sugar content may contribute to obesity and diabetes",
     confidence: 92
   },
   {
-    name: "Natural Flavors",
-    rating: "caution",
-    explanation: "Vague term that may contain allergens or additives",
-    confidence: 75
+    name: "Soybean Oil",
+    rating: "safe",
+    explanation: "Common cooking oil, generally recognized as safe",
+    confidence: 88
   },
   {
-    name: "Calcium Chloride",
+    name: "High Fructose Corn Syrup",
+    rating: "caution",
+    explanation: "Linked to obesity, diabetes, and metabolic disorders",
+    confidence: 89
+  },
+  {
+    name: "Artificial Vanilla Flavor",
+    rating: "caution",
+    explanation: "Synthetic flavoring, may cause allergic reactions in sensitive individuals",
+    confidence: 78
+  },
+  {
+    name: "Sodium Benzoate",
     rating: "avoid",
-    explanation: "May cause digestive issues in sensitive individuals",
-    confidence: 80
+    explanation: "Preservative linked to hyperactivity in children and potential carcinogenic effects",
+    confidence: 85
+  },
+  {
+    name: "Yellow 5 (Tartrazine)",
+    rating: "avoid",
+    explanation: "Artificial food dye linked to hyperactivity and allergic reactions",
+    confidence: 91
   }
 ];
 
@@ -140,7 +152,7 @@ export default function ResultsScreen() {
   const avoidCount = ingredientResults.filter(i => i.rating === 'avoid').length;
 
   const scanData = {
-    productName: "H-E-B Tomato Sauce",
+    productName: "Oreo Original Cookies",
     safeCount,
     cautionCount,
     avoidCount,
@@ -205,7 +217,7 @@ export default function ResultsScreen() {
               <View style={styles.imageContainer}>
                 <Animated.View
                   style={[
-                    styles.tomatoSauce,
+                    styles.cookiePackage,
                     {
                       transform: [
                         {
@@ -219,31 +231,31 @@ export default function ResultsScreen() {
                   ]}
                 >
                   <LinearGradient
-                    colors={['#DC2626', '#B91C1C']}
-                    style={styles.canBody}
+                    colors={['#1E40AF', '#1D4ED8']}
+                    style={styles.packageBody}
                   />
                   <LinearGradient
-                    colors={['#F59E0B', '#D97706']}
-                    style={styles.canLabel}
+                    colors={['#FBBF24', '#F59E0B']}
+                    style={styles.packageLabel}
                   />
                   <LinearGradient
-                    colors={['#EF4444', '#DC2626']}
-                    style={styles.canTop}
+                    colors={['#374151', '#1F2937']}
+                    style={styles.packageTop}
                   />
                 </Animated.View>
               </View>
               
               {/* Title and Badge */}
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>H-E-B Tomato Sauce</Text>
+                <Text style={styles.title}>Oreo Original Cookies</Text>
                 <CircularProgress
                   size={60}
                   strokeWidth={6}
-                  progress={75}
-                  color={['#F59E0B', '#D97706']}
+                  progress={45}
+                  color={['#EF4444', '#DC2626']}
                   showPercentage={false}
                 >
-                  <Text style={styles.scoreText}>75</Text>
+                  <Text style={styles.scoreText}>45</Text>
                 </CircularProgress>
               </View>
               
@@ -421,37 +433,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  tomatoSauce: {
+  cookiePackage: {
     width: 80,
     height: 80,
     position: 'relative',
   },
-  canBody: {
+  packageBody: {
     position: 'absolute',
     bottom: 5,
     left: '50%',
     marginLeft: -20,
     width: 40,
     height: 60,
-    borderRadius: 6,
+    borderRadius: 8,
   },
-  canLabel: {
+  packageLabel: {
     position: 'absolute',
     top: 20,
     left: '50%',
     marginLeft: -18,
     width: 36,
     height: 25,
-    borderRadius: 4,
+    borderRadius: 6,
   },
-  canTop: {
+  packageTop: {
     position: 'absolute',
     top: 15,
     left: '50%',
     marginLeft: -20,
     width: 40,
     height: 8,
-    borderRadius: 4,
+    borderRadius: 6,
   },
   titleContainer: {
     flexDirection: 'row',
