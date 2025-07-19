@@ -209,18 +209,6 @@ export default function ResultsScreen() {
             </TouchableOpacity>
           </ExpoBlurView>
         )}
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <ArrowLeft size={24} color="#F8FAFC" />
-          </TouchableOpacity>
-          <View style={styles.headerTitleContainer}>
-            <Sparkles size={20} color="#60A5FA" />
-            <Text style={styles.headerTitle}>Results</Text>
-            <Star size={20} color="#F59E0B" />
-          </View>
-          <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-            <Share2 size={24} color="#F8FAFC" />
-          </TouchableOpacity>
-        </BlurView>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Product Info Card */}
