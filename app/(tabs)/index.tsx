@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera, Shield, Zap, Users, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
-import { useTheme } from '@/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
@@ -63,73 +62,29 @@ const faqs = [
     answer: 'We aggregate data from trusted sources including the FDA, EWG Food Scores Database, USDA Food Database, and peer-reviewed scientific research to provide comprehensive safety assessments.',
   },
 ];
+
 export default function HomeScreen() {
   const router = useRouter();
   const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
-  const { darkMode } = useTheme();
 
   const handleScanPress = () => {
     router.push('/scan');
   };
 
-  // Dynamic styles based on dark mode
-  const dynamicStyles = {
-    container: {
-      backgroundColor: darkMode ? '#1f2937' : '#15803D',
-    },
-    section: {
-      backgroundColor: darkMode ? '#374151' : '#DCFCE7',
-    },
-    text: {
-      color: darkMode ? '#f9fafb' : '#ffffff',
-    },
-    secondaryText: {
-      color: darkMode ? '#d1d5db' : '#E6F4EA',
-    },
-    featureCard: {
-      backgroundColor: darkMode ? '#4b5563' : '#ffffff',
-      borderColor: darkMode ? '#6b7280' : '#e5e7eb',
-    },
-    faqItem: {
-      backgroundColor: darkMode ? '#4b5563' : '#ffffff',
-      borderColor: darkMode ? '#6b7280' : '#e5e7eb',
-    },
-    faqAnswer: {
-      borderTopColor: darkMode ? '#6b7280' : '#e5e7eb',
-    },
-    heroTitle: {
-      color: darkMode ? '#f9fafb' : '#15803D',
-    },
-    sectionTitle: {
-      color: darkMode ? '#f9fafb' : '#15803D',
-    },
-    featureTitle: {
-      color: darkMode ? '#f9fafb' : '#15803D',
-    },
-    featureDescription: {
-      color: darkMode ? '#d1d5db' : '#6b7280',
-    },
-    faqQuestionText: {
-      color: darkMode ? '#f9fafb' : '#15803D',
-    },
-    faqAnswerText: {
-      color: darkMode ? '#d1d5db' : '#6b7280',
-    },
-  };
-
   const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
   };
+
   return (
-    <SafeAreaView style={[styles.container, dynamicStyles.container]}>
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {/* Hero Section */}
-        <View style={[styles.heroSection, dynamicStyles.section]}>
+        <View style={styles.heroSection}>
           <View style={styles.heroContent}>
-            <Text style={[styles.heroTitle, dynamicStyles.heroTitle]}>
+            <Text style={styles.heroTitle}>
               Food Scanner App
             </Text>
-            <Text style={[styles.heroSubtitle, dynamicStyles.featureDescription]}>
+            <Text style={styles.heroSubtitle}>
               AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
             </Text>
             
@@ -143,25 +98,25 @@ export default function HomeScreen() {
             
             {/* How To Steps */}
             <View style={styles.howToSection}>
-              <Text style={[styles.howToTitle, dynamicStyles.heroTitle]}>How it works in 3 easy steps:</Text>
+              <Text style={styles.howToTitle}>How it works in 3 easy steps:</Text>
               <View style={styles.stepsContainer}>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>1</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Take a photo of the ingredient label</Text>
+                  <Text style={styles.stepText}>Take a photo of the ingredient label</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>2</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Get instant safety ratings for each ingredient</Text>
+                  <Text style={styles.stepText}>Get instant safety ratings for each ingredient</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>3</Text>
                   </View>
-                  <Text style={[styles.stepText, dynamicStyles.featureDescription]}>Discover healthier alternatives and recipes</Text>
+                  <Text style={styles.stepText}>Discover healthier alternatives and recipes</Text>
                 </View>
               </View>
             </View>
@@ -169,33 +124,33 @@ export default function HomeScreen() {
         </View>
 
         {/* Features Section */}
-        <View style={[styles.section, dynamicStyles.section]}>
-          <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Why Choose Food Safety Scanner?</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
           <View style={styles.featuresGrid}>
             {features.map((feature, index) => (
-              <View key={index} style={[styles.featureCard, dynamicStyles.featureCard]}>
+              <View key={index} style={styles.featureCard}>
                 <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
                   <feature.icon size={24} color={feature.color} />
                 </View>
-                <Text style={[styles.featureTitle, dynamicStyles.featureTitle]}>{feature.title}</Text>
-                <Text style={[styles.featureDescription, dynamicStyles.featureDescription]}>{feature.description}</Text>
+                <Text style={styles.featureTitle}>{feature.title}</Text>
+                <Text style={styles.featureDescription}>{feature.description}</Text>
               </View>
             ))}
           </View>
         </View>
 
         {/* FAQ Section */}
-        <View style={[styles.section, dynamicStyles.section]}>
-          <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Frequently Asked Questions</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
           <View style={styles.faqContainer}>
             {faqs.map((faq, index) => (
-              <View key={index} style={[styles.faqItem, dynamicStyles.faqItem]}>
+              <View key={index} style={styles.faqItem}>
                 <TouchableOpacity 
                   style={styles.faqQuestion}
                   onPress={() => toggleFaq(index)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.faqQuestionText, dynamicStyles.faqQuestionText]}>{faq.question}</Text>
+                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
                   {expandedFaq === index ? (
                     <ChevronUp size={20} color="#15803D" />
                   ) : (
@@ -203,8 +158,8 @@ export default function HomeScreen() {
                   )}
                 </TouchableOpacity>
                 {expandedFaq === index && (
-                  <View style={[styles.faqAnswer, dynamicStyles.faqAnswer]}>
-                    <Text style={[styles.faqAnswerText, dynamicStyles.faqAnswerText]}>{faq.answer}</Text>
+                  <View style={styles.faqAnswer}>
+                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
                   </View>
                 )}
               </View>
@@ -220,11 +175,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#15803D',
   },
   scrollView: {
     flex: 1,
   },
   heroSection: {
+    backgroundColor: '#DCFCE7',
     paddingVertical: 40,
     paddingHorizontal: 24,
     alignItems: 'center',
@@ -236,11 +193,13 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 32,
     fontWeight: '800',
+    color: '#15803D',
     textAlign: 'center',
     marginBottom: 16,
   },
   heroSubtitle: {
     fontSize: 16,
+    color: '#6b7280',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
@@ -264,6 +223,7 @@ const styles = StyleSheet.create({
   howToTitle: {
     fontSize: 18,
     fontWeight: '600',
+    color: '#15803D',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -292,9 +252,11 @@ const styles = StyleSheet.create({
   },
   stepText: {
     fontSize: 16,
+    color: '#6b7280',
     flex: 1,
   },
   section: {
+    backgroundColor: '#DCFCE7',
     paddingHorizontal: 24,
     paddingVertical: 32,
     marginBottom: 1,
@@ -302,15 +264,18 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: '700',
+    color: '#15803D',
     marginBottom: 24,
   },
   featuresGrid: {
     gap: 20,
   },
   featureCard: {
+    backgroundColor: '#ffffff',
     padding: 20,
     borderRadius: 16,
     borderWidth: 1,
+    borderColor: '#e5e7eb',
   },
   featureIcon: {
     width: 48,
@@ -323,18 +288,22 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 18,
     fontWeight: '600',
+    color: '#15803D',
     marginBottom: 8,
   },
   featureDescription: {
     fontSize: 16,
+    color: '#6b7280',
     lineHeight: 20,
   },
   faqContainer: {
     gap: 12,
   },
   faqItem: {
+    backgroundColor: '#ffffff',
     borderRadius: 12,
     borderWidth: 1,
+    borderColor: '#e5e7eb',
     overflow: 'hidden',
   },
   faqQuestion: {
@@ -346,6 +315,7 @@ const styles = StyleSheet.create({
   faqQuestionText: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#15803D',
     flex: 1,
     marginRight: 12,
   },
@@ -353,9 +323,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
   },
   faqAnswerText: {
     fontSize: 15,
+    color: '#6b7280',
     lineHeight: 22,
   },
 });
