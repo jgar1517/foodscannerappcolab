@@ -70,7 +70,6 @@ export default function GlassmorphismCard({
 
   return (
     <Animated.View
-      collapsable={false}
       style={[
         styles.container,
         {

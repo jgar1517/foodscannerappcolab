@@ -138,7 +138,6 @@ export default function ScanScreen() {
           ) : (
             <BlurView intensity={30} style={styles.permissionBlur}>
               <Animated.View
-                collapsable={false}
                 style={[
                   styles.permissionContent,
                   {
@@ -254,7 +253,6 @@ export default function ScanScreen() {
           >
             {/* Scan Frame */}
             <Animated.View
-              collapsable={false}
               style={[
                 styles.scanFrame,
                 {
@@ -269,7 +267,6 @@ export default function ScanScreen() {
               
               {/* Animated scan line */}
               <Animated.View
-                collapsable={false}
                 style={[
                   styles.scanLine,
                   {
@@ -280,8 +277,6 @@ export default function ScanScreen() {
               
               {/* Apple illustration in center */}
               <View style={styles.appleContainer}>
-                <Animated.View
-                  collapsable={false}
                   style={[
                     styles.apple,
                     {
@@ -313,7 +308,6 @@ export default function ScanScreen() {
         {/* Capture Button */}
         <View style={styles.captureContainer}>
           <Animated.View
-            collapsable={false}
             style={[
               styles.captureButtonContainer,
               {
@@ -332,7 +326,6 @@ export default function ScanScreen() {
               >
                 {isProcessing ? (
                   <Animated.View
-                    collapsable={false}
                     style={[
                       styles.processingIndicator,
                       {
