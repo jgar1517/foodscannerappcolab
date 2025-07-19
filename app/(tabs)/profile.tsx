@@ -10,21 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { 
-  User, 
-  Bell, 
-  Moon, 
-  Shield, 
-  BarChart3, 
-  Eye, 
-  HelpCircle, 
-  MessageSquare, 
-  Star, 
-  FileText, 
-  LogOut,
-  ChevronRight,
-  Sparkles
-} from 'lucide-react-native';
+import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
