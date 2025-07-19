@@ -6,12 +6,34 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Sun, Moon } from 'lucide-react-native';
+import { Sun, Moon, Calendar, Target, History } from 'lucide-react-native';
 
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
+  
+  const userProfile = {
+    "id": "user_001",
+    "name": "Joseph Days",
+    "email": "jdays@email.com",
+    "avatar": "https://i.pravatar.cc/150?img=12",
+    "preferences": ["Vegan", "Gluten-Free"],
+    "scanCount": 14,
+    "theme": "light",
+    "joinedDate": "2024-03-15T10:20:00Z",
+    "lastLogin": "2025-07-18T16:30:00Z",
+    "goal": "Track sugar and calorie intake",
+    "history": [
+      { "item": "Broccoli", "date": "2025-07-16", "rating": "Healthy" },
+      { "item": "Protein Bar", "date": "2025-07-14", "rating": "Moderate" }
+    ],
+    "settings": {
+      "notifications": true,
+      "language": "en"
+    }
+  };
   
   const toggleTheme = () => setDarkMode(!darkMode);
 
@@ -20,7 +42,75 @@ export default function ProfileScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Appearance</Text>
+          <Text style={styles.headerTitle}>Profile</Text>
+        </View>
+
+        {/* User Info Card */}
+        <View style={styles.userCard}>
+          <View style={styles.userInfo}>
+            <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
+            <View style={styles.userDetails}>
+              <Text style={styles.userName}>{userProfile.name}</Text>
+              <Text style={styles.userEmail}>{userProfile.email}</Text>
+              <View style={styles.preferencesContainer}>
+                {userProfile.preferences.map((preference, index) => (
+                  <View key={index} style={styles.preferenceChip}>
+                    <Text style={styles.preferenceText}>{preference}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Stats Card */}
+        <View style={styles.statsCard}>
+          <Text style={styles.sectionTitle}>Statistics</Text>
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>{userProfile.scanCount}</Text>
+              <Text style={styles.statLabel}>Total Scans</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Calendar size={20} color="#15803D" />
+              <Text style={styles.statLabel}>Member Since</Text>
+              <Text style={styles.statValue}>Mar 2024</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Goal Card */}
+        <View style={styles.goalCard}>
+          <View style={styles.goalHeader}>
+            <Target size={24} color="#15803D" />
+            <Text style={styles.sectionTitle}>Current Goal</Text>
+          </View>
+          <Text style={styles.goalText}>{userProfile.goal}</Text>
+        </View>
+
+        {/* Recent History Card */}
+        <View style={styles.historyCard}>
+          <View style={styles.historyHeader}>
+            <History size={24} color="#15803D" />
+            <Text style={styles.sectionTitle}>Recent Scans</Text>
+          </View>
+          {userProfile.history.map((item, index) => (
+            <View key={index} style={styles.historyItem}>
+              <View style={styles.historyInfo}>
+                <Text style={styles.historyItemName}>{item.item}</Text>
+                <Text style={styles.historyDate}>{item.date}</Text>
+              </View>
+              <View style={[
+                styles.ratingBadge,
+                item.rating === 'Healthy' ? styles.healthyBadge : styles.moderateBadge
+              ]}>
+                <Text style={[
+                  styles.ratingText,
+                  item.rating === 'Healthy' ? styles.healthyText : styles.moderateText
+                ]}>{item.rating}</Text>
+              </View>
+            </View>
+          ))}
         </View>
 
         {/* Theme Toggle Card */}
@@ -45,8 +135,6 @@ export default function ProfileScreen() {
             />
           </View>
         </View>
-
-        {/* Visual Style Guide Section */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -72,10 +160,189 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#14532D',
   },
-  themeCard: {
+  userCard: {
     backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 20,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 16,
+  },
+  userDetails: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#14532D',
+    marginBottom: 4,
+  },
+  userEmail: {
+    fontSize: 16,
+    color: '#6b7280',
+    marginBottom: 12,
+  },
+  preferencesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  preferenceChip: {
+    backgroundColor: '#DCFCE7',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  preferenceText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#15803D',
+  },
+  statsCard: {
+    backgroundColor: '#ffffff',
+    marginHorizontal: 24,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#14532D',
+    marginBottom: 16,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  statItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#15803D',
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#6b7280',
+    textAlign: 'center',
+  },
+  statValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#14532D',
+    marginTop: 4,
+  },
+  goalCard: {
+    backgroundColor: '#ffffff',
+    marginHorizontal: 24,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  goalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 8,
+  },
+  goalText: {
+    fontSize: 16,
+    color: '#6b7280',
+    lineHeight: 24,
+  },
+  historyCard: {
+    backgroundColor: '#ffffff',
+    marginHorizontal: 24,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  historyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  historyItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  historyInfo: {
+    flex: 1,
+  },
+  historyItemName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#14532D',
+    marginBottom: 4,
+  },
+  historyDate: {
+    fontSize: 14,
+    color: '#6b7280',
+  },
+  ratingBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  healthyBadge: {
+    backgroundColor: '#DCFCE7',
+  },
+  moderateBadge: {
+    backgroundColor: '#FEF3C7',
+  },
+  ratingText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  healthyText: {
+    color: '#15803D',
+  },
+  moderateText: {
+    color: '#D97706',
+  },
+  themeCard: {
+    backgroundColor: '#ffffff',
+    marginHorizontal: 24,
+    marginTop: 16,
+    marginBottom: 24,
     padding: 20,
     borderRadius: 16,
     flexDirection: 'row',
