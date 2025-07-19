@@ -9,7 +9,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Shield, Zap, Users, TrendingUp, ChevronRight, Sparkles, Star, CheckCircle } from 'lucide-react-native';
+import { Camera, Shield, Zap, Users, TrendingUp, ChevronRight, Sparkles, Star, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
