@@ -178,44 +178,6 @@ export default function ScanScreen() {
               </Animated.View>
             </ExpoBlurView>
           )}
-            <Animated.View
-              style={[
-                styles.permissionContent,
-                {
-                  transform: [
-                    {
-                      translateY: floatAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -10],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <LinearGradient
-                colors={['#8B5CF6', '#7C3AED']}
-                style={styles.permissionIconContainer}
-              >
-                <Camera size={40} color="#ffffff" />
-              </LinearGradient>
-              <Text style={styles.permissionTitle}>Camera Access Required</Text>
-              <Text style={styles.permissionMessage}>
-                We need access to your camera to scan food items and provide nutritional analysis.
-              </Text>
-              <TouchableOpacity 
-                style={styles.permissionButton}
-                onPress={requestPermission}
-              >
-                <LinearGradient
-                  colors={['#8B5CF6', '#7C3AED']}
-                  style={styles.permissionButtonGradient}
-                >
-                  <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </Animated.View>
-          </BlurView>
         </SafeAreaView>
       </View>
     );
@@ -296,15 +258,6 @@ export default function ScanScreen() {
             </View>
           </ExpoBlurView>
         )}
-          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <ArrowLeft size={24} color="#F8FAFC" />
-          </TouchableOpacity>
-          <View style={styles.headerTitleContainer}>
-            <Sparkles size={20} color="#60A5FA" />
-            <Text style={styles.headerTitle}>Scan Food</Text>
-            <Zap size={20} color="#F59E0B" />
-          </View>
-        </BlurView>
 
         {/* Camera Container */}
         <View style={styles.cameraContainer}>
@@ -375,10 +328,6 @@ export default function ScanScreen() {
             </Text>
           </ExpoBlurView>
         )}
-          <Text style={styles.instructionText}>
-            Align the food within the frame to scan
-          </Text>
-        </BlurView>
 
         {/* Capture Button */}
         <View style={styles.captureContainer}>
