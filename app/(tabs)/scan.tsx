@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { BlurView } from 'expo-blur';
 import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -96,6 +97,7 @@ export default function ScanScreen() {
           {Platform.OS === 'web' ? (
             <View style={[styles.permissionBlur, styles.webPermissionBlur]}>
               <Animated.View
+                collapsable={false}
                 style={[
                   styles.permissionContent,
                   {
@@ -134,8 +136,9 @@ export default function ScanScreen() {
               </Animated.View>
             </View>
           ) : (
-            <ExpoBlurView intensity={30} style={styles.permissionBlur}>
+            <BlurView intensity={30} style={styles.permissionBlur}>
               <Animated.View
+                collapsable={false}
                 style={[
                   styles.permissionContent,
                   {
@@ -172,7 +175,7 @@ export default function ScanScreen() {
                   </LinearGradient>
                 </TouchableOpacity>
               </Animated.View>
-            </ExpoBlurView>
+            </BlurView>
           )}
         </SafeAreaView>
       </View>
@@ -251,6 +254,7 @@ export default function ScanScreen() {
           >
             {/* Scan Frame */}
             <Animated.View
+              collapsable={false}
               style={[
                 styles.scanFrame,
                 {
@@ -265,6 +269,7 @@ export default function ScanScreen() {
               
               {/* Animated scan line */}
               <Animated.View
+                collapsable={false}
                 style={[
                   styles.scanLine,
                   {
@@ -276,6 +281,7 @@ export default function ScanScreen() {
               {/* Apple illustration in center */}
               <View style={styles.appleContainer}>
                 <Animated.View
+                  collapsable={false}
                   style={[
                     styles.apple,
                     {
@@ -307,6 +313,7 @@ export default function ScanScreen() {
         {/* Capture Button */}
         <View style={styles.captureContainer}>
           <Animated.View
+            collapsable={false}
             style={[
               styles.captureButtonContainer,
               {
@@ -325,6 +332,7 @@ export default function ScanScreen() {
               >
                 {isProcessing ? (
                   <Animated.View
+                    collapsable={false}
                     style={[
                       styles.processingIndicator,
                       {
