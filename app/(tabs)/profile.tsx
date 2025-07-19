@@ -190,7 +190,7 @@ export default function ProfileScreen() {
               <View style={styles.userInfo}>
                 <View style={styles.avatarContainer}>
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.avatarGradient}
                   >
                     <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
@@ -232,7 +232,7 @@ export default function ProfileScreen() {
                 </View>
                 <View style={styles.statItem}>
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.statBadge}
                   >
                     <AnimatedCounter 
@@ -253,7 +253,6 @@ export default function ProfileScreen() {
               <GlassmorphismCard
                 key={sectionIndex}
                 style={styles.menuSection}
-                animated={false}
               >
                 <View style={styles.sectionContent}>
                   <Text style={styles.sectionTitle}>{section.title}</Text>

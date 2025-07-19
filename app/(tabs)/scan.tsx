@@ -113,7 +113,7 @@ export default function ScanScreen() {
                 ]}
               >
                 <LinearGradient
-                  colors={['#14B8A6', '#0D9488']}
+                  colors={['#8B5CF6', '#7C3AED']}
                   style={styles.permissionIconContainer}
                 >
                   <Camera size={40} color="#ffffff" />
@@ -127,7 +127,7 @@ export default function ScanScreen() {
                   onPress={requestPermission}
                 >
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.permissionButtonGradient}
                   >
                     <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
@@ -154,7 +154,7 @@ export default function ScanScreen() {
                 ]}
               >
                 <LinearGradient
-                  colors={['#14B8A6', '#0D9488']}
+                  colors={['#8B5CF6', '#7C3AED']}
                   style={styles.permissionIconContainer}
                 >
                   <Camera size={40} color="#ffffff" />
@@ -168,7 +168,7 @@ export default function ScanScreen() {
                   onPress={requestPermission}
                 >
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.permissionButtonGradient}
                   >
                     <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
@@ -327,7 +327,7 @@ export default function ScanScreen() {
               disabled={isProcessing}
             >
               <LinearGradient
-                colors={isProcessing ? ['#6B7280', '#4B5563'] : ['#14B8A6', '#0D9488']}
+                colors={isProcessing ? ['#6B7280', '#4B5563'] : ['#8B5CF6', '#7C3AED']}
                 style={styles.captureButtonGradient}
               >
                 {isProcessing ? (
