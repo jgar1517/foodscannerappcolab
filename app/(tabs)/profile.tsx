@@ -253,6 +253,7 @@ export default function ProfileScreen() {
               <GlassmorphismCard
                 key={sectionIndex}
                 style={styles.menuSection}
+                animated={false}
               >
                 <View style={styles.sectionContent}>
                   <Text style={styles.sectionTitle}>{section.title}</Text>

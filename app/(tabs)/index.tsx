@@ -156,7 +156,7 @@ export default function HomeScreen() {
                   activeOpacity={0.9}
                 >
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.startButtonGradient}
                   >
                     <Camera size={20} color="#ffffff" />
