@@ -112,11 +112,11 @@ export default function ProfileScreen() {
     
     const item = menuSections[sectionIndex].items[itemIndex];
     
-    if (item.key === "darkMode") {
+    if (item.key === 'darkMode') {
       setDarkMode(!darkMode);
-    } else if (item.key === "notifications") {
+    } else if (item.key === 'notifications') {
       setNotifications(!notifications);
-    } else if (item.key && dietaryPreferences.hasOwnProperty(item.key)) {
+    } else if (item.key && item.key in dietaryPreferences) {
       setDietaryPreferences(prev => ({
         ...prev,
         [item.key]: !prev[item.key as keyof typeof prev]
