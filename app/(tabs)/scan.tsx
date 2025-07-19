@@ -15,11 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView as ExpoBlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
-
-// Platform-specific BlurView component
-const BlurView = Platform.OS === 'web' ? View : ExpoBlurView;
 
 const { width, height } = Dimensions.get('window');
 
@@ -235,29 +231,16 @@ export default function ScanScreen() {
 
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
-        {Platform.OS === 'web' ? (
-          <View style={[styles.header, styles.webHeader]}>
-            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-              <ArrowLeft size={24} color="#F8FAFC" />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Sparkles size={20} color="#60A5FA" />
-              <Text style={styles.headerTitle}>Scan Food</Text>
-              <Zap size={20} color="#F59E0B" />
-            </View>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+            <ArrowLeft size={24} color="#F8FAFC" />
+          </TouchableOpacity>
+          <View style={styles.headerTitleContainer}>
+            <Sparkles size={20} color="#60A5FA" />
+            <Text style={styles.headerTitle}>Scan Food</Text>
+            <Zap size={20} color="#F59E0B" />
           </View>
-        ) : (
-          <ExpoBlurView intensity={20} style={styles.header}>
-            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-              <ArrowLeft size={24} color="#F8FAFC" />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Sparkles size={20} color="#60A5FA" />
-              <Text style={styles.headerTitle}>Scan Food</Text>
-              <Zap size={20} color="#F59E0B" />
-            </View>
-          </ExpoBlurView>
-        )}
+        </View>
 
         {/* Camera Container */}
         <View style={styles.cameraContainer}>
@@ -315,19 +298,11 @@ export default function ScanScreen() {
         </View>
 
         {/* Instruction Text */}
-        {Platform.OS === 'web' ? (
-          <View style={[styles.instructionContainer, styles.webInstructionContainer]}>
-            <Text style={styles.instructionText}>
-              Align the food within the frame to scan
-            </Text>
-          </View>
-        ) : (
-          <ExpoBlurView intensity={20} style={styles.instructionContainer}>
-            <Text style={styles.instructionText}>
-              Align the food within the frame to scan
-            </Text>
-          </ExpoBlurView>
-        )}
+        <View style={styles.instructionContainer}>
+          <Text style={styles.instructionText}>
+            Align the food within the frame to scan
+          </Text>
+        </View>
 
         {/* Capture Button */}
         <View style={styles.captureContainer}>
@@ -456,9 +431,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  webHeader: {
     backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   backButton: {
@@ -572,9 +544,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  webInstructionContainer: {
     backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   instructionText: {
