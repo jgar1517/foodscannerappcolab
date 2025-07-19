@@ -314,7 +314,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2E8B57',
+    backgroundColor: '#15803D',
   },
   scrollView: {
     flex: 1,
@@ -324,9 +324,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 24,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#BBF7D0',
   },
   profileImageContainer: {
     position: 'relative',
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#10b981',
+    backgroundColor: '#15803D',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -352,14 +352,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileName: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 4,
   },
   profileEmail: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontSize: 16,
+    color: '#15803D',
     marginBottom: 8,
   },
   membershipBadge: {
@@ -387,12 +387,12 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#BBF7D0',
   },
   statIcon: {
     width: 40,
@@ -404,14 +404,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   statValue: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
     textAlign: 'center',
   },
   upgradeCard: {
@@ -434,12 +434,12 @@ const styles = StyleSheet.create({
   upgradeTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 4,
   },
   upgradeDescription: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
   },
   upgradeButton: {
     backgroundColor: '#fbbf24',
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 16,
     paddingHorizontal: 24,
   },
@@ -481,7 +481,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f0fdf4',
+    backgroundColor: '#DCFCE7',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -492,12 +492,12 @@ const styles = StyleSheet.create({
   menuItemTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 2,
   },
   menuItemSubtitle: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
   },
   dietaryGrid: {
     flexDirection: 'row',
@@ -507,20 +507,20 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dietaryChip: {
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#BBF7D0',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#86EFAC',
   },
   dietaryChipActive: {
-    backgroundColor: '#10b981',
-    borderColor: '#10b981',
+    backgroundColor: '#15803D',
+    borderColor: '#15803D',
   },
   dietaryChipText: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
     fontWeight: '600',
   },
   dietaryChipTextActive: {
@@ -533,24 +533,24 @@ const styles = StyleSheet.create({
     borderTopColor: '#f3f4f6',
   },
   customAvoidancesTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 8,
   },
   avoidanceItem: {
     marginBottom: 4,
   },
   avoidanceText: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontSize: 16,
+    color: '#15803D',
   },
   addAvoidanceButton: {
     marginTop: 8,
   },
   addAvoidanceText: {
-    fontSize: 14,
-    color: '#10b981',
+    fontSize: 16,
+    color: '#22C55E',
     fontWeight: '600',
   },
   logoutContainer: {
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
   },
   appInfoText: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: '#86EFAC',
     textAlign: 'center',
   },
 });

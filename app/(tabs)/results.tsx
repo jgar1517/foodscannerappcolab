@@ -373,17 +373,17 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2E8B57',
+    backgroundColor: '#15803D',
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     paddingHorizontal: 24,
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#BBF7D0',
   },
   headerContent: {
     flexDirection: 'row',
@@ -401,12 +401,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontSize: 16,
+    color: '#15803D',
   },
   shareButton: {
     width: 40,
@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
     fontWeight: '600',
   },
   summaryRow: {
@@ -461,18 +461,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   summaryCount: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
   },
   summaryLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
     fontWeight: '600',
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     marginHorizontal: 24,
     borderRadius: 12,
     padding: 4,
@@ -492,12 +492,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   tabText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#6b7280',
+    color: '#15803D',
   },
   activeTabText: {
-    color: '#10b981',
+    color: '#15803D',
   },
   tabContent: {
     paddingHorizontal: 24,
@@ -506,16 +506,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 16,
   },
   ingredientCard: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#BBF7D0',
   },
   ingredientHeader: {
     flexDirection: 'row',
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   ingredientName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
     marginBottom: 4,
   },
   ingredientMeta: {
@@ -538,11 +538,11 @@ const styles = StyleSheet.create({
   },
   ingredientPosition: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
   },
   ingredientConfidence: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
   },
   ratingBadge: {
     flexDirection: 'row',
@@ -557,8 +557,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   ingredientExplanation: {
-    fontSize: 14,
-    color: '#374151',
+    fontSize: 16,
+    color: '#15803D',
     lineHeight: 20,
     marginBottom: 12,
   },
@@ -569,7 +569,7 @@ const styles = StyleSheet.create({
   },
   sourcesLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
     fontWeight: '600',
   },
   sourcesRow: {
@@ -577,23 +577,23 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   sourceTag: {
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#BBF7D0',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
   },
   sourceText: {
     fontSize: 10,
-    color: '#374151',
+    color: '#14532D',
     fontWeight: '600',
   },
   recommendationCard: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#BBF7D0',
     flexDirection: 'row',
     gap: 12,
   },
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
   recommendationName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
     flex: 1,
   },
   recommendationScore: {
@@ -623,24 +623,24 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   scoreValue: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
   },
   recommendationBrand: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontSize: 16,
+    color: '#15803D',
     marginBottom: 6,
   },
   recommendationDescription: {
-    fontSize: 14,
-    color: '#374151',
+    fontSize: 16,
+    color: '#15803D',
     lineHeight: 18,
     marginBottom: 6,
   },
   recommendationReason: {
     fontSize: 12,
-    color: '#10b981',
+    color: '#22C55E',
     fontWeight: '600',
     marginBottom: 12,
   },
@@ -652,12 +652,12 @@ const styles = StyleSheet.create({
   recommendationPrice: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2937',
+    color: '#14532D',
   },
   buyButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#10b98115',
+    backgroundColor: '#22C55E15',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
@@ -666,15 +666,15 @@ const styles = StyleSheet.create({
   buyButtonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#10b981',
+    color: '#15803D',
   },
   recipeCard: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#DCFCE7',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: '#BBF7D0',
   },
   recipeImage: {
     width: '100%',
@@ -688,11 +688,11 @@ const styles = StyleSheet.create({
   recipeName: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#14532D',
   },
   recipeDescription: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontSize: 16,
+    color: '#15803D',
   },
   recipeDetails: {
     flexDirection: 'row',
@@ -705,27 +705,27 @@ const styles = StyleSheet.create({
   },
   recipeDetailText: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#15803D',
   },
   ingredientsList: {
     gap: 2,
   },
   recipeIngredient: {
     fontSize: 12,
-    color: '#374151',
+    color: '#15803D',
   },
   viewRecipeButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#10b98115',
+    backgroundColor: '#22C55E15',
     paddingVertical: 12,
     borderRadius: 8,
     gap: 4,
   },
   viewRecipeText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    color: '#10b981',
+    color: '#15803D',
   },
 });
