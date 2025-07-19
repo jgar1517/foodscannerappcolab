@@ -7,11 +7,15 @@ import {
   Modal,
   Animated,
   Dimensions,
+  Platform,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { BlurView as ExpoBlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { X, Share2, MessageCircle, Mail, Copy, Download } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
+
+// Platform-specific BlurView component
+const BlurView = Platform.OS === 'web' ? View : ExpoBlurView;
 
 const { width, height } = Dimensions.get('window');
 
@@ -112,7 +116,149 @@ export default function ShareModal({ visible, onClose, scanData }: ShareModalPro
             },
           ]}
         >
-          <BlurView intensity={30} style={styles.modalContent}>
+          {Platform.OS === 'web' ? (
+            <View style={[styles.modalContent, styles.webModalContent]}>
+              {/* Header */}
+              <View style={styles.header}>
+                <View style={styles.headerTitleContainer}>
+                  <Share2 size={24} color="#A78BFA" />
+                  <Text style={styles.headerTitle}>Share Results</Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={onClose}
+                  activeOpacity={0.7}
+                >
+                  <X size={24} color="#94A3B8" />
+                </TouchableOpacity>
+              </View>
+
+              {/* Scan Summary */}
+              <View style={styles.summaryContainer}>
+                <Text style={styles.productName}>{scanData.productName}</Text>
+                <View style={styles.statsRow}>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#22C55E', '#16A34A']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.safeCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Safe</Text>
+                  </View>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#F59E0B', '#D97706']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.cautionCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Caution</Text>
+                  </View>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#EF4444', '#DC2626']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.avoidCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Avoid</Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* Share Options */}
+              <View style={styles.shareOptions}>
+                {shareOptions.map((option, index) => (
+                  <TouchableOpacity
+                    key={option.id}
+                    style={styles.shareOption}
+                    onPress={() => handleShare(option.id)}
+                    activeOpacity={0.8}
+                  >
+                    <LinearGradient
+                      colors={option.color}
+                      style={styles.shareIconContainer}
+                    >
+                      <option.icon size={24} color="#ffffff" />
+                    </LinearGradient>
+                    <Text style={styles.shareLabel}>{option.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          ) : (
+            <ExpoBlurView intensity={30} style={styles.modalContent}>
+              {/* Header */}
+              <View style={styles.header}>
+                <View style={styles.headerTitleContainer}>
+                  <Share2 size={24} color="#A78BFA" />
+                  <Text style={styles.headerTitle}>Share Results</Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={onClose}
+                  activeOpacity={0.7}
+                >
+                  <X size={24} color="#94A3B8" />
+                </TouchableOpacity>
+              </View>
+
+              {/* Scan Summary */}
+              <View style={styles.summaryContainer}>
+                <Text style={styles.productName}>{scanData.productName}</Text>
+                <View style={styles.statsRow}>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#22C55E', '#16A34A']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.safeCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Safe</Text>
+                  </View>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#F59E0B', '#D97706']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.cautionCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Caution</Text>
+                  </View>
+                  <View style={styles.statItem}>
+                    <LinearGradient
+                      colors={['#EF4444', '#DC2626']}
+                      style={styles.statBadge}
+                    >
+                      <Text style={styles.statNumber}>{scanData.avoidCount}</Text>
+                    </LinearGradient>
+                    <Text style={styles.statLabel}>Avoid</Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* Share Options */}
+              <View style={styles.shareOptions}>
+                {shareOptions.map((option, index) => (
+                  <TouchableOpacity
+                    key={option.id}
+                    style={styles.shareOption}
+                    onPress={() => handleShare(option.id)}
+                    activeOpacity={0.8}
+                  >
+                    <LinearGradient
+                      colors={option.color}
+                      style={styles.shareIconContainer}
+                    >
+                      <option.icon size={24} color="#ffffff" />
+                    </LinearGradient>
+                    <Text style={styles.shareLabel}>{option.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ExpoBlurView>
+          )}
             {/* Header */}
             <View style={styles.header}>
               <View style={styles.headerTitleContainer}>
@@ -210,6 +356,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
     paddingBottom: 40,
+  },
+  webModalContent: {
+    backgroundColor: 'rgba(42, 26, 62, 0.95)',
   },
   header: {
     flexDirection: 'row',

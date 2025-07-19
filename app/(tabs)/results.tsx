@@ -6,17 +6,22 @@ import {
   ScrollView,
   TouchableOpacity,
   Animated,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Sparkles, Star, Leaf, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, Share2 } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView as ExpoBlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import ShareModal from '@/components/ShareModal';
 import SuccessAnimation from '@/components/SuccessAnimation';
 import GlassmorphismCard from '@/components/GlassmorphismCard';
 import CircularProgress from '@/components/CircularProgress';
 import StaggeredList from '@/components/StaggeredList';
+
+// Platform-specific BlurView component
+const BlurView = Platform.OS === 'web' ? View : ExpoBlurView;
 
 const ingredientResults = [
   {
@@ -175,7 +180,35 @@ export default function ResultsScreen() {
 
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
-        <BlurView intensity={20} style={styles.header}>
+        {Platform.OS === 'web' ? (
+          <View style={[styles.header, styles.webHeader]}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <ArrowLeft size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+            <View style={styles.headerTitleContainer}>
+              <Sparkles size={20} color="#60A5FA" />
+              <Text style={styles.headerTitle}>Results</Text>
+              <Star size={20} color="#F59E0B" />
+            </View>
+            <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
+              <Share2 size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <ExpoBlurView intensity={20} style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <ArrowLeft size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+            <View style={styles.headerTitleContainer}>
+              <Sparkles size={20} color="#60A5FA" />
+              <Text style={styles.headerTitle}>Results</Text>
+              <Star size={20} color="#F59E0B" />
+            </View>
+            <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
+              <Share2 size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+          </ExpoBlurView>
+        )}
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
@@ -386,6 +419,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  webHeader: {
+    backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   backButton: {
     marginRight: 16,

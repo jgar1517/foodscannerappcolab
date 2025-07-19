@@ -4,9 +4,13 @@ import {
   StyleSheet,
   Animated,
   ViewStyle,
+  Platform,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { BlurView as ExpoBlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+
+// Platform-specific BlurView component
+const BlurView = Platform.OS === 'web' ? View : ExpoBlurView;
 
 interface GlassmorphismCardProps {
   children: React.ReactNode;
@@ -95,15 +99,65 @@ export default function GlassmorphismCard({
         end={{ x: 1, y: 1 }}
       >
         {/* Glass Effect */}
-        <BlurView
-          intensity={intensity}
-          style={[
-            styles.glassContainer,
-            {
-              borderRadius: borderRadius - 1,
-            },
-          ]}
-        >
+        {Platform.OS === 'web' ? (
+          <View
+            style={[
+              styles.glassContainer,
+              styles.webGlassContainer,
+              {
+                borderRadius: borderRadius - 1,
+              },
+            ]}
+          >
+            {/* Content Background */}
+            <LinearGradient
+              colors={[
+                'rgba(255, 255, 255, 0.15)',
+                'rgba(255, 255, 255, 0.05)',
+                'rgba(255, 255, 255, 0.1)',
+              ]}
+              style={[
+                styles.contentBackground,
+                {
+                  borderRadius: borderRadius - 1,
+                },
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              {children}
+            </LinearGradient>
+          </View>
+        ) : (
+          <ExpoBlurView
+            intensity={intensity}
+            style={[
+              styles.glassContainer,
+              {
+                borderRadius: borderRadius - 1,
+              },
+            ]}
+          >
+            {/* Content Background */}
+            <LinearGradient
+              colors={[
+                'rgba(255, 255, 255, 0.15)',
+                'rgba(255, 255, 255, 0.05)',
+                'rgba(255, 255, 255, 0.1)',
+              ]}
+              style={[
+                styles.contentBackground,
+                {
+                  borderRadius: borderRadius - 1,
+                },
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              {children}
+            </LinearGradient>
+          </ExpoBlurView>
+        )}
           {/* Content Background */}
           <LinearGradient
             colors={[
@@ -137,6 +191,9 @@ const styles = StyleSheet.create({
   },
   glassContainer: {
     overflow: 'hidden',
+  },
+  webGlassContainer: {
+    backgroundColor: 'rgba(42, 26, 62, 0.3)',
   },
   contentBackground: {
     overflow: 'hidden',

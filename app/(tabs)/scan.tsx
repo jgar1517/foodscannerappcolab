@@ -7,6 +7,7 @@ import {
   Alert,
   Dimensions,
   Animated,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
@@ -14,8 +15,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
+import { BlurView as ExpoBlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
+
+// Platform-specific BlurView component
+const BlurView = Platform.OS === 'web' ? View : ExpoBlurView;
 
 const { width, height } = Dimensions.get('window');
 
@@ -93,7 +97,87 @@ export default function ScanScreen() {
           style={styles.backgroundGradient}
         />
         <SafeAreaView style={styles.permissionContainer}>
-          <BlurView intensity={30} style={styles.permissionBlur}>
+          {Platform.OS === 'web' ? (
+            <View style={[styles.permissionBlur, styles.webPermissionBlur]}>
+              <Animated.View
+                style={[
+                  styles.permissionContent,
+                  {
+                    transform: [
+                      {
+                        translateY: floatAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0, -10],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              >
+                <LinearGradient
+                  colors={['#8B5CF6', '#7C3AED']}
+                  style={styles.permissionIconContainer}
+                >
+                  <Camera size={40} color="#ffffff" />
+                </LinearGradient>
+                <Text style={styles.permissionTitle}>Camera Access Required</Text>
+                <Text style={styles.permissionMessage}>
+                  We need access to your camera to scan food items and provide nutritional analysis.
+                </Text>
+                <TouchableOpacity 
+                  style={styles.permissionButton}
+                  onPress={requestPermission}
+                >
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.permissionButtonGradient}
+                  >
+                    <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          ) : (
+            <ExpoBlurView intensity={30} style={styles.permissionBlur}>
+              <Animated.View
+                style={[
+                  styles.permissionContent,
+                  {
+                    transform: [
+                      {
+                        translateY: floatAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0, -10],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              >
+                <LinearGradient
+                  colors={['#8B5CF6', '#7C3AED']}
+                  style={styles.permissionIconContainer}
+                >
+                  <Camera size={40} color="#ffffff" />
+                </LinearGradient>
+                <Text style={styles.permissionTitle}>Camera Access Required</Text>
+                <Text style={styles.permissionMessage}>
+                  We need access to your camera to scan food items and provide nutritional analysis.
+                </Text>
+                <TouchableOpacity 
+                  style={styles.permissionButton}
+                  onPress={requestPermission}
+                >
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.permissionButtonGradient}
+                  >
+                    <Text style={styles.permissionButtonText}>Grant Camera Access</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animated.View>
+            </ExpoBlurView>
+          )}
             <Animated.View
               style={[
                 styles.permissionContent,
@@ -189,7 +273,29 @@ export default function ScanScreen() {
 
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
-        <BlurView intensity={20} style={styles.header}>
+        {Platform.OS === 'web' ? (
+          <View style={[styles.header, styles.webHeader]}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <ArrowLeft size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+            <View style={styles.headerTitleContainer}>
+              <Sparkles size={20} color="#60A5FA" />
+              <Text style={styles.headerTitle}>Scan Food</Text>
+              <Zap size={20} color="#F59E0B" />
+            </View>
+          </View>
+        ) : (
+          <ExpoBlurView intensity={20} style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+              <ArrowLeft size={24} color="#F8FAFC" />
+            </TouchableOpacity>
+            <View style={styles.headerTitleContainer}>
+              <Sparkles size={20} color="#60A5FA" />
+              <Text style={styles.headerTitle}>Scan Food</Text>
+              <Zap size={20} color="#F59E0B" />
+            </View>
+          </ExpoBlurView>
+        )}
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
@@ -256,7 +362,19 @@ export default function ScanScreen() {
         </View>
 
         {/* Instruction Text */}
-        <BlurView intensity={20} style={styles.instructionContainer}>
+        {Platform.OS === 'web' ? (
+          <View style={[styles.instructionContainer, styles.webInstructionContainer]}>
+            <Text style={styles.instructionText}>
+              Align the food within the frame to scan
+            </Text>
+          </View>
+        ) : (
+          <ExpoBlurView intensity={20} style={styles.instructionContainer}>
+            <Text style={styles.instructionText}>
+              Align the food within the frame to scan
+            </Text>
+          </ExpoBlurView>
+        )}
           <Text style={styles.instructionText}>
             Align the food within the frame to scan
           </Text>
@@ -336,6 +454,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
+  webPermissionBlur: {
+    backgroundColor: 'rgba(42, 26, 62, 0.9)',
+  },
   permissionContent: {
     alignItems: 'center',
   },
@@ -387,6 +508,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  webHeader: {
+    backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   backButton: {
     marginRight: 16,
@@ -500,6 +624,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  webInstructionContainer: {
+    backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   instructionText: {
     fontSize: 18,
