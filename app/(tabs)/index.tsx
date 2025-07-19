@@ -65,24 +65,55 @@ const faqs = [
 export default function HomeScreen() {
   const router = useRouter();
   const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
+  const [darkMode, setDarkMode] = React.useState(false);
 
   const handleScanPress = () => {
     router.push('/scan');
+  };
+
+  // Dynamic styles based on dark mode
+  const dynamicStyles = {
+    container: {
+      backgroundColor: darkMode ? '#1f2937' : '#f8f9fa',
+    },
+    heroSection: {
+      backgroundColor: darkMode ? '#374151' : '#ffffff',
+    },
+    section: {
+      backgroundColor: darkMode ? '#374151' : '#ffffff',
+    },
+    text: {
+      color: darkMode ? '#f9fafb' : '#14532D',
+    },
+    secondaryText: {
+      color: darkMode ? '#d1d5db' : '#6b7280',
+    },
+    featureCard: {
+      backgroundColor: darkMode ? '#4b5563' : '#f8f9fa',
+      borderColor: darkMode ? '#6b7280' : '#e5e7eb',
+    },
+    faqItem: {
+      backgroundColor: darkMode ? '#4b5563' : '#f8f9fa',
+      borderColor: darkMode ? '#6b7280' : '#e5e7eb',
+    },
+    faqAnswer: {
+      borderTopColor: darkMode ? '#6b7280' : '#e5e7eb',
+    },
   };
 
   const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, dynamicStyles.container]}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {/* Hero Section */}
-        <View style={styles.heroSection}>
+        <View style={[styles.heroSection, dynamicStyles.heroSection]}>
           <View style={styles.heroContent}>
             <Text style={styles.heroTitle}>
               Food Scanner App
             </Text>
-            <Text style={styles.heroSubtitle}>
+            <Text style={[styles.heroSubtitle, dynamicStyles.secondaryText]}>
               AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
             </Text>
             
@@ -96,25 +127,25 @@ export default function HomeScreen() {
             
             {/* How To Steps */}
             <View style={styles.howToSection}>
-              <Text style={styles.howToTitle}>How it works in 3 easy steps:</Text>
+              <Text style={[styles.howToTitle, dynamicStyles.text]}>How it works in 3 easy steps:</Text>
               <View style={styles.stepsContainer}>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>1</Text>
                   </View>
-                  <Text style={styles.stepText}>Take a photo of the ingredient label</Text>
+                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Take a photo of the ingredient label</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>2</Text>
                   </View>
-                  <Text style={styles.stepText}>Get instant safety ratings for each ingredient</Text>
+                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Get instant safety ratings for each ingredient</Text>
                 </View>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
                     <Text style={styles.stepNumberText}>3</Text>
                   </View>
-                  <Text style={styles.stepText}>Discover healthier alternatives and recipes</Text>
+                  <Text style={[styles.stepText, dynamicStyles.secondaryText]}>Discover healthier alternatives and recipes</Text>
                 </View>
               </View>
             </View>
@@ -122,33 +153,33 @@ export default function HomeScreen() {
         </View>
 
         {/* Features Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
+        <View style={[styles.section, dynamicStyles.section]}>
+          <Text style={[styles.sectionTitle, dynamicStyles.text]}>Why Choose Food Safety Scanner?</Text>
           <View style={styles.featuresGrid}>
             {features.map((feature, index) => (
-              <View key={index} style={styles.featureCard}>
+              <View key={index} style={[styles.featureCard, dynamicStyles.featureCard]}>
                 <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
                   <feature.icon size={24} color={feature.color} />
                 </View>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>{feature.description}</Text>
+                <Text style={[styles.featureTitle, dynamicStyles.text]}>{feature.title}</Text>
+                <Text style={[styles.featureDescription, dynamicStyles.secondaryText]}>{feature.description}</Text>
               </View>
             ))}
           </View>
         </View>
 
         {/* FAQ Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
+        <View style={[styles.section, dynamicStyles.section]}>
+          <Text style={[styles.sectionTitle, dynamicStyles.text]}>Frequently Asked Questions</Text>
           <View style={styles.faqContainer}>
             {faqs.map((faq, index) => (
-              <View key={index} style={styles.faqItem}>
+              <View key={index} style={[styles.faqItem, dynamicStyles.faqItem]}>
                 <TouchableOpacity 
                   style={styles.faqQuestion}
                   onPress={() => toggleFaq(index)}
                   activeOpacity={0.7}
                 >
-                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
+                  <Text style={[styles.faqQuestionText, dynamicStyles.text]}>{faq.question}</Text>
                   {expandedFaq === index ? (
                     <ChevronUp size={20} color="#15803D" />
                   ) : (
@@ -156,13 +187,25 @@ export default function HomeScreen() {
                   )}
                 </TouchableOpacity>
                 {expandedFaq === index && (
-                  <View style={styles.faqAnswer}>
-                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+                  <View style={[styles.faqAnswer, dynamicStyles.faqAnswer]}>
+                    <Text style={[styles.faqAnswerText, dynamicStyles.secondaryText]}>{faq.answer}</Text>
                   </View>
                 )}
               </View>
             ))}
           </View>
+        </View>
+
+        {/* Dark Mode Toggle (for testing) */}
+        <View style={[styles.section, dynamicStyles.section]}>
+          <TouchableOpacity 
+            style={styles.darkModeToggle}
+            onPress={() => setDarkMode(!darkMode)}
+          >
+            <Text style={[styles.darkModeText, dynamicStyles.text]}>
+              Toggle Dark Mode (Current: {darkMode ? 'Dark' : 'Light'})
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -172,13 +215,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   scrollView: {
     flex: 1,
   },
   heroSection: {
-    backgroundColor: '#ffffff',
     paddingVertical: 40,
     paddingHorizontal: 24,
     alignItems: 'center',
@@ -190,13 +231,11 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#14532D',
     textAlign: 'center',
     marginBottom: 16,
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#6b7280',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
@@ -220,7 +259,6 @@ const styles = StyleSheet.create({
   howToTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#14532D',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -249,30 +287,25 @@ const styles = StyleSheet.create({
   },
   stepText: {
     fontSize: 16,
-    color: '#6b7280',
     flex: 1,
   },
   section: {
     paddingHorizontal: 24,
     paddingVertical: 32,
-    backgroundColor: '#ffffff',
     marginBottom: 1,
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#14532D',
     marginBottom: 24,
   },
   featuresGrid: {
     gap: 20,
   },
   featureCard: {
-    backgroundColor: '#f8f9fa',
     padding: 20,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
   },
   featureIcon: {
     width: 48,
@@ -285,22 +318,18 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#14532D',
     marginBottom: 8,
   },
   featureDescription: {
     fontSize: 16,
-    color: '#6b7280',
     lineHeight: 20,
   },
   faqContainer: {
     gap: 12,
   },
   faqItem: {
-    backgroundColor: '#f8f9fa',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
     overflow: 'hidden',
   },
   faqQuestion: {
@@ -312,7 +341,6 @@ const styles = StyleSheet.create({
   faqQuestionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#14532D',
     flex: 1,
     marginRight: 12,
   },
@@ -320,11 +348,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
   },
   faqAnswerText: {
     fontSize: 15,
-    color: '#6b7280',
     lineHeight: 22,
+  },
+  darkModeToggle: {
+    padding: 16,
+    backgroundColor: '#15803D',
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  darkModeText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#ffffff',
   },
 });
