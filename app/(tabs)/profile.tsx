@@ -5,14 +5,15 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
   Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Settings, Heart, Shield, Star, FileText, CircleHelp as HelpCircle, LogOut, ChevronRight, Crown, Zap, Calendar, ChartBar as BarChart3, Sun, Moon } from 'lucide-react-native';
+import { Sun, Moon } from 'lucide-react-native';
 
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
+  
+  const toggleTheme = () => setDarkMode(!darkMode);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,9 +37,12 @@ export default function ProfileScreen() {
           </View>
           
           <View style={styles.toggleContainer}>
-            <View style={[styles.toggle, darkMode && styles.toggleActive]}>
-              <View style={[styles.toggleThumb, darkMode && styles.toggleThumbActive]} />
-            </View>
+            <Switch 
+              value={darkMode} 
+              onValueChange={toggleTheme}
+              trackColor={{ false: '#e5e7eb', true: '#15803D' }}
+              thumbColor={darkMode ? '#ffffff' : '#ffffff'}
+            />
           </View>
         </View>
 
@@ -103,30 +107,5 @@ const styles = StyleSheet.create({
   },
   toggleContainer: {
     padding: 4,
-  },
-  toggle: {
-    width: 60,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#e5e7eb',
-    justifyContent: 'center',
-    paddingHorizontal: 4,
-  },
-  toggleActive: {
-    backgroundColor: '#15803D',
-  },
-  toggleThumb: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  toggleThumbActive: {
-    transform: [{ translateX: 28 }],
   },
 });
