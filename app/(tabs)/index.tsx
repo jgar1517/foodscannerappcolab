@@ -96,6 +96,22 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Features Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
+          <View style={styles.featuresGrid}>
+            {features.map((feature, index) => (
+              <View key={index} style={styles.featureCard}>
+                <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
+                  <feature.icon size={24} color={feature.color} />
+                </View>
+                <Text style={styles.featureTitle}>{feature.title}</Text>
+                <Text style={styles.featureDescription}>{feature.description}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
         {/* FAQ Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
@@ -119,21 +135,6 @@ export default function HomeScreen() {
                     <Text style={styles.faqAnswerText}>{faq.answer}</Text>
                   </View>
                 )}
-              </View>
-            ))}
-          </View>
-        </View>
-        {/* Features Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
-          <View style={styles.featuresGrid}>
-            {features.map((feature, index) => (
-              <View key={index} style={styles.featureCard}>
-                <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
-                  <feature.icon size={24} color={feature.color} />
-                </View>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>{feature.description}</Text>
               </View>
             ))}
           </View>
