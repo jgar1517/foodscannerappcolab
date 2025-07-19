@@ -224,7 +224,7 @@ export default function HomeScreen() {
               <StaggeredList staggerDelay={200} initialDelay={300}>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#3B82F6', '#1D4ED8']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>1</Text>
@@ -238,7 +238,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#3B82F6', '#1D4ED8']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>2</Text>
@@ -252,7 +252,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#14B8A6', '#0D9488']}
+                    colors={['#3B82F6', '#1D4ED8']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>3</Text>
