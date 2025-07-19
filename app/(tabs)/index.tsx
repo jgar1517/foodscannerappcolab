@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Switch,
-  Image,
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
+import { Camera, CheckCircle } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
-export default function ProfileScreen() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [notifications, setNotifications] = useState(true);
+export default function HomeScreen() {
+  const router = useRouter();
   const floatAnim = React.useRef(new Animated.Value(0)).current;
-  
+  const pulseAnim = React.useRef(new Animated.Value(1)).current;
+
   React.useEffect(() => {
     // Floating animation
     Animated.loop(
@@ -35,250 +34,218 @@ export default function ProfileScreen() {
         }),
       ])
     ).start();
-  }, []);
 
-  const userProfile = {
-    name: "Sarah Johnson",
-    email: "sarah.johnson@email.com",
-    avatar: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=150&h=150&fit=crop&crop=face",
-    totalScans: 127,
-    healthGoals: 8,
-    streakDays: 85,
-  };
+    // Pulse animation
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.05,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
 
   const floatingTransform = floatAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0, -8],
   });
 
-  const menuSections = [
-    {
-      title: "Dietary Preferences",
-      items: [
-        { icon: User, title: "Gluten-Free", subtitle: "Avoid gluten-containing ingredients", hasToggle: true, enabled: true },
-        { icon: User, title: "Vegan", subtitle: "Plant-based diet preferences", hasToggle: true, enabled: false },
-        { icon: User, title: "Diabetic-Friendly", subtitle: "Low sugar and carb options", hasToggle: true, enabled: true },
-        { icon: User, title: "Keto", subtitle: "High fat, low carb diet", hasToggle: true, enabled: false },
-        { icon: User, title: "Paleo", subtitle: "Whole foods diet", hasToggle: true, enabled: false },
-        { icon: User, title: "Low Sodium", subtitle: "Reduced sodium intake", hasToggle: true, enabled: true },
-      ]
-    },
-    {
-      title: "Account",
-      items: [
-        { icon: User, title: "Edit Profile", subtitle: "Update your personal information" },
-        { icon: Bell, title: "Notifications", subtitle: "Manage notification preferences", hasToggle: true, enabled: notifications },
-        { icon: Moon, title: "Dark Mode", subtitle: "Switch to dark theme", hasToggle: true, enabled: darkMode },
-      ]
-    },
-    {
-      title: "Health & Safety",
-      items: [
-        { icon: BarChart3, title: "Health Goals", subtitle: "Set and track health objectives" },
-        { icon: Shield, title: "Safety Analytics", subtitle: "View your safety score trends" },
-        { icon: Eye, title: "Data Privacy", subtitle: "Control your data and privacy settings" },
-      ]
-    },
-    {
-      title: "Support",
-      items: [
-        { icon: HelpCircle, title: "Help Center", subtitle: "Get help and support" },
-        { icon: MessageSquare, title: "Send Feedback", subtitle: "Help us improve the app" },
-        { icon: Star, title: "Rate the App", subtitle: "Share your experience" },
-      ]
-    },
-    {
-      title: "Legal",
-      items: [
-        { icon: FileText, title: "Terms of Service", subtitle: "Read our terms and conditions" },
-        { icon: FileText, title: "Privacy Policy", subtitle: "Learn about our privacy practices" },
-      ]
-    }
-  ];
-
-  const handleToggle = (sectionIndex: number, itemIndex: number) => {
-    const item = menuSections[sectionIndex].items[itemIndex];
-    if (item.title === "Dark Mode") {
-      setDarkMode(!darkMode);
-    } else if (item.title === "Notifications") {
-      setNotifications(!notifications);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0F172A', '#1E293B', '#334155']}
+        colors={['#22C55E', '#16A34A', '#15803D']}
         style={styles.backgroundGradient}
       />
-      
-      {/* Floating particles */}
-      <View style={styles.particlesContainer}>
-        {[...Array(20)].map((_, i) => (
+
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {/* Hero Section */}
+          <View style={styles.heroSection}>
+            <Animated.View
+              style={[
+                styles.heroContent,
+                {
+                  transform: [{ translateY: floatingTransform }],
+                },
+              ]}
+            >
+              <Text style={styles.heroTitle}>Scan with</Text>
+              <Text style={styles.heroSubtitle}>Confidence</Text>
+              <Text style={styles.heroDescription}>
+                AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
+              </Text>
+              
+              <Animated.View
+                style={[
+                  styles.startButtonContainer,
+                  {
+                    transform: [{ scale: pulseAnim }],
+                  },
+                ]}
+              >
+                <TouchableOpacity 
+                  style={styles.startButton}
+                  onPress={() => router.push('/scan')}
+                  activeOpacity={0.9}
+                >
+                  <Camera size={20} color="#22C55E" />
+                  <Text style={styles.startButtonText}>Start Scanning</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            </Animated.View>
+          </View>
+
+          {/* Why Choose Section */}
           <Animated.View
-            key={i}
             style={[
-              styles.particle,
+              styles.whyChooseSection,
               {
-                left: Math.random() * 400,
-                top: Math.random() * 800,
                 transform: [
                   {
-                    translateY: floatingTransform,
+                    translateY: floatAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -5],
+                    }),
                   },
                 ],
               },
             ]}
-          />
-        ))}
-      </View>
-
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerTitleContainer}>
-              <Sparkles size={24} color="#60A5FA" />
-              <Text style={styles.headerTitle}>Profile</Text>
-              <Star size={20} color="#F59E0B" />
-            </View>
-          </View>
-
-          {/* User Info Card */}
-          <Animated.View
-            style={[
-              styles.userCard,
-              {
-                transform: [{ translateY: floatingTransform }],
-              },
-            ]}
           >
-            <BlurView intensity={30} style={styles.userCardBlur}>
-              <View style={styles.userInfo}>
-                <View style={styles.avatarContainer}>
-                  <LinearGradient
-                    colors={['#3B82F6', '#1D4ED8']}
-                    style={styles.avatarGradient}
-                  >
-                    <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
-                  </LinearGradient>
-                </View>
-                <View style={styles.userDetails}>
-                  <Text style={styles.userName}>{userProfile.name}</Text>
-                  <Text style={styles.userEmail}>{userProfile.email}</Text>
-                </View>
-              </View>
-              
-              {/* Stats Row */}
-              <View style={styles.statsRow}>
-                <View style={styles.statItem}>
-                  <LinearGradient
-                    colors={['#22C55E', '#16A34A']}
-                    style={styles.statBadge}
-                  >
-                    <Text style={styles.statNumber}>{userProfile.totalScans}</Text>
-                  </LinearGradient>
-                  <Text style={styles.statLabel}>Total Scans</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <LinearGradient
-                    colors={['#F59E0B', '#D97706']}
-                    style={styles.statBadge}
-                  >
-                    <Text style={styles.statNumber}>{userProfile.healthGoals}</Text>
-                  </LinearGradient>
-                  <Text style={styles.statLabel}>Health Goals</Text>
-                </View>
-                <View style={styles.statItem}>
-                  <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
-                    style={styles.statBadge}
-                  >
-                    <Text style={styles.statNumber}>{userProfile.streakDays}</Text>
-                  </LinearGradient>
-                  <Text style={styles.statLabel}>Day Streak</Text>
-                </View>
-              </View>
+            <BlurView intensity={30} style={styles.whyChooseBlur}>
+              <Text style={styles.whyChooseTitle}>Why Choose Food Safety Scanner?</Text>
             </BlurView>
           </Animated.View>
 
-          {/* Menu Sections */}
-          {menuSections.map((section, sectionIndex) => (
-            <Animated.View
-              key={sectionIndex}
-              style={[
-                styles.menuSection,
-                {
-                  transform: [
-                    {
-                      translateY: floatAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -3 * sectionIndex],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <BlurView intensity={30} style={styles.sectionBlur}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {section.items.map((item, itemIndex) => (
-                  <TouchableOpacity
-                    key={itemIndex}
-                    style={styles.menuItem}
-                    onPress={() => item.hasToggle && handleToggle(sectionIndex, itemIndex)}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.menuItemLeft}>
-                      <LinearGradient
-                        colors={['#3B82F6', '#1D4ED8']}
-                        style={styles.menuIcon}
-                      >
-                        <item.icon size={20} color="#ffffff" />
-                      </LinearGradient>
-                      <View style={styles.menuItemText}>
-                        <Text style={styles.menuItemTitle}>{item.title}</Text>
-                        <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.menuItemRight}>
-                      {item.hasToggle ? (
-                        <Switch
-                          value={item.enabled}
-                          onValueChange={() => handleToggle(sectionIndex, itemIndex)}
-                          trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#3B82F6' }}
-                          thumbColor={'#ffffff'}
-                        />
-                      ) : (
-                        <ChevronRight size={20} color="#60A5FA" />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </BlurView>
-            </Animated.View>
-          ))}
-
-          {/* Logout Button */}
+          {/* How It Works Section */}
           <Animated.View
             style={[
-              styles.logoutSection,
+              styles.howItWorksSection,
+              {
+                transform: [
+                  {
+                    translateY: floatAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -3],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <Text style={styles.sectionTitle}>How It Works</Text>
+            
+            <View style={styles.stepsContainer}>
+              <View style={styles.stepItem}>
+                <View style={styles.stepNumber}>
+                  <Text style={styles.stepNumberText}>1</Text>
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Scan or Upload</Text>
+                  <Text style={styles.stepDescription}>
+                    Take a photo of any ingredient label or upload from your gallery
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.stepItem}>
+                <View style={styles.stepNumber}>
+                  <Text style={styles.stepNumberText}>2</Text>
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>AI Analysis</Text>
+                  <Text style={styles.stepDescription}>
+                    Our AI identifies each ingredient and cross-references safety databases
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.stepItem}>
+                <View style={styles.stepNumber}>
+                  <Text style={styles.stepNumberText}>3</Text>
+                </View>
+                <View style={styles.stepContent}>
+                  <Text style={styles.stepTitle}>Get Results</Text>
+                  <Text style={styles.stepDescription}>
+                    Receive safety ratings, explanations, and healthier alternatives
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Animated.View>
+
+          {/* Trusted By Section */}
+          <Animated.View
+            style={[
+              styles.trustedSection,
+              {
+                transform: [
+                  {
+                    translateY: floatAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -2],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <Text style={styles.sectionTitle}>Trusted by Health Professionals</Text>
+            
+            <View style={styles.trustedItems}>
+              <View style={styles.trustedItem}>
+                <CheckCircle size={20} color="#ffffff" />
+                <Text style={styles.trustedText}>FDA Database Integration</Text>
+              </View>
+              <View style={styles.trustedItem}>
+                <CheckCircle size={20} color="#ffffff" />
+                <Text style={styles.trustedText}>EWG Food Scores</Text>
+              </View>
+              <View style={styles.trustedItem}>
+                <CheckCircle size={20} color="#ffffff" />
+                <Text style={styles.trustedText}>Scientific Research Backed</Text>
+              </View>
+              <View style={styles.trustedItem}>
+                <CheckCircle size={20} color="#ffffff" />
+                <Text style={styles.trustedText}>Regular Database Updates</Text>
+              </View>
+            </View>
+          </Animated.View>
+
+          {/* CTA Section */}
+          <Animated.View
+            style={[
+              styles.ctaSection,
               {
                 transform: [{ translateY: floatingTransform }],
               },
             ]}
           >
-            <TouchableOpacity style={styles.logoutButton} activeOpacity={0.8}>
-              <BlurView intensity={30} style={styles.logoutBlur}>
+            <BlurView intensity={30} style={styles.ctaBlur}>
+              <Text style={styles.ctaTitle}>Ready to eat with confidence?</Text>
+              <Text style={styles.ctaDescription}>
+                Join thousands of users making safer food choices every day
+              </Text>
+              
+              <TouchableOpacity 
+                style={styles.ctaButton}
+                onPress={() => router.push('/scan')}
+                activeOpacity={0.9}
+              >
                 <LinearGradient
-                  colors={['#EF4444', '#DC2626']}
-                  style={styles.logoutIcon}
+                  colors={['#ffffff', '#f8fafc']}
+                  style={styles.ctaButtonGradient}
                 >
-                  <LogOut size={20} color="#ffffff" />
+                  <Text style={styles.ctaButtonText}>Start Your First Scan</Text>
                 </LinearGradient>
-                <Text style={styles.logoutText}>Sign Out</Text>
-              </BlurView>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </BlurView>
           </Animated.View>
 
           <View style={styles.bottomSpacing} />
@@ -299,195 +266,213 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-  particlesContainer: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-  particle: {
-    position: 'absolute',
-    width: 3,
-    height: 3,
-    backgroundColor: '#60A5FA',
-    borderRadius: 1.5,
-    opacity: 0.7,
-  },
   safeArea: {
     flex: 1,
   },
   scrollView: {
     flex: 1,
   },
-  header: {
+  heroSection: {
     paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingTop: 60,
+    paddingBottom: 40,
     alignItems: 'center',
   },
-  headerTitleContainer: {
-    flexDirection: 'row',
+  heroContent: {
     alignItems: 'center',
-    gap: 8,
   },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#F8FAFC',
-  },
-  userCard: {
-    marginHorizontal: 24,
-    marginTop: 20,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  userCardBlur: {
-    padding: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  avatarContainer: {
-    borderRadius: 44,
-    padding: 4,
-  },
-  avatarGradient: {
-    borderRadius: 40,
-    padding: 4,
-  },
-  avatar: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-  },
-  userDetails: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  userName: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#F8FAFC',
-    marginBottom: 4,
-  },
-  userEmail: {
-    fontSize: 16,
-    color: '#CBD5E1',
-  },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  statItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  statBadge: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  statNumber: {
-    fontSize: 18,
+  heroTitle: {
+    fontSize: 48,
+    fontFamily: 'Poppins-Bold',
     fontWeight: '700',
     color: '#ffffff',
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#CBD5E1',
     textAlign: 'center',
+    letterSpacing: 0.5,
   },
-  menuSection: {
+  heroSubtitle: {
+    fontSize: 48,
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
+    color: 'rgba(255, 255, 255, 0.8)',
+    textAlign: 'center',
+    marginBottom: 24,
+    letterSpacing: 0.5,
+  },
+  heroDescription: {
+    fontSize: 18,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: '#ffffff',
+    textAlign: 'center',
+    lineHeight: 28,
+    marginBottom: 40,
+    paddingHorizontal: 20,
+    letterSpacing: 0.3,
+  },
+  startButtonContainer: {
+    borderRadius: 25,
+  },
+  startButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 25,
+    gap: 8,
+    elevation: 8,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
+  startButtonText: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
+    color: '#22C55E',
+    letterSpacing: 0.5,
+  },
+  whyChooseSection: {
     marginHorizontal: 24,
-    marginTop: 16,
+    marginBottom: 32,
     borderRadius: 20,
     overflow: 'hidden',
   },
-  sectionBlur: {
+  whyChooseBlur: {
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  whyChooseTitle: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '600',
+    color: '#ffffff',
+    textAlign: 'center',
+    letterSpacing: 0.3,
+  },
+  howItWorksSection: {
+    paddingHorizontal: 24,
+    marginBottom: 40,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 28,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
-    color: '#F8FAFC',
-    marginBottom: 16,
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 32,
+    letterSpacing: 0.5,
   },
-  menuItem: {
+  stepsContainer: {
+    gap: 24,
+  },
+  stepItem: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    alignItems: 'flex-start',
+    gap: 16,
   },
-  menuItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  menuIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  stepNumber: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginTop: 4,
   },
-  menuItemText: {
+  stepNumberText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 0.3,
+  },
+  stepContent: {
     flex: 1,
   },
-  menuItemTitle: {
-    fontSize: 16,
+  stepTitle: {
+    fontSize: 20,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
-    color: '#F8FAFC',
-    marginBottom: 2,
+    color: '#ffffff',
+    marginBottom: 8,
+    letterSpacing: 0.3,
   },
-  menuItemSubtitle: {
-    fontSize: 14,
-    color: '#CBD5E1',
+  stepDescription: {
+    fontSize: 16,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.9)',
+    lineHeight: 24,
+    letterSpacing: 0.2,
   },
-  menuItemRight: {
-    marginLeft: 12,
+  trustedSection: {
+    paddingHorizontal: 24,
+    marginBottom: 40,
   },
-  logoutSection: {
+  trustedItems: {
+    gap: 16,
+  },
+  trustedItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  trustedText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: '#ffffff',
+    letterSpacing: 0.2,
+  },
+  ctaSection: {
     marginHorizontal: 24,
-    marginTop: 24,
+    marginBottom: 40,
     borderRadius: 20,
     overflow: 'hidden',
   },
-  logoutButton: {
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  logoutBlur: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  ctaBlur: {
+    padding: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  logoutIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     alignItems: 'center',
-    marginRight: 12,
   },
-  logoutText: {
+  ctaTitle: {
+    fontSize: 24,
+    fontFamily: 'Poppins-SemiBold',
+    fontWeight: '700',
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: 12,
+    letterSpacing: 0.3,
+  },
+  ctaDescription: {
     fontSize: 16,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+    marginBottom: 32,
+    letterSpacing: 0.2,
+  },
+  ctaButton: {
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
+  ctaButtonGradient: {
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+  },
+  ctaButtonText: {
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
-    color: '#F8FAFC',
+    color: '#22C55E',
+    letterSpacing: 0.5,
   },
   bottomSpacing: {
     height: 40,
