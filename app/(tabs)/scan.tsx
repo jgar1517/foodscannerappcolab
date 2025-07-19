@@ -97,7 +97,7 @@ export default function ScanScreen() {
           {Platform.OS === 'web' ? (
             <View style={[styles.permissionBlur, styles.webPermissionBlur]}>
               <Animated.View
-                collapsable={false}
+                collapsable="false"
                 style={[
                   styles.permissionContent,
                   {
