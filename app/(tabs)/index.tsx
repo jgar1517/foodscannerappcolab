@@ -9,7 +9,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Shield, Zap, Users, TrendingUp, ChevronRight, Sparkles, Star, CircleCheck as CheckCircle } from 'lucide-react-native';
+import { Camera, Shield, Zap, Users, TrendingUp, ChevronRight, Sparkles, Star, CircleCheck as CheckCircle, Brain, Clock, User, TrendingUp as Trending } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -119,6 +119,113 @@ export default function HomeScreen() {
             </BlurView>
           </Animated.View>
 
+          {/* Feature Cards */}
+          <View style={styles.featureCardsContainer}>
+            <Animated.View
+              style={[
+                styles.featureCard,
+                {
+                  transform: [{ translateY: floatingTransform }],
+                },
+              ]}
+            >
+              <BlurView intensity={20} style={styles.featureCardBlur}>
+                <View style={styles.featureCardContent}>
+                  <View style={styles.featureIcon}>
+                    <Brain size={20} color="#60A5FA" />
+                  </View>
+                  <View style={styles.featureTextContainer}>
+                    <Text style={styles.featureTitle}>AI-Powered Safety Analysis</Text>
+                    <Text style={styles.featureDescription}>Get instant safety ratings for every ingredient based on trusted scientific sources</Text>
+                  </View>
+                </View>
+              </BlurView>
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                styles.featureCard,
+                {
+                  transform: [
+                    {
+                      translateY: floatAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -5],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <BlurView intensity={20} style={styles.featureCardBlur}>
+                <View style={styles.featureCardContent}>
+                  <View style={styles.featureIcon}>
+                    <Clock size={20} color="#F59E0B" />
+                  </View>
+                  <View style={styles.featureTextContainer}>
+                    <Text style={styles.featureTitle}>Instant Results</Text>
+                    <Text style={styles.featureDescription}>Scan any ingredient label and get results in under 5 seconds</Text>
+                  </View>
+                </View>
+              </BlurView>
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                styles.featureCard,
+                {
+                  transform: [
+                    {
+                      translateY: floatAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -3],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <BlurView intensity={20} style={styles.featureCardBlur}>
+                <View style={styles.featureCardContent}>
+                  <View style={styles.featureIcon}>
+                    <User size={20} color="#8B5CF6" />
+                  </View>
+                  <View style={styles.featureTextContainer}>
+                    <Text style={styles.featureTitle}>Personalized for You</Text>
+                    <Text style={styles.featureDescription}>Custom dietary profiles adapt safety ratings to your specific needs</Text>
+                  </View>
+                </View>
+              </BlurView>
+            </Animated.View>
+
+            <Animated.View
+              style={[
+                styles.featureCard,
+                {
+                  transform: [
+                    {
+                      translateY: floatAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -2],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <BlurView intensity={20} style={styles.featureCardBlur}>
+                <View style={styles.featureCardContent}>
+                  <View style={styles.featureIcon}>
+                    <Trending size={20} color="#EF4444" />
+                  </View>
+                  <View style={styles.featureTextContainer}>
+                    <Text style={styles.featureTitle}>Smart Recommendations</Text>
+                    <Text style={styles.featureDescription}>Discover healthier alternatives and simple recipes using safer ingredients</Text>
+                  </View>
+                </View>
+              </BlurView>
+            </Animated.View>
+          </View>
           {/* How It Works Section */}
           <View style={styles.howItWorksSection}>
             <Text style={styles.sectionTitle}>How It Works</Text>
@@ -382,6 +489,48 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#ffffff',
     textAlign: 'center',
+  },
+  featureCardsContainer: {
+    paddingHorizontal: 24,
+    marginBottom: 32,
+    gap: 12,
+  },
+  featureCard: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  featureCardBlur: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 20,
+  },
+  featureCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  featureIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  featureTextContainer: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#ffffff',
+    marginBottom: 4,
+  },
+  featureDescription: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.8)',
+    lineHeight: 20,
   },
   howItWorksSection: {
     paddingHorizontal: 24,
