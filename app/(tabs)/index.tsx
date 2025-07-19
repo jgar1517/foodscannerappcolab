@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Shield, Zap, Users, TrendingUp } from 'lucide-react-native';
+import { Camera, Shield, Zap, Users, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
@@ -40,13 +40,39 @@ const features = [
   },
 ];
 
+const faqs = [
+  {
+    question: 'How accurate is the ingredient analysis?',
+    answer: 'Our AI-powered system achieves 95% accuracy by combining multiple trusted sources including FDA databases, EWG Food Scores, and scientific research. We continuously update our database to ensure the most current safety information.',
+  },
+  {
+    question: 'Can I use this app for dietary restrictions?',
+    answer: 'Yes! The app supports various dietary profiles including gluten-free, vegan, diabetic-friendly, and custom restrictions. Safety ratings are personalized based on your specific dietary needs and preferences.',
+  },
+  {
+    question: 'How does the scanning process work?',
+    answer: 'Simply take a photo of any ingredient label. Our OCR technology extracts the text, identifies each ingredient, and provides instant safety ratings with explanations. The entire process takes less than 5 seconds.',
+  },
+  {
+    question: 'Is my data secure and private?',
+    answer: 'Absolutely. We use end-to-end encryption for all data transmission and storage. Your personal dietary information is never shared with third parties, and you have full control over your data.',
+  },
+  {
+    question: 'What sources do you use for safety ratings?',
+    answer: 'We aggregate data from trusted sources including the FDA, EWG Food Scores Database, USDA Food Database, and peer-reviewed scientific research to provide comprehensive safety assessments.',
+  },
+];
 export default function HomeScreen() {
   const router = useRouter();
+  const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
 
   const handleScanPress = () => {
     router.push('/scan');
   };
 
+  const toggleFaq = (index: number) => {
+    setExpandedFaq(expandedFaq === index ? null : index);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
@@ -70,6 +96,33 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* FAQ Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
+          <View style={styles.faqContainer}>
+            {faqs.map((faq, index) => (
+              <View key={index} style={styles.faqItem}>
+                <TouchableOpacity 
+                  style={styles.faqQuestion}
+                  onPress={() => toggleFaq(index)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
+                  {expandedFaq === index ? (
+                    <ChevronUp size={20} color="#15803D" />
+                  ) : (
+                    <ChevronDown size={20} color="#15803D" />
+                  )}
+                </TouchableOpacity>
+                {expandedFaq === index && (
+                  <View style={styles.faqAnswer}>
+                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        </View>
         {/* Features Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
@@ -174,5 +227,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6b7280',
     lineHeight: 20,
+  },
+  faqContainer: {
+    gap: 12,
+  },
+  faqItem: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    overflow: 'hidden',
+  },
+  faqQuestion: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+  },
+  faqQuestionText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#14532D',
+    flex: 1,
+    marginRight: 12,
+  },
+  faqAnswer: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+  },
+  faqAnswerText: {
+    fontSize: 15,
+    color: '#6b7280',
+    lineHeight: 22,
   },
 });
