@@ -18,7 +18,7 @@ export default function ProfileScreen() {
     "id": "user_001",
     "name": "Joseph Days",
     "email": "jdays@email.com",
-    "avatar": "https://i.pravatar.cc/150?img=12",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     "preferences": ["Vegan", "Gluten-Free"],
     "scanCount": 14,
     "theme": "light",
