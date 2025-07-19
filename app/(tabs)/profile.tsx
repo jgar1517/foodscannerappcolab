@@ -123,7 +123,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0F172A', '#1E293B', '#334155']}
+        colors={['#2A1A3E', '#3D2A52', '#503A66']}
         style={styles.backgroundGradient}
       />
       
@@ -172,7 +172,7 @@ export default function ProfileScreen() {
               <View style={styles.userInfo}>
                 <View style={styles.avatarContainer}>
                   <LinearGradient
-                    colors={['#3B82F6', '#1D4ED8']}
+                    colors={['#8B5CF6', '#7C3AED']}
                     style={styles.avatarGradient}
                   >
                     <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
@@ -246,7 +246,7 @@ export default function ProfileScreen() {
                   >
                     <View style={styles.menuItemLeft}>
                       <LinearGradient
-                        colors={['#3B82F6', '#1D4ED8']}
+                        colors={['#8B5CF6', '#7C3AED']}
                         style={styles.menuIcon}
                       >
                         <item.icon size={20} color="#ffffff" />
@@ -261,11 +261,11 @@ export default function ProfileScreen() {
                         <Switch
                           value={item.enabled}
                           onValueChange={() => handleToggle(sectionIndex, itemIndex)}
-                          trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#3B82F6' }}
+                          trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#8B5CF6' }}
                           thumbColor={'#ffffff'}
                         />
                       ) : (
-                        <ChevronRight size={20} color="#60A5FA" />
+                        <ChevronRight size={20} color="#A78BFA" />
                       )}
                     </View>
                   </TouchableOpacity>

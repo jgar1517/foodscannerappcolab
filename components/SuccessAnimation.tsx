@@ -133,7 +133,7 @@ export default function SuccessAnimation({ visible, onComplete }: SuccessAnimati
           ]}
         >
           <LinearGradient
-            colors={index % 2 === 0 ? ['#60A5FA', '#3B82F6'] : ['#F59E0B', '#D97706']}
+            colors={index % 2 === 0 ? ['#A78BFA', '#8B5CF6'] : ['#C084FC', '#A855F7']}
             style={styles.particleGradient}
           />
         </Animated.View>

@@ -116,7 +116,7 @@ export default function ShareModal({ visible, onClose, scanData }: ShareModalPro
             {/* Header */}
             <View style={styles.header}>
               <View style={styles.headerTitleContainer}>
-                <Share2 size={24} color="#60A5FA" />
+                <Share2 size={24} color="#A78BFA" />
                 <Text style={styles.headerTitle}>Share Results</Text>
               </View>
               <TouchableOpacity
