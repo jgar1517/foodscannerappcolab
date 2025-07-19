@@ -11,10 +11,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Sparkles, Star, Leaf, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, Share2 } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import ShareModal from '@/components/ShareModal';
 import SuccessAnimation from '@/components/SuccessAnimation';
+import GlassmorphismCard from '@/components/GlassmorphismCard';
+import CircularProgress from '@/components/CircularProgress';
+import StaggeredList from '@/components/StaggeredList';
 
 const ingredientResults = [
   {
@@ -189,7 +191,7 @@ export default function ResultsScreen() {
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Product Info Card */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.productCard,
               {
@@ -197,7 +199,7 @@ export default function ResultsScreen() {
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.cardBlur}>
+            <View style={styles.cardContent}>
               {/* Tomato Sauce Illustration */}
               <View style={styles.imageContainer}>
                 <Animated.View
@@ -233,12 +235,15 @@ export default function ResultsScreen() {
               {/* Title and Badge */}
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>H-E-B Tomato Sauce</Text>
-                <LinearGradient
-                  colors={['#F59E0B', '#D97706']}
-                  style={styles.cautionBadge}
+                <CircularProgress
+                  size={60}
+                  strokeWidth={6}
+                  progress={75}
+                  color={['#F59E0B', '#D97706']}
+                  showPercentage={false}
                 >
-                  <Text style={styles.badgeText}>Mixed</Text>
-                </LinearGradient>
+                  <Text style={styles.scoreText}>75</Text>
+                </CircularProgress>
               </View>
               
               {/* Summary Stats */}
@@ -276,11 +281,11 @@ export default function ResultsScreen() {
                   <Text style={styles.summaryLabel}>Avoid</Text>
                 </View>
               </View>
-            </BlurView>
-          </Animated.View>
+            </View>
+          </GlassmorphismCard>
 
           {/* Ingredients Analysis */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.ingredientsCard,
               {
@@ -295,47 +300,38 @@ export default function ResultsScreen() {
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.cardBlur}>
+            <View style={styles.cardContent}>
               <Text style={styles.sectionTitle}>Ingredient Analysis</Text>
-              {ingredientResults.map((ingredient, index) => {
-                const RatingIcon = getRatingIcon(ingredient.rating);
-                return (
-                  <Animated.View
-                    key={index}
-                    style={[
-                      styles.ingredientItem,
-                      {
-                        transform: [
-                          {
-                            translateY: floatAnim.interpolate({
-                              inputRange: [0, 1],
-                              outputRange: [0, -2 * index],
-                            }),
-                          },
-                        ],
-                      },
-                    ]}
-                  >
-                    <View style={styles.ingredientHeader}>
-                      <View style={styles.ingredientInfo}>
-                        <Text style={styles.ingredientName}>{ingredient.name}</Text>
-                        <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
-                      </View>
-                      <View style={styles.ratingContainer}>
-                        <LinearGradient
-                          colors={getRatingColor(ingredient.rating)}
-                          style={styles.ratingBadge}
-                        >
-                          <RatingIcon size={16} color="#ffffff" />
-                        </LinearGradient>
-                        <Text style={styles.confidenceText}>{ingredient.confidence}%</Text>
+              
+              <StaggeredList staggerDelay={100} initialDelay={200}>
+                {ingredientResults.map((ingredient, index) => {
+                  const RatingIcon = getRatingIcon(ingredient.rating);
+                  return (
+                    <View key={index} style={styles.ingredientItem}>
+                      <View style={styles.ingredientHeader}>
+                        <View style={styles.ingredientInfo}>
+                          <Text style={styles.ingredientName}>{ingredient.name}</Text>
+                          <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
+                        </View>
+                        <View style={styles.ratingContainer}>
+                          <CircularProgress
+                            size={40}
+                            strokeWidth={4}
+                            progress={ingredient.confidence}
+                            color={getRatingColor(ingredient.rating)}
+                            showPercentage={false}
+                          >
+                            <RatingIcon size={12} color="#ffffff" />
+                          </CircularProgress>
+                          <Text style={styles.confidenceText}>{ingredient.confidence}%</Text>
+                        </View>
                       </View>
                     </View>
-                  </Animated.View>
-                );
-              })}
-            </BlurView>
-          </Animated.View>
+                  );
+                })}
+              </StaggeredList>
+            </View>
+          </GlassmorphismCard>
 
           <View style={styles.bottomSpacing} />
         </ScrollView>
@@ -416,14 +412,9 @@ const styles = StyleSheet.create({
   },
   productCard: {
     margin: 20,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  cardBlur: {
+  cardContent: {
     padding: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   imageContainer: {
     alignItems: 'center',
@@ -475,12 +466,7 @@ const styles = StyleSheet.create({
     flex: 1,
     letterSpacing: 0.3,
   },
-  cautionBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-  },
-  badgeText: {
+  scoreText: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
@@ -533,8 +519,6 @@ const styles = StyleSheet.create({
   ingredientsCard: {
     marginHorizontal: 20,
     marginTop: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
   sectionTitle: {
     fontSize: 22,
@@ -578,20 +562,13 @@ const styles = StyleSheet.create({
   ratingContainer: {
     alignItems: 'center',
   },
-  ratingBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
   confidenceText: {
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
     color: '#94A3B8',
     letterSpacing: 0.3,
+    marginTop: 4,
   },
   bottomSpacing: {
     height: 40,

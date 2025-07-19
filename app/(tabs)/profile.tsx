@@ -12,8 +12,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
+import GlassmorphismCard from '@/components/GlassmorphismCard';
+import AnimatedCounter from '@/components/AnimatedCounter';
+import StaggeredList from '@/components/StaggeredList';
 
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
@@ -160,7 +162,7 @@ export default function ProfileScreen() {
           </View>
 
           {/* User Info Card */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.userCard,
               {
@@ -168,7 +170,7 @@ export default function ProfileScreen() {
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.userCardBlur}>
+            <View style={styles.userCardContent}>
               <View style={styles.userInfo}>
                 <View style={styles.avatarContainer}>
                   <LinearGradient
@@ -191,7 +193,11 @@ export default function ProfileScreen() {
                     colors={['#22C55E', '#16A34A']}
                     style={styles.statBadge}
                   >
-                    <Text style={styles.statNumber}>{userProfile.totalScans}</Text>
+                    <AnimatedCounter 
+                      value={userProfile.totalScans} 
+                      style={styles.statNumber}
+                      duration={1500}
+                    />
                   </LinearGradient>
                   <Text style={styles.statLabel}>Total Scans</Text>
                 </View>
@@ -200,7 +206,11 @@ export default function ProfileScreen() {
                     colors={['#F59E0B', '#D97706']}
                     style={styles.statBadge}
                   >
-                    <Text style={styles.statNumber}>{userProfile.healthGoals}</Text>
+                    <AnimatedCounter 
+                      value={userProfile.healthGoals} 
+                      style={styles.statNumber}
+                      duration={1500}
+                    />
                   </LinearGradient>
                   <Text style={styles.statLabel}>Health Goals</Text>
                 </View>
@@ -209,73 +219,67 @@ export default function ProfileScreen() {
                     colors={['#8B5CF6', '#7C3AED']}
                     style={styles.statBadge}
                   >
-                    <Text style={styles.statNumber}>{userProfile.streakDays}</Text>
+                    <AnimatedCounter 
+                      value={userProfile.streakDays} 
+                      style={styles.statNumber}
+                      duration={1500}
+                    />
                   </LinearGradient>
                   <Text style={styles.statLabel}>Day Streak</Text>
                 </View>
               </View>
-            </BlurView>
-          </Animated.View>
+            </View>
+          </GlassmorphismCard>
 
           {/* Menu Sections */}
-          {menuSections.map((section, sectionIndex) => (
-            <Animated.View
-              key={sectionIndex}
-              style={[
-                styles.menuSection,
-                {
-                  transform: [
-                    {
-                      translateY: floatAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -3 * sectionIndex],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <BlurView intensity={30} style={styles.sectionBlur}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {section.items.map((item, itemIndex) => (
-                  <TouchableOpacity
-                    key={itemIndex}
-                    style={styles.menuItem}
-                    onPress={() => item.hasToggle ? handleToggle(sectionIndex, itemIndex) : handleMenuItemPress(item)}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.menuItemLeft}>
-                      <LinearGradient
-                        colors={['#8B5CF6', '#7C3AED']}
-                        style={styles.menuIcon}
-                      >
-                        <item.icon size={20} color="#ffffff" />
-                      </LinearGradient>
-                      <View style={styles.menuItemText}>
-                        <Text style={styles.menuItemTitle}>{item.title}</Text>
-                        <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+          <StaggeredList staggerDelay={150} initialDelay={300}>
+            {menuSections.map((section, sectionIndex) => (
+              <GlassmorphismCard
+                key={sectionIndex}
+                style={styles.menuSection}
+              >
+                <View style={styles.sectionContent}>
+                  <Text style={styles.sectionTitle}>{section.title}</Text>
+                  {section.items.map((item, itemIndex) => (
+                    <TouchableOpacity
+                      key={itemIndex}
+                      style={styles.menuItem}
+                      onPress={() => item.hasToggle ? handleToggle(sectionIndex, itemIndex) : handleMenuItemPress(item)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={styles.menuItemLeft}>
+                        <LinearGradient
+                          colors={['#8B5CF6', '#7C3AED']}
+                          style={styles.menuIcon}
+                        >
+                          <item.icon size={20} color="#ffffff" />
+                        </LinearGradient>
+                        <View style={styles.menuItemText}>
+                          <Text style={styles.menuItemTitle}>{item.title}</Text>
+                          <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={styles.menuItemRight}>
-                      {item.hasToggle ? (
-                        <Switch
-                          value={item.enabled}
-                          onValueChange={() => handleToggle(sectionIndex, itemIndex)}
-                          trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#8B5CF6' }}
-                          thumbColor={'#ffffff'}
-                        />
-                      ) : (
-                        <ChevronRight size={20} color="#A78BFA" />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </BlurView>
-            </Animated.View>
-          ))}
+                      <View style={styles.menuItemRight}>
+                        {item.hasToggle ? (
+                          <Switch
+                            value={item.enabled}
+                            onValueChange={() => handleToggle(sectionIndex, itemIndex)}
+                            trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#8B5CF6' }}
+                            thumbColor={'#ffffff'}
+                          />
+                        ) : (
+                          <ChevronRight size={20} color="#A78BFA" />
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </GlassmorphismCard>
+            ))}
+          </StaggeredList>
 
           {/* Logout Button */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.logoutSection,
               {
@@ -283,8 +287,7 @@ export default function ProfileScreen() {
               },
             ]}
           >
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout} activeOpacity={0.8}>
-              <BlurView intensity={30} style={styles.logoutBlur}>
+            <TouchableOpacity style={styles.logoutContent} onPress={handleLogout} activeOpacity={0.8}>
                 <LinearGradient
                   colors={['#EF4444', '#DC2626']}
                   style={styles.logoutIcon}
@@ -292,9 +295,8 @@ export default function ProfileScreen() {
                   <LogOut size={20} color="#ffffff" />
                 </LinearGradient>
                 <Text style={styles.logoutText}>Sign Out</Text>
-              </BlurView>
             </TouchableOpacity>
-          </Animated.View>
+          </GlassmorphismCard>
 
           <View style={styles.bottomSpacing} />
         </ScrollView>
@@ -353,14 +355,9 @@ const styles = StyleSheet.create({
   userCard: {
     marginHorizontal: 24,
     marginTop: 20,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  userCardBlur: {
+  userCardContent: {
     padding: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   userInfo: {
     flexDirection: 'row',
@@ -433,14 +430,9 @@ const styles = StyleSheet.create({
   menuSection: {
     marginHorizontal: 24,
     marginTop: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  sectionBlur: {
+  sectionContent: {
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   sectionTitle: {
     fontSize: 18,
@@ -494,20 +486,11 @@ const styles = StyleSheet.create({
   logoutSection: {
     marginHorizontal: 24,
     marginTop: 24,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  logoutButton: {
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  logoutBlur: {
+  logoutContent: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   logoutIcon: {
     width: 36,

@@ -11,13 +11,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
+import GlassmorphismCard from '@/components/GlassmorphismCard';
+import StaggeredList from '@/components/StaggeredList';
+import AnimatedCounter from '@/components/AnimatedCounter';
 
 export default function HomeScreen() {
   const router = useRouter();
   const floatAnim = React.useRef(new Animated.Value(0)).current;
   const pulseAnim = React.useRef(new Animated.Value(1)).current;
+  const slideAnim = React.useRef(new Animated.Value(50)).current;
+  const opacityAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
     // Floating animation
@@ -51,6 +55,20 @@ export default function HomeScreen() {
         }),
       ])
     ).start();
+
+    // Slide in animation
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
   }, []);
 
   const handleStartScanning = async () => {
@@ -99,7 +117,15 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
-          <View style={styles.heroSection}>
+          <Animated.View 
+            style={[
+              styles.heroSection,
+              {
+                opacity: opacityAnim,
+                transform: [{ translateY: slideAnim }],
+              },
+            ]}
+          >
             <Animated.View
               style={[
                 styles.heroContent,
@@ -136,10 +162,10 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </Animated.View>
             </Animated.View>
-          </View>
+          </Animated.View>
 
           {/* Why Choose Section */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.whyChooseSection,
               {
@@ -154,13 +180,27 @@ export default function HomeScreen() {
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.whyChooseBlur}>
+            <View style={styles.whyChooseContent}>
               <Text style={styles.whyChooseTitle}>Why Choose Food Safety Scanner?</Text>
-            </BlurView>
-          </Animated.View>
+              <View style={styles.statsRow}>
+                <View style={styles.statItem}>
+                  <AnimatedCounter value={50000} style={styles.statNumber} />
+                  <Text style={styles.statLabel}>Ingredients Analyzed</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <AnimatedCounter value={98} style={styles.statNumber} formatter={(val) => `${Math.round(val)}%`} />
+                  <Text style={styles.statLabel}>Accuracy Rate</Text>
+                </View>
+                <View style={styles.statItem}>
+                  <AnimatedCounter value={25000} style={styles.statNumber} />
+                  <Text style={styles.statLabel}>Happy Users</Text>
+                </View>
+              </View>
+            </View>
+          </GlassmorphismCard>
 
           {/* How It Works Section */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.howItWorksSection,
               {
@@ -175,49 +215,58 @@ export default function HomeScreen() {
               },
             ]}
           >
-            <Text style={styles.sectionTitle}>How It Works</Text>
-            
-            <View style={styles.stepsContainer}>
-              <View style={styles.stepItem}>
-                <View style={styles.stepNumber}>
-                  <Text style={styles.stepNumberText}>1</Text>
+            <View style={styles.howItWorksContent}>
+              <Text style={styles.sectionTitle}>How It Works</Text>
+              
+              <StaggeredList staggerDelay={200} initialDelay={300}>
+                <View style={styles.stepItem}>
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.stepNumber}
+                  >
+                    <Text style={styles.stepNumberText}>1</Text>
+                  </LinearGradient>
+                  <View style={styles.stepContent}>
+                    <Text style={styles.stepTitle}>Scan or Upload</Text>
+                    <Text style={styles.stepDescription}>
+                      Take a photo of any ingredient label or upload from your gallery
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.stepContent}>
-                  <Text style={styles.stepTitle}>Scan or Upload</Text>
-                  <Text style={styles.stepDescription}>
-                    Take a photo of any ingredient label or upload from your gallery
-                  </Text>
+                <View style={styles.stepItem}>
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.stepNumber}
+                  >
+                    <Text style={styles.stepNumberText}>2</Text>
+                  </LinearGradient>
+                  <View style={styles.stepContent}>
+                    <Text style={styles.stepTitle}>AI Analysis</Text>
+                    <Text style={styles.stepDescription}>
+                      Our AI identifies each ingredient and cross-references safety databases
+                    </Text>
+                  </View>
                 </View>
-              </View>
-
-              <View style={styles.stepItem}>
-                <View style={styles.stepNumber}>
-                  <Text style={styles.stepNumberText}>2</Text>
+                <View style={styles.stepItem}>
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.stepNumber}
+                  >
+                    <Text style={styles.stepNumberText}>3</Text>
+                  </LinearGradient>
+                  <View style={styles.stepContent}>
+                    <Text style={styles.stepTitle}>Get Results</Text>
+                    <Text style={styles.stepDescription}>
+                      Receive safety ratings, explanations, and healthier alternatives
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.stepContent}>
-                  <Text style={styles.stepTitle}>AI Analysis</Text>
-                  <Text style={styles.stepDescription}>
-                    Our AI identifies each ingredient and cross-references safety databases
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.stepItem}>
-                <View style={styles.stepNumber}>
-                  <Text style={styles.stepNumberText}>3</Text>
-                </View>
-                <View style={styles.stepContent}>
-                  <Text style={styles.stepTitle}>Get Results</Text>
-                  <Text style={styles.stepDescription}>
-                    Receive safety ratings, explanations, and healthier alternatives
-                  </Text>
-                </View>
-              </View>
+              </StaggeredList>
             </View>
-          </Animated.View>
+          </GlassmorphismCard>
 
           {/* Trusted By Section */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.trustedSection,
               {
@@ -232,30 +281,52 @@ export default function HomeScreen() {
               },
             ]}
           >
-            <Text style={styles.sectionTitle}>Trusted by Health Professionals</Text>
-            
-            <View style={styles.trustedItems}>
-              <View style={styles.trustedItem}>
-                <CheckCircle size={20} color="#ffffff" />
-                <Text style={styles.trustedText}>FDA Database Integration</Text>
-              </View>
-              <View style={styles.trustedItem}>
-                <CheckCircle size={20} color="#ffffff" />
-                <Text style={styles.trustedText}>EWG Food Scores</Text>
-              </View>
-              <View style={styles.trustedItem}>
-                <CheckCircle size={20} color="#ffffff" />
-                <Text style={styles.trustedText}>Scientific Research Backed</Text>
-              </View>
-              <View style={styles.trustedItem}>
-                <CheckCircle size={20} color="#ffffff" />
-                <Text style={styles.trustedText}>Regular Database Updates</Text>
-              </View>
+            <View style={styles.trustedContent}>
+              <Text style={styles.sectionTitle}>Trusted by Health Professionals</Text>
+              
+              <StaggeredList staggerDelay={150} initialDelay={500}>
+                <View style={styles.trustedItem}>
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.trustedIcon}
+                  >
+                    <CheckCircle size={16} color="#ffffff" />
+                  </LinearGradient>
+                  <Text style={styles.trustedText}>FDA Database Integration</Text>
+                </View>
+                <View style={styles.trustedItem}>
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.trustedIcon}
+                  >
+                    <CheckCircle size={16} color="#ffffff" />
+                  </LinearGradient>
+                  <Text style={styles.trustedText}>EWG Food Scores</Text>
+                </View>
+                <View style={styles.trustedItem}>
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.trustedIcon}
+                  >
+                    <CheckCircle size={16} color="#ffffff" />
+                  </LinearGradient>
+                  <Text style={styles.trustedText}>Scientific Research Backed</Text>
+                </View>
+                <View style={styles.trustedItem}>
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.trustedIcon}
+                  >
+                    <CheckCircle size={16} color="#ffffff" />
+                  </LinearGradient>
+                  <Text style={styles.trustedText}>Regular Database Updates</Text>
+                </View>
+              </StaggeredList>
             </View>
-          </Animated.View>
+          </GlassmorphismCard>
 
           {/* CTA Section */}
-          <Animated.View
+          <GlassmorphismCard
             style={[
               styles.ctaSection,
               {
@@ -263,7 +334,7 @@ export default function HomeScreen() {
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.ctaBlur}>
+            <View style={styles.ctaContent}>
               <Text style={styles.ctaTitle}>Ready to eat with confidence?</Text>
               <Text style={styles.ctaDescription}>
                 Join thousands of users making safer food choices every day
@@ -281,8 +352,8 @@ export default function HomeScreen() {
                   <Text style={styles.ctaButtonText}>Start Your First Scan</Text>
                 </LinearGradient>
               </TouchableOpacity>
-            </BlurView>
-          </Animated.View>
+            </View>
+          </GlassmorphismCard>
 
           <View style={styles.bottomSpacing} />
         </ScrollView>
@@ -387,14 +458,9 @@ const styles = StyleSheet.create({
   whyChooseSection: {
     marginHorizontal: 24,
     marginBottom: 32,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  whyChooseBlur: {
+  whyChooseContent: {
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   whyChooseTitle: {
     fontSize: 20,
@@ -404,9 +470,36 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 0.3,
   },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 0.3,
+  },
+  statLabel: {
+    fontSize: 12,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.8)',
+    textAlign: 'center',
+    marginTop: 4,
+    letterSpacing: 0.2,
+  },
   howItWorksSection: {
     paddingHorizontal: 24,
     marginBottom: 40,
+  },
+  howItWorksContent: {
+    padding: 20,
   },
   sectionTitle: {
     fontSize: 28,
@@ -417,19 +510,16 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     letterSpacing: 0.5,
   },
-  stepsContainer: {
-    gap: 24,
-  },
   stepItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 16,
+    marginBottom: 24,
   },
   stepNumber: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 4,
@@ -464,13 +554,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginBottom: 40,
   },
-  trustedItems: {
-    gap: 16,
+  trustedContent: {
+    padding: 20,
   },
   trustedItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    marginBottom: 16,
+  },
+  trustedIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   trustedText: {
     fontSize: 16,
@@ -482,14 +580,9 @@ const styles = StyleSheet.create({
   ctaSection: {
     marginHorizontal: 24,
     marginBottom: 40,
-    borderRadius: 20,
-    overflow: 'hidden',
   },
-  ctaBlur: {
+  ctaContent: {
     padding: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
     alignItems: 'center',
   },
   ctaTitle: {
