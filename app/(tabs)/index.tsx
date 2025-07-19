@@ -109,7 +109,6 @@ export default function HomeScreen() {
               ]}
             >
               <Text style={styles.heroTitle}>Scan with</Text>
-              <Text style={styles.heroSubtitle}>Confidence</Text>
               <Text style={styles.heroDescription}>
                 AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
               </Text>
