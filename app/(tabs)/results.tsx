@@ -44,7 +44,7 @@ const ingredientResults = [
   {
     name: "Cocoa Powder",
     rating: "safe",
-    explanation: "Natural cocoa powder provides antioxidants and is generally safe.",
+    explanation: "Natural cocoa powder provides antioxidants and is generally safe for consumption.",
     confidence: 98,
     position: 4,
     sources: ["FDA", "EWG"]
@@ -52,7 +52,7 @@ const ingredientResults = [
   {
     name: "Soybean Oil",
     rating: "safe",
-    explanation: "Commonly used cooking oil that is generally recognized as safe.",
+    explanation: "Commonly used cooking oil that is generally recognized as safe by regulatory authorities.",
     confidence: 88,
     position: 5,
     sources: ["FDA"]
@@ -60,7 +60,7 @@ const ingredientResults = [
   {
     name: "Palm Oil",
     rating: "caution",
-    explanation: "High in saturated fat, environmental concerns with production.",
+    explanation: "High in saturated fat which may raise cholesterol levels. Environmental concerns with production methods.",
     confidence: 88,
     position: 6,
     sources: ["EWG"]
@@ -68,7 +68,7 @@ const ingredientResults = [
   {
     name: "High Fructose Corn Syrup",
     rating: "caution",
-    explanation: "Linked to obesity and metabolic issues when consumed in large quantities.",
+    explanation: "Linked to obesity, diabetes, and metabolic issues when consumed in large quantities over time.",
     confidence: 89,
     position: 7,
     sources: ["EWG", "WHO"]
@@ -76,7 +76,7 @@ const ingredientResults = [
   {
     name: "Yellow 5 (Tartrazine)",
     rating: "avoid",
-    explanation: "Artificial food coloring linked to hyperactivity in children and allergic reactions.",
+    explanation: "Artificial food coloring linked to hyperactivity in children and may cause allergic reactions in sensitive individuals.",
     confidence: 91,
     position: 8,
     sources: ["EWG"]
@@ -160,7 +160,7 @@ export default function ResultsScreen() {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        {/* Header */}
+        {/* Header with back button and share */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#1F2937" />
@@ -193,22 +193,22 @@ export default function ResultsScreen() {
         {/* Summary Stats */}
         <View style={styles.summaryContainer}>
           <View style={styles.summaryItem}>
-            <View style={[styles.summaryIcon, { backgroundColor: '#22C55E' }]}>
-              <CheckCircle size={16} color="#ffffff" />
+            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
+              <CheckCircle size={20} color="#22C55E" />
             </View>
             <Text style={styles.summaryCount}>{safeCount}</Text>
             <Text style={styles.summaryLabel}>Safe</Text>
           </View>
           <View style={styles.summaryItem}>
-            <View style={[styles.summaryIcon, { backgroundColor: '#F59E0B' }]}>
-              <AlertTriangle size={16} color="#ffffff" />
+            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
+              <AlertTriangle size={20} color="#F59E0B" />
             </View>
             <Text style={styles.summaryCount}>{cautionCount}</Text>
             <Text style={styles.summaryLabel}>Caution</Text>
           </View>
           <View style={styles.summaryItem}>
-            <View style={[styles.summaryIcon, { backgroundColor: '#EF4444' }]}>
-              <XCircle size={16} color="#ffffff" />
+            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
+              <XCircle size={20} color="#EF4444" />
             </View>
             <Text style={styles.summaryCount}>{avoidCount}</Text>
             <Text style={styles.summaryLabel}>Avoid</Text>
@@ -259,8 +259,8 @@ export default function ResultsScreen() {
                         </Text>
                       </View>
                       <View style={styles.ratingBadge}>
-                        <View style={[styles.ratingIcon, { backgroundColor: getRatingColor(ingredient.rating) }]}>
-                          <RatingIcon size={12} color="#ffffff" />
+                        <View style={[styles.ratingIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
+                          <RatingIcon size={16} color={getRatingColor(ingredient.rating)} />
                         </View>
                         <Text style={[styles.ratingText, { color: getRatingColor(ingredient.rating) }]}>
                           {ingredient.rating.charAt(0).toUpperCase() + ingredient.rating.slice(1)}
@@ -406,10 +406,10 @@ const styles = StyleSheet.create({
   summaryItem: {
     alignItems: 'center',
   },
-  summaryIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  summaryIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
@@ -460,27 +460,29 @@ const styles = StyleSheet.create({
   },
   ingredientCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowRadius: 8,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: '#F3F4F6',
   },
   ingredientHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   ingredientInfo: {
     flex: 1,
     marginRight: 12,
   },
   ingredientName: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
     color: '#1F2937',
@@ -494,17 +496,17 @@ const styles = StyleSheet.create({
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
   },
-  ratingIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+  ratingIconContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
   },
   ratingText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Inter-SemiBold',
     fontWeight: '600',
   },
@@ -519,6 +521,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    flexWrap: 'wrap',
   },
   sourcesLabel: {
     fontSize: 14,
@@ -528,9 +531,9 @@ const styles = StyleSheet.create({
   },
   sourceTag: {
     backgroundColor: '#F3F4F6',
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 6,
+    borderRadius: 8,
   },
   sourceText: {
     fontSize: 12,
