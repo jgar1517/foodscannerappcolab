@@ -265,7 +265,7 @@ export default function ProfileScreen() {
                     >
                       <View style={styles.menuItemLeft}>
                         <LinearGradient
-                          colors={['#14B8A6', '#0D9488']}
+                          colors={['#3B82F6', '#1D4ED8']}
                           style={styles.menuIcon}
                         >
                           <item.icon size={20} color="#ffffff" />
