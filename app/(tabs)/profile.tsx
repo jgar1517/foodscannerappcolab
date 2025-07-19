@@ -329,9 +329,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold',
     fontWeight: '700',
     color: '#F8FAFC',
+    letterSpacing: 0.5,
   },
   userCard: {
     marginHorizontal: 24,
@@ -368,14 +370,19 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   userName: {
-    fontSize: 20,
+    fontSize: 22,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
     color: '#F8FAFC',
     marginBottom: 4,
+    letterSpacing: 0.3,
   },
   userEmail: {
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
     color: '#CBD5E1',
+    letterSpacing: 0.2,
   },
   statsRow: {
     flexDirection: 'row',
@@ -394,14 +401,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   statNumber: {
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
     fontWeight: '700',
     color: '#ffffff',
+    letterSpacing: 0.3,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 13,
+    fontFamily: 'Inter-SemiBold',
+    fontWeight: '600',
     color: '#CBD5E1',
     textAlign: 'center',
+    letterSpacing: 0.3,
   },
   menuSection: {
     marginHorizontal: 24,
@@ -416,10 +428,12 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
     color: '#F8FAFC',
     marginBottom: 16,
+    letterSpacing: 0.3,
   },
   menuItem: {
     flexDirection: 'row',
@@ -446,14 +460,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuItemTitle: {
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Poppins-Medium',
     fontWeight: '600',
     color: '#F8FAFC',
     marginBottom: 2,
+    letterSpacing: 0.2,
   },
   menuItemSubtitle: {
-    fontSize: 14,
+    fontSize: 15,
+    fontFamily: 'Inter-Regular',
     color: '#CBD5E1',
+    letterSpacing: 0.1,
   },
   menuItemRight: {
     marginLeft: 12,
@@ -485,9 +503,11 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   logoutText: {
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
     color: '#F8FAFC',
+    letterSpacing: 0.3,
   },
   bottomSpacing: {
     height: 40,
