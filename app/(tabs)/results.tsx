@@ -207,6 +207,7 @@ export default function ResultsScreen() {
           <GlassmorphismCard
             style={[
               styles.productCard,
+              {
                 transform: [{ scale: scaleAnim }, { translateY: floatingTransform }],
               },
             ]}
