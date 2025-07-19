@@ -153,7 +153,7 @@ export default function HomeScreen() {
                   activeOpacity={0.9}
                 >
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.startButtonGradient}
                   >
                     <Camera size={20} color="#ffffff" />
@@ -221,7 +221,7 @@ export default function HomeScreen() {
               <StaggeredList staggerDelay={200} initialDelay={300}>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>1</Text>
@@ -235,7 +235,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>2</Text>
@@ -249,7 +249,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.stepItem}>
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.stepNumber}
                   >
                     <Text style={styles.stepNumberText}>3</Text>
