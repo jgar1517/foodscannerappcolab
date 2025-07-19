@@ -15,6 +15,7 @@ import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 
 const { width, height } = Dimensions.get('window');
 
@@ -139,10 +140,17 @@ export default function ScanScreen() {
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
+        // Haptic feedback for capture
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        
         const photo = await cameraRef.current.takePictureAsync();
         if (photo?.uri) {
           setCapturedImage(photo.uri);
           setIsProcessing(true);
+          
+          // Success haptic feedback
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          
           // Simulate processing and navigate to results
           setTimeout(() => {
             setIsProcessing(false);
@@ -150,9 +158,16 @@ export default function ScanScreen() {
           }, 2000);
         }
       } catch (error) {
+        // Error haptic feedback
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         Alert.alert('Error', 'Failed to take picture. Please try again.');
       }
     }
+  };
+
+  const handleBackPress = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.back();
   };
 
   const floatingTransform = floatAnim.interpolate({
@@ -175,7 +190,7 @@ export default function ScanScreen() {
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
         <BlurView intensity={20} style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>

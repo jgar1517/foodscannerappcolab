@@ -8,10 +8,13 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, Sparkles, Star, Leaf, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle } from 'lucide-react-native';
+import { ArrowLeft, Sparkles, Star, Leaf, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, Share2 } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
+import ShareModal from '@/components/ShareModal';
+import SuccessAnimation from '@/components/SuccessAnimation';
 
 const ingredientResults = [
   {
@@ -80,10 +83,15 @@ const getRatingIcon = (rating: string) => {
 
 export default function ResultsScreen() {
   const router = useRouter();
+  const [shareModalVisible, setShareModalVisible] = useState(false);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
   const floatAnim = React.useRef(new Animated.Value(0)).current;
   const scaleAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
+    // Show success animation when component mounts
+    setShowSuccessAnimation(true);
+    
     // Floating animation
     Animated.loop(
       Animated.sequence([
@@ -109,6 +117,16 @@ export default function ResultsScreen() {
     }).start();
   }, []);
 
+  const handleShare = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setShareModalVisible(true);
+  };
+
+  const handleBackPress = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.back();
+  };
+
   const floatingTransform = floatAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0, -8],
@@ -118,6 +136,13 @@ export default function ResultsScreen() {
   const cautionCount = ingredientResults.filter(i => i.rating === 'caution').length;
   const avoidCount = ingredientResults.filter(i => i.rating === 'avoid').length;
 
+  const scanData = {
+    productName: "H-E-B Tomato Sauce",
+    safeCount,
+    cautionCount,
+    avoidCount,
+    totalIngredients: ingredientResults.length,
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -149,7 +174,7 @@ export default function ResultsScreen() {
       <SafeAreaView style={styles.safeArea}>
         {/* Header */}
         <BlurView intensity={20} style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
@@ -157,6 +182,9 @@ export default function ResultsScreen() {
             <Text style={styles.headerTitle}>Results</Text>
             <Star size={20} color="#F59E0B" />
           </View>
+          <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
+            <Share2 size={24} color="#F8FAFC" />
+          </TouchableOpacity>
         </BlurView>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -311,6 +339,19 @@ export default function ResultsScreen() {
 
           <View style={styles.bottomSpacing} />
         </ScrollView>
+        
+        {/* Share Modal */}
+        <ShareModal
+          visible={shareModalVisible}
+          onClose={() => setShareModalVisible(false)}
+          scanData={scanData}
+        />
+        
+        {/* Success Animation */}
+        <SuccessAnimation
+          visible={showSuccessAnimation}
+          onComplete={() => setShowSuccessAnimation(false)}
+        />
       </SafeAreaView>
     </View>
   );
@@ -353,10 +394,15 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: 16,
   },
+  shareButton: {
+    marginLeft: 16,
+  },
   headerTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    flex: 1,
+    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 26,

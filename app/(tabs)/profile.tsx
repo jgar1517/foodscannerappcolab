@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
@@ -97,12 +98,26 @@ export default function ProfileScreen() {
   ];
 
   const handleToggle = (sectionIndex: number, itemIndex: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    
     const item = menuSections[sectionIndex].items[itemIndex];
     if (item.title === "Dark Mode") {
       setDarkMode(!darkMode);
     } else if (item.title === "Notifications") {
       setNotifications(!notifications);
     }
+  };
+
+  const handleMenuItemPress = async (item: any) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // Handle navigation or action based on item
+    console.log('Menu item pressed:', item.title);
+  };
+
+  const handleLogout = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // Handle logout logic
+    console.log('Logout pressed');
   };
 
   return (
@@ -226,7 +241,7 @@ export default function ProfileScreen() {
                   <TouchableOpacity
                     key={itemIndex}
                     style={styles.menuItem}
-                    onPress={() => item.hasToggle && handleToggle(sectionIndex, itemIndex)}
+                    onPress={() => item.hasToggle ? handleToggle(sectionIndex, itemIndex) : handleMenuItemPress(item)}
                     activeOpacity={0.7}
                   >
                     <View style={styles.menuItemLeft}>
@@ -268,7 +283,7 @@ export default function ProfileScreen() {
               },
             ]}
           >
-            <TouchableOpacity style={styles.logoutButton} activeOpacity={0.8}>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout} activeOpacity={0.8}>
               <BlurView intensity={30} style={styles.logoutBlur}>
                 <LinearGradient
                   colors={['#EF4444', '#DC2626']}

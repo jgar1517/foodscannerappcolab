@@ -12,6 +12,7 @@ import { Camera, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -51,6 +52,16 @@ export default function HomeScreen() {
       ])
     ).start();
   }, []);
+
+  const handleStartScanning = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push('/scan');
+  };
+
+  const handleStartFirstScan = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push('/scan');
+  };
 
   const floatingTransform = floatAnim.interpolate({
     inputRange: [0, 1],
@@ -261,7 +272,7 @@ export default function HomeScreen() {
               
               <TouchableOpacity 
                 style={styles.ctaButton}
-                onPress={() => router.push('/scan')}
+                onPress={handleStartFirstScan}
                 activeOpacity={0.9}
               >
                 <LinearGradient
