@@ -74,30 +74,48 @@ export default function HomeScreen() {
   // Dynamic styles based on dark mode
   const dynamicStyles = {
     container: {
-      backgroundColor: darkMode ? '#1f2937' : '#f8f9fa',
+      backgroundColor: darkMode ? '#1f2937' : '#15803D',
     },
     heroSection: {
-      backgroundColor: darkMode ? '#374151' : '#ffffff',
+      backgroundColor: darkMode ? '#374151' : '#15803D',
     },
     section: {
-      backgroundColor: darkMode ? '#374151' : '#ffffff',
+      backgroundColor: darkMode ? '#374151' : '#DCFCE7',
     },
     text: {
-      color: darkMode ? '#f9fafb' : '#14532D',
+      color: darkMode ? '#f9fafb' : '#ffffff',
     },
     secondaryText: {
-      color: darkMode ? '#d1d5db' : '#6b7280',
+      color: darkMode ? '#d1d5db' : '#E6F4EA',
     },
     featureCard: {
-      backgroundColor: darkMode ? '#4b5563' : '#f8f9fa',
+      backgroundColor: darkMode ? '#4b5563' : '#ffffff',
       borderColor: darkMode ? '#6b7280' : '#e5e7eb',
     },
     faqItem: {
-      backgroundColor: darkMode ? '#4b5563' : '#f8f9fa',
+      backgroundColor: darkMode ? '#4b5563' : '#ffffff',
       borderColor: darkMode ? '#6b7280' : '#e5e7eb',
     },
     faqAnswer: {
       borderTopColor: darkMode ? '#6b7280' : '#e5e7eb',
+    },
+    heroTitle: {
+      color: darkMode ? '#f9fafb' : '#ffffff',
+    },
+    sectionTitle: {
+      color: darkMode ? '#f9fafb' : '#15803D',
+    },
+    featureTitle: {
+      color: darkMode ? '#f9fafb' : '#15803D',
+    },
+    featureDescription: {
+      color: darkMode ? '#d1d5db' : '#6b7280',
+    },
+    faqQuestionText: {
+      color: darkMode ? '#f9fafb' : '#15803D',
+    },
+    faqAnswerText: {
+      color: darkMode ? '#d1d5db' : '#6b7280',
     },
   };
 
@@ -110,7 +128,7 @@ export default function HomeScreen() {
         {/* Hero Section */}
         <View style={[styles.heroSection, dynamicStyles.heroSection]}>
           <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>
+            <Text style={[styles.heroTitle, dynamicStyles.heroTitle]}>
               Food Scanner App
             </Text>
             <Text style={[styles.heroSubtitle, dynamicStyles.secondaryText]}>
@@ -127,7 +145,7 @@ export default function HomeScreen() {
             
             {/* How To Steps */}
             <View style={styles.howToSection}>
-              <Text style={[styles.howToTitle, dynamicStyles.text]}>How it works in 3 easy steps:</Text>
+              <Text style={[styles.howToTitle, dynamicStyles.heroTitle]}>How it works in 3 easy steps:</Text>
               <View style={styles.stepsContainer}>
                 <View style={styles.step}>
                   <View style={styles.stepNumber}>
@@ -154,15 +172,15 @@ export default function HomeScreen() {
 
         {/* Features Section */}
         <View style={[styles.section, dynamicStyles.section]}>
-          <Text style={[styles.sectionTitle, dynamicStyles.text]}>Why Choose Food Safety Scanner?</Text>
+          <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Why Choose Food Safety Scanner?</Text>
           <View style={styles.featuresGrid}>
             {features.map((feature, index) => (
               <View key={index} style={[styles.featureCard, dynamicStyles.featureCard]}>
                 <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
                   <feature.icon size={24} color={feature.color} />
                 </View>
-                <Text style={[styles.featureTitle, dynamicStyles.text]}>{feature.title}</Text>
-                <Text style={[styles.featureDescription, dynamicStyles.secondaryText]}>{feature.description}</Text>
+                <Text style={[styles.featureTitle, dynamicStyles.featureTitle]}>{feature.title}</Text>
+                <Text style={[styles.featureDescription, dynamicStyles.featureDescription]}>{feature.description}</Text>
               </View>
             ))}
           </View>
@@ -170,7 +188,7 @@ export default function HomeScreen() {
 
         {/* FAQ Section */}
         <View style={[styles.section, dynamicStyles.section]}>
-          <Text style={[styles.sectionTitle, dynamicStyles.text]}>Frequently Asked Questions</Text>
+          <Text style={[styles.sectionTitle, dynamicStyles.sectionTitle]}>Frequently Asked Questions</Text>
           <View style={styles.faqContainer}>
             {faqs.map((faq, index) => (
               <View key={index} style={[styles.faqItem, dynamicStyles.faqItem]}>
@@ -179,7 +197,7 @@ export default function HomeScreen() {
                   onPress={() => toggleFaq(index)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.faqQuestionText, dynamicStyles.text]}>{faq.question}</Text>
+                  <Text style={[styles.faqQuestionText, dynamicStyles.faqQuestionText]}>{faq.question}</Text>
                   {expandedFaq === index ? (
                     <ChevronUp size={20} color="#15803D" />
                   ) : (
@@ -188,7 +206,7 @@ export default function HomeScreen() {
                 </TouchableOpacity>
                 {expandedFaq === index && (
                   <View style={[styles.faqAnswer, dynamicStyles.faqAnswer]}>
-                    <Text style={[styles.faqAnswerText, dynamicStyles.secondaryText]}>{faq.answer}</Text>
+                    <Text style={[styles.faqAnswerText, dynamicStyles.faqAnswerText]}>{faq.answer}</Text>
                   </View>
                 )}
               </View>
@@ -202,7 +220,7 @@ export default function HomeScreen() {
             style={styles.darkModeToggle}
             onPress={() => setDarkMode(!darkMode)}
           >
-            <Text style={[styles.darkModeText, dynamicStyles.text]}>
+           <Text style={styles.darkModeText}>
               Toggle Dark Mode (Current: {darkMode ? 'Dark' : 'Light'})
             </Text>
           </TouchableOpacity>
