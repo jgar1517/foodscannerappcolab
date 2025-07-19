@@ -145,7 +145,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#15803D',
   },
   scrollView: {
     flex: 1,
@@ -153,14 +153,12 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingVertical: 20,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    backgroundColor: '#15803D',
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#14532D',
+    color: '#ffffff',
   },
   userCard: {
     marginHorizontal: 24,
