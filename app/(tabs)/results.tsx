@@ -28,56 +28,56 @@ const ingredientResults = [
   {
     name: "Organic Cane Sugar",
     rating: "caution", 
-    explanation: "Natural sweetener but high consumption may contribute to health issues.",
-    confidence: 95,
+    explanation: "High sugar content may contribute to weight gain and dental issues. Moderate consumption recommended.",
+    confidence: 85,
     position: 2,
-    sources: ["EWG"]
+    sources: ["EWG", "WHO"]
+  },
+  {
+    name: "Natural Flavors",
+    rating: "caution",
+    explanation: "While generally safe, \"natural flavors\" can be vague and may contain allergens or chemicals not listed.",
+    confidence: 70,
+    position: 3,
+    sources: ["FDA"]
   },
   {
     name: "Cocoa Powder",
     rating: "safe",
     explanation: "Natural cocoa powder provides antioxidants and is generally safe.",
     confidence: 98,
-    position: 3,
+    position: 4,
     sources: ["FDA", "EWG"]
+  },
+  {
+    name: "Soybean Oil",
+    rating: "safe",
+    explanation: "Commonly used cooking oil that is generally recognized as safe.",
+    confidence: 88,
+    position: 5,
+    sources: ["FDA"]
   },
   {
     name: "Palm Oil",
     rating: "caution",
     explanation: "High in saturated fat, environmental concerns with production.",
     confidence: 88,
-    position: 4,
-    sources: ["EWG"]
-  },
-  {
-    name: "Natural Vanilla Extract",
-    rating: "safe",
-    explanation: "Natural flavoring derived from vanilla beans, generally safe.",
-    confidence: 92,
-    position: 5,
-    sources: ["FDA"]
-  },
-  {
-    name: "Soy Lecithin",
-    rating: "safe",
-    explanation: "Common emulsifier, generally recognized as safe by FDA.",
-    confidence: 90,
     position: 6,
-    sources: ["FDA"]
-  },
-  {
-    name: "Artificial Flavor",
-    rating: "avoid",
-    explanation: "Synthetic flavoring compounds may cause allergic reactions.",
-    confidence: 78,
-    position: 7,
     sources: ["EWG"]
   },
   {
-    name: "Sodium Benzoate",
+    name: "High Fructose Corn Syrup",
+    rating: "caution",
+    explanation: "Linked to obesity and metabolic issues when consumed in large quantities.",
+    confidence: 89,
+    position: 7,
+    sources: ["EWG", "WHO"]
+  },
+  {
+    name: "Yellow 5 (Tartrazine)",
     rating: "avoid",
-    explanation: "Preservative linked to hyperactivity in children and potential health concerns.",
-    confidence: 85,
+    explanation: "Artificial food coloring linked to hyperactivity in children and allergic reactions.",
+    confidence: 91,
     position: 8,
     sources: ["EWG"]
   }
