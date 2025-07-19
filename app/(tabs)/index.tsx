@@ -93,6 +93,31 @@ export default function HomeScreen() {
             >
               <Text style={styles.scanButtonText}>SCAN FOOD</Text>
             </TouchableOpacity>
+            
+            {/* How To Steps */}
+            <View style={styles.howToSection}>
+              <Text style={styles.howToTitle}>How it works in 3 easy steps:</Text>
+              <View style={styles.stepsContainer}>
+                <View style={styles.step}>
+                  <View style={styles.stepNumber}>
+                    <Text style={styles.stepNumberText}>1</Text>
+                  </View>
+                  <Text style={styles.stepText}>Take a photo of the ingredient label</Text>
+                </View>
+                <View style={styles.step}>
+                  <View style={styles.stepNumber}>
+                    <Text style={styles.stepNumberText}>2</Text>
+                  </View>
+                  <Text style={styles.stepText}>Get instant safety ratings for each ingredient</Text>
+                </View>
+                <View style={styles.step}>
+                  <View style={styles.stepNumber}>
+                    <Text style={styles.stepNumberText}>3</Text>
+                  </View>
+                  <Text style={styles.stepText}>Discover healthier alternatives and recipes</Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -187,6 +212,45 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#ffffff',
     letterSpacing: 1,
+  },
+  howToSection: {
+    marginTop: 32,
+    alignItems: 'center',
+  },
+  howToTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#14532D',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  stepsContainer: {
+    gap: 16,
+    alignItems: 'flex-start',
+  },
+  step: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    maxWidth: 300,
+  },
+  stepNumber: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#15803D',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  stepNumberText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  stepText: {
+    fontSize: 16,
+    color: '#6b7280',
+    flex: 1,
   },
   section: {
     paddingHorizontal: 24,
