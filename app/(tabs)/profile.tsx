@@ -37,25 +37,52 @@ export default function ProfileScreen() {
   
   const toggleTheme = () => setDarkMode(!darkMode);
 
+  // Dynamic styles based on dark mode
+  const dynamicStyles = {
+    container: {
+      backgroundColor: darkMode ? '#1f2937' : '#f8f9fa',
+    },
+    card: {
+      backgroundColor: darkMode ? '#374151' : '#ffffff',
+    },
+    text: {
+      color: darkMode ? '#f9fafb' : '#14532D',
+    },
+    secondaryText: {
+      color: darkMode ? '#d1d5db' : '#6b7280',
+    },
+    border: {
+      borderColor: darkMode ? '#4b5563' : '#e5e7eb',
+    },
+    preferenceChip: {
+      backgroundColor: darkMode ? '#065f46' : '#DCFCE7',
+    },
+    preferenceText: {
+      color: darkMode ? '#a7f3d0' : '#15803D',
+    },
+    themeIcon: {
+      backgroundColor: darkMode ? '#065f46' : '#DCFCE7',
+    },
+  };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, dynamicStyles.container]}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile</Text>
+        <View style={[styles.header, dynamicStyles.card, dynamicStyles.border]}>
+          <Text style={[styles.headerTitle, dynamicStyles.text]}>Profile</Text>
         </View>
 
         {/* User Info Card */}
-        <View style={styles.userCard}>
+        <View style={[styles.userCard, dynamicStyles.card]}>
           <View style={styles.userInfo}>
             <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
             <View style={styles.userDetails}>
-              <Text style={styles.userName}>{userProfile.name}</Text>
-              <Text style={styles.userEmail}>{userProfile.email}</Text>
+              <Text style={[styles.userName, dynamicStyles.text]}>{userProfile.name}</Text>
+              <Text style={[styles.userEmail, dynamicStyles.secondaryText]}>{userProfile.email}</Text>
               <View style={styles.preferencesContainer}>
                 {userProfile.preferences.map((preference, index) => (
-                  <View key={index} style={styles.preferenceChip}>
-                    <Text style={styles.preferenceText}>{preference}</Text>
+                  <View key={index} style={[styles.preferenceChip, dynamicStyles.preferenceChip]}>
+                    <Text style={[styles.preferenceText, dynamicStyles.preferenceText]}>{preference}</Text>
                   </View>
                 ))}
               </View>
@@ -64,41 +91,41 @@ export default function ProfileScreen() {
         </View>
 
         {/* Stats Card */}
-        <View style={styles.statsCard}>
-          <Text style={styles.sectionTitle}>Statistics</Text>
+        <View style={[styles.statsCard, dynamicStyles.card]}>
+          <Text style={[styles.sectionTitle, dynamicStyles.text]}>Statistics</Text>
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>{userProfile.scanCount}</Text>
-              <Text style={styles.statLabel}>Total Scans</Text>
+              <Text style={[styles.statLabel, dynamicStyles.secondaryText]}>Total Scans</Text>
             </View>
             <View style={styles.statItem}>
               <Calendar size={20} color="#15803D" />
-              <Text style={styles.statLabel}>Member Since</Text>
-              <Text style={styles.statValue}>Mar 2024</Text>
+              <Text style={[styles.statLabel, dynamicStyles.secondaryText]}>Member Since</Text>
+              <Text style={[styles.statValue, dynamicStyles.text]}>Mar 2024</Text>
             </View>
           </View>
         </View>
 
         {/* Goal Card */}
-        <View style={styles.goalCard}>
+        <View style={[styles.goalCard, dynamicStyles.card]}>
           <View style={styles.goalHeader}>
             <Target size={24} color="#15803D" />
-            <Text style={styles.sectionTitle}>Current Goal</Text>
+            <Text style={[styles.sectionTitle, dynamicStyles.text]}>Current Goal</Text>
           </View>
-          <Text style={styles.goalText}>{userProfile.goal}</Text>
+          <Text style={[styles.goalText, dynamicStyles.secondaryText]}>{userProfile.goal}</Text>
         </View>
 
         {/* Recent History Card */}
-        <View style={styles.historyCard}>
+        <View style={[styles.historyCard, dynamicStyles.card]}>
           <View style={styles.historyHeader}>
             <History size={24} color="#15803D" />
-            <Text style={styles.sectionTitle}>Recent Scans</Text>
+            <Text style={[styles.sectionTitle, dynamicStyles.text]}>Recent Scans</Text>
           </View>
           {userProfile.history.map((item, index) => (
-            <View key={index} style={styles.historyItem}>
+            <View key={index} style={[styles.historyItem, dynamicStyles.border]}>
               <View style={styles.historyInfo}>
-                <Text style={styles.historyItemName}>{item.item}</Text>
-                <Text style={styles.historyDate}>{item.date}</Text>
+                <Text style={[styles.historyItemName, dynamicStyles.text]}>{item.item}</Text>
+                <Text style={[styles.historyDate, dynamicStyles.secondaryText]}>{item.date}</Text>
               </View>
               <View style={[
                 styles.ratingBadge,
@@ -114,23 +141,23 @@ export default function ProfileScreen() {
         </View>
 
         {/* Theme Toggle Card */}
-        <View style={styles.themeCard}>
+        <View style={[styles.themeCard, dynamicStyles.card]}>
           <View style={styles.themeHeader}>
-            <View style={styles.themeIconContainer}>
+            <View style={[styles.themeIconContainer, dynamicStyles.themeIcon]}>
               {darkMode ? (
-                <Moon size={24} color="#15803D" />
+                <Moon size={24} color={darkMode ? "#a7f3d0" : "#15803D"} />
               ) : (
-                <Sun size={24} color="#15803D" />
+                <Sun size={24} color={darkMode ? "#a7f3d0" : "#15803D"} />
               )}
             </View>
-            <Text style={styles.themeTitle}>Dark Mode</Text>
+            <Text style={[styles.themeTitle, dynamicStyles.text]}>Dark Mode</Text>
           </View>
           
           <View style={styles.toggleContainer}>
             <Switch 
               value={darkMode} 
               onValueChange={toggleTheme}
-              trackColor={{ false: '#e5e7eb', true: '#15803D' }}
+              trackColor={{ false: darkMode ? '#4b5563' : '#e5e7eb', true: '#15803D' }}
               thumbColor={darkMode ? '#ffffff' : '#ffffff'}
             />
           </View>
@@ -143,25 +170,20 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    backgroundColor: '#ffffff',
     paddingHorizontal: 24,
     paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#14532D',
   },
   userCard: {
-    backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 20,
     padding: 20,
@@ -188,12 +210,10 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#14532D',
     marginBottom: 4,
   },
   userEmail: {
     fontSize: 16,
-    color: '#6b7280',
     marginBottom: 12,
   },
   preferencesContainer: {
@@ -202,7 +222,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   preferenceChip: {
-    backgroundColor: '#DCFCE7',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -210,10 +229,8 @@ const styles = StyleSheet.create({
   preferenceText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#15803D',
   },
   statsCard: {
-    backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 16,
     padding: 20,
@@ -227,7 +244,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#14532D',
     marginBottom: 16,
   },
   statsRow: {
@@ -246,17 +262,14 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: '#6b7280',
     textAlign: 'center',
   },
   statValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#14532D',
     marginTop: 4,
   },
   goalCard: {
-    backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 16,
     padding: 20,
@@ -275,11 +288,9 @@ const styles = StyleSheet.create({
   },
   goalText: {
     fontSize: 16,
-    color: '#6b7280',
     lineHeight: 24,
   },
   historyCard: {
-    backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 16,
     padding: 20,
@@ -302,7 +313,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
   },
   historyInfo: {
     flex: 1,
@@ -310,12 +320,10 @@ const styles = StyleSheet.create({
   historyItemName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#14532D',
     marginBottom: 4,
   },
   historyDate: {
     fontSize: 14,
-    color: '#6b7280',
   },
   ratingBadge: {
     paddingHorizontal: 12,
@@ -339,7 +347,6 @@ const styles = StyleSheet.create({
     color: '#D97706',
   },
   themeCard: {
-    backgroundColor: '#ffffff',
     marginHorizontal: 24,
     marginTop: 16,
     marginBottom: 24,
@@ -362,7 +369,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#DCFCE7',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -370,7 +376,6 @@ const styles = StyleSheet.create({
   themeTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#14532D',
   },
   toggleContainer: {
     padding: 4,
