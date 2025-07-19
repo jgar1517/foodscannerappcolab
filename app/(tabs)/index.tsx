@@ -6,10 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Shield, Zap, Users, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react-native';
+import { Camera, Shield, Zap, Users, TrendingUp, ChevronDown, ChevronUp, Sparkles, Star } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 const { width } = Dimensions.get('window');
 
@@ -19,24 +22,28 @@ const features = [
     title: 'AI-Powered Safety Analysis',
     description: 'Get instant safety ratings for every ingredient based on trusted scientific sources',
     color: '#22C55E',
+    gradient: ['#22C55E', '#16A34A'],
   },
   {
     icon: Zap,
     title: 'Instant Results',
     description: 'Scan any ingredient label and get results in under 5 seconds',
-    color: '#fbbf24',
+    color: '#F59E0B',
+    gradient: ['#F59E0B', '#D97706'],
   },
   {
     icon: Users,
     title: 'Personalized for You',
     description: 'Custom dietary profiles adapt safety ratings to your specific needs',
-    color: '#8b5cf6',
+    color: '#8B5CF6',
+    gradient: ['#8B5CF6', '#7C3AED'],
   },
   {
     icon: TrendingUp,
     title: 'Smart Recommendations',
     description: 'Discover healthier alternatives and simple recipes using safer ingredients',
-    color: '#ef4444',
+    color: '#EF4444',
+    gradient: ['#EF4444', '#DC2626'],
   },
 ];
 
@@ -66,123 +73,282 @@ const faqs = [
 export default function HomeScreen() {
   const router = useRouter();
   const [expandedFaq, setExpandedFaq] = React.useState<number | null>(null);
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const floatAnim = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    // Floating animation
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnim, {
+          toValue: 1,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: 0,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
 
   const handleScanPress = () => {
-    router.push('/scan');
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 0.95,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    
+    setTimeout(() => {
+      router.push('/scan');
+    }, 200);
   };
 
   const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
   };
 
+  const floatingTransform = floatAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -10],
+  });
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-        {/* Hero Section */}
-        <View style={styles.heroSection}>
-          <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>
-              Food Scanner App
-            </Text>
-            <Text style={styles.heroSubtitle}>
-              AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
-            </Text>
-            
-            <TouchableOpacity 
-              style={styles.scanButton}
-              onPress={handleScanPress}
-              activeOpacity={0.9}
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#0F172A', '#1E293B', '#334155']}
+        style={styles.backgroundGradient}
+      />
+      
+      {/* Floating particles */}
+      <View style={styles.particlesContainer}>
+        {[...Array(20)].map((_, i) => (
+          <Animated.View
+            key={i}
+            style={[
+              styles.particle,
+              {
+                left: Math.random() * width,
+                top: Math.random() * 800,
+                transform: [
+                  {
+                    translateY: floatingTransform,
+                  },
+                ],
+              },
+            ]}
+          />
+        ))}
+      </View>
+
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+          {/* Hero Section */}
+          <View style={styles.heroSection}>
+            <Animated.View
+              style={[
+                styles.heroContent,
+                {
+                  transform: [{ translateY: floatingTransform }],
+                },
+              ]}
             >
-              <Text style={styles.scanButtonText}>SCAN FOOD</Text>
-            </TouchableOpacity>
-            
-            {/* How To Steps */}
-            <View style={styles.howToSection}>
-              <Text style={styles.howToTitle}>How it works in 3 easy steps:</Text>
-              <View style={styles.stepsContainer}>
-                <View style={styles.step}>
-                  <View style={styles.stepNumber}>
-                    <Text style={styles.stepNumberText}>1</Text>
-                  </View>
-                  <Text style={styles.stepText}>Take a photo of the ingredient label</Text>
-                </View>
-                <View style={styles.step}>
-                  <View style={styles.stepNumber}>
-                    <Text style={styles.stepNumberText}>2</Text>
-                  </View>
-                  <Text style={styles.stepText}>Get instant safety ratings for each ingredient</Text>
-                </View>
-                <View style={styles.step}>
-                  <View style={styles.stepNumber}>
-                    <Text style={styles.stepNumberText}>3</Text>
-                  </View>
-                  <Text style={styles.stepText}>Discover healthier alternatives and recipes</Text>
+              <View style={styles.titleContainer}>
+                <Sparkles size={32} color="#60A5FA" style={styles.sparkleIcon} />
+                <Text style={styles.heroTitle}>Food Scanner App</Text>
+                <Star size={24} color="#F59E0B" style={styles.starIcon} />
+              </View>
+              
+              <Text style={styles.heroSubtitle}>
+                AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
+              </Text>
+              
+              <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                <TouchableOpacity 
+                  style={styles.scanButton}
+                  onPress={handleScanPress}
+                  activeOpacity={0.9}
+                >
+                  <LinearGradient
+                    colors={['#3B82F6', '#1D4ED8']}
+                    style={styles.scanButtonGradient}
+                  >
+                    <Camera size={20} color="#ffffff" />
+                    <Text style={styles.scanButtonText}>SCAN FOOD</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </Animated.View>
+              
+              {/* How To Steps */}
+              <View style={styles.howToSection}>
+                <Text style={styles.howToTitle}>How it works in 3 easy steps:</Text>
+                <View style={styles.stepsContainer}>
+                  {[
+                    'Take a photo of the ingredient label',
+                    'Get instant safety ratings for each ingredient',
+                    'Discover healthier alternatives and recipes'
+                  ].map((step, index) => (
+                    <Animated.View
+                      key={index}
+                      style={[
+                        styles.step,
+                        {
+                          transform: [
+                            {
+                              translateY: floatAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0, -5 * (index + 1)],
+                              }),
+                            },
+                          ],
+                        },
+                      ]}
+                    >
+                      <BlurView intensity={20} style={styles.stepBlur}>
+                        <LinearGradient
+                          colors={['#3B82F6', '#1E40AF']}
+                          style={styles.stepNumber}
+                        >
+                          <Text style={styles.stepNumberText}>{index + 1}</Text>
+                        </LinearGradient>
+                        <Text style={styles.stepText}>{step}</Text>
+                      </BlurView>
+                    </Animated.View>
+                  ))}
                 </View>
               </View>
+            </Animated.View>
+          </View>
+
+          {/* Features Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
+            <View style={styles.featuresGrid}>
+              {features.map((feature, index) => (
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.featureCard,
+                    {
+                      transform: [
+                        {
+                          translateY: floatAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -8 * (index % 2 === 0 ? 1 : -1)],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <BlurView intensity={30} style={styles.featureBlur}>
+                    <LinearGradient
+                      colors={feature.gradient}
+                      style={styles.featureIcon}
+                    >
+                      <feature.icon size={24} color="#ffffff" />
+                    </LinearGradient>
+                    <Text style={styles.featureTitle}>{feature.title}</Text>
+                    <Text style={styles.featureDescription}>{feature.description}</Text>
+                  </BlurView>
+                </Animated.View>
+              ))}
             </View>
           </View>
-        </View>
 
-        {/* Features Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
-          <View style={styles.featuresGrid}>
-            {features.map((feature, index) => (
-              <View key={index} style={styles.featureCard}>
-                <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
-                  <feature.icon size={24} color={feature.color} />
-                </View>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>{feature.description}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* FAQ Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
-          <View style={styles.faqContainer}>
-            {faqs.map((faq, index) => (
-              <View key={index} style={styles.faqItem}>
-                <TouchableOpacity 
-                  style={styles.faqQuestion}
-                  onPress={() => toggleFaq(index)}
-                  activeOpacity={0.7}
+          {/* FAQ Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Frequently Asked Questions</Text>
+            <View style={styles.faqContainer}>
+              {faqs.map((faq, index) => (
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.faqItem,
+                    {
+                      transform: [
+                        {
+                          translateY: floatAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -3 * index],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
                 >
-                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
-                  {expandedFaq === index ? (
-                    <ChevronUp size={20} color="#15803D" />
-                  ) : (
-                    <ChevronDown size={20} color="#15803D" />
-                  )}
-                </TouchableOpacity>
-                {expandedFaq === index && (
-                  <View style={styles.faqAnswer}>
-                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
-                  </View>
-                )}
-              </View>
-            ))}
+                  <BlurView intensity={25} style={styles.faqBlur}>
+                    <TouchableOpacity 
+                      style={styles.faqQuestion}
+                      onPress={() => toggleFaq(index)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={styles.faqQuestionText}>{faq.question}</Text>
+                      {expandedFaq === index ? (
+                        <ChevronUp size={20} color="#60A5FA" />
+                      ) : (
+                        <ChevronDown size={20} color="#60A5FA" />
+                      )}
+                    </TouchableOpacity>
+                    {expandedFaq === index && (
+                      <View style={styles.faqAnswer}>
+                        <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+                      </View>
+                    )}
+                  </BlurView>
+                </Animated.View>
+              ))}
+            </View>
           </View>
-        </View>
 
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.bottomSpacing} />
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#15803D',
+  },
+  backgroundGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  particlesContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  particle: {
+    position: 'absolute',
+    width: 4,
+    height: 4,
+    backgroundColor: '#60A5FA',
+    borderRadius: 2,
+    opacity: 0.6,
+  },
+  safeArea: {
+    flex: 1,
   },
   scrollView: {
     flex: 1,
   },
   heroSection: {
-    backgroundColor: '#DCFCE7',
-    paddingVertical: 40,
+    paddingVertical: 60,
     paddingHorizontal: 24,
     alignItems: 'center',
   },
@@ -190,25 +356,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     maxWidth: 400,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  sparkleIcon: {
+    marginRight: 12,
+  },
+  starIcon: {
+    marginLeft: 12,
+  },
   heroTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#15803D',
+    color: '#F8FAFC',
     textAlign: 'center',
-    marginBottom: 16,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#6b7280',
+    color: '#CBD5E1',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
   },
   scanButton: {
-    backgroundColor: '#15803D',
+    borderRadius: 25,
+    overflow: 'hidden',
+    elevation: 8,
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
+  scanButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 32,
     paddingVertical: 16,
-    borderRadius: 25,
+    gap: 8,
   },
   scanButtonText: {
     fontSize: 16,
@@ -217,14 +406,14 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   howToSection: {
-    marginTop: 32,
+    marginTop: 48,
     alignItems: 'center',
   },
   howToTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#15803D',
-    marginBottom: 20,
+    color: '#F8FAFC',
+    marginBottom: 24,
     textAlign: 'center',
   },
   stepsContainer: {
@@ -232,15 +421,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   step: {
+    maxWidth: 320,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  stepBlur: {
     flexDirection: 'row',
     alignItems: 'center',
-    maxWidth: 300,
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   stepNumber: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#15803D',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -252,30 +446,32 @@ const styles = StyleSheet.create({
   },
   stepText: {
     fontSize: 16,
-    color: '#6b7280',
+    color: '#E2E8F0',
     flex: 1,
   },
   section: {
-    backgroundColor: '#DCFCE7',
     paddingHorizontal: 24,
     paddingVertical: 32,
-    marginBottom: 1,
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#15803D',
+    color: '#F8FAFC',
     marginBottom: 24,
+    textAlign: 'center',
   },
   featuresGrid: {
     gap: 20,
   },
   featureCard: {
-    backgroundColor: '#ffffff',
-    padding: 20,
-    borderRadius: 16,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  featureBlur: {
+    padding: 24,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   featureIcon: {
     width: 48,
@@ -283,28 +479,30 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   featureTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#15803D',
+    color: '#F8FAFC',
     marginBottom: 8,
   },
   featureDescription: {
     fontSize: 16,
-    color: '#6b7280',
-    lineHeight: 20,
+    color: '#CBD5E1',
+    lineHeight: 22,
   },
   faqContainer: {
-    gap: 12,
+    gap: 16,
   },
   faqItem: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderRadius: 16,
     overflow: 'hidden',
+  },
+  faqBlur: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   faqQuestion: {
     flexDirection: 'row',
@@ -315,7 +513,7 @@ const styles = StyleSheet.create({
   faqQuestionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#15803D',
+    color: '#F8FAFC',
     flex: 1,
     marginRight: 12,
   },
@@ -323,11 +521,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
   },
   faqAnswerText: {
     fontSize: 15,
-    color: '#6b7280',
+    color: '#CBD5E1',
     lineHeight: 22,
+  },
+  bottomSpacing: {
+    height: 40,
   },
 });

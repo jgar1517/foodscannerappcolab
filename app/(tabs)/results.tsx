@@ -5,106 +5,256 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, Sparkles, Star, Leaf } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 export default function ResultsScreen() {
   const router = useRouter();
+  const floatAnim = React.useRef(new Animated.Value(0)).current;
+  const scaleAnim = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    // Floating animation
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnim, {
+          toValue: 1,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: 0,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    // Scale in animation
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      tension: 50,
+      friction: 7,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const floatingTransform = floatAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -8],
+  });
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <ArrowLeft size={24} color="#ffffff" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Results</Text>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#0F172A', '#1E293B', '#334155']}
+        style={styles.backgroundGradient}
+      />
+
+      {/* Floating particles */}
+      <View style={styles.particlesContainer}>
+        {[...Array(15)].map((_, i) => (
+          <Animated.View
+            key={i}
+            style={[
+              styles.particle,
+              {
+                left: Math.random() * 400,
+                top: Math.random() * 800,
+                transform: [
+                  {
+                    translateY: floatingTransform,
+                  },
+                ],
+              },
+            ]}
+          />
+        ))}
       </View>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Result Card */}
-        <View style={styles.card}>
-          {/* Broccoli Illustration */}
-          <View style={styles.imageContainer}>
-            <View style={styles.broccoli}>
-              <View style={styles.broccoliStem} />
-              <View style={styles.broccoliTop} />
-              <View style={[styles.broccoliFloret, styles.floret1]} />
-              <View style={[styles.broccoliFloret, styles.floret2]} />
-              <View style={[styles.broccoliFloret, styles.floret3]} />
-            </View>
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header */}
+        <BlurView intensity={20} style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <ArrowLeft size={24} color="#F8FAFC" />
+          </TouchableOpacity>
+          <View style={styles.headerTitleContainer}>
+            <Sparkles size={20} color="#60A5FA" />
+            <Text style={styles.headerTitle}>Results</Text>
+            <Star size={20} color="#F59E0B" />
           </View>
-          
-          {/* Title and Badge */}
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Broccoli</Text>
-            <View style={styles.healthyBadge}>
-              <Text style={styles.healthyText}>Healthy</Text>
-            </View>
-          </View>
-          
-          {/* Nutrition Facts */}
-          <Text style={styles.label}>Nutrition Facts</Text>
-          <View style={styles.divider} />
-          <Text style={styles.fact}>Calories: 9 cal</Text>
-          <Text style={styles.fact}>Per Serving: 12%</Text>
-          
-          {/* Tags */}
-          <View style={styles.tags}>
-            <View style={styles.chip}>
-              <View style={styles.leafIcon}>
-                <Text style={styles.leafText}>🌿</Text>
+        </BlurView>
+
+        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {/* Result Card */}
+          <Animated.View
+            style={[
+              styles.card,
+              {
+                transform: [{ scale: scaleAnim }, { translateY: floatingTransform }],
+              },
+            ]}
+          >
+            <BlurView intensity={30} style={styles.cardBlur}>
+              {/* Broccoli Illustration */}
+              <View style={styles.imageContainer}>
+                <Animated.View
+                  style={[
+                    styles.broccoli,
+                    {
+                      transform: [
+                        {
+                          translateY: floatAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0, -5],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <LinearGradient
+                    colors={['#86EFAC', '#22C55E']}
+                    style={styles.broccoliStem}
+                  />
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.broccoliTop}
+                  />
+                  <LinearGradient
+                    colors={['#16A34A', '#15803D']}
+                    style={[styles.broccoliFloret, styles.floret1]}
+                  />
+                  <LinearGradient
+                    colors={['#16A34A', '#15803D']}
+                    style={[styles.broccoliFloret, styles.floret2]}
+                  />
+                  <LinearGradient
+                    colors={['#16A34A', '#15803D']}
+                    style={[styles.broccoliFloret, styles.floret3]}
+                  />
+                </Animated.View>
               </View>
-              <Text style={styles.chipText}>Vegan</Text>
-            </View>
-            <View style={styles.gfChip}>
-              <Text style={styles.gfText}>GF</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+              
+              {/* Title and Badge */}
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Broccoli</Text>
+                <LinearGradient
+                  colors={['#22C55E', '#16A34A']}
+                  style={styles.healthyBadge}
+                >
+                  <Text style={styles.healthyText}>Healthy</Text>
+                </LinearGradient>
+              </View>
+              
+              {/* Nutrition Facts */}
+              <Text style={styles.label}>Nutrition Facts</Text>
+              <LinearGradient
+                colors={['#22C55E', '#16A34A']}
+                style={styles.divider}
+              />
+              <View style={styles.factsContainer}>
+                <Text style={styles.fact}>Calories: 9 cal</Text>
+                <Text style={styles.fact}>Per Serving: 12%</Text>
+              </View>
+              
+              {/* Tags */}
+              <View style={styles.tags}>
+                <LinearGradient
+                  colors={['#22C55E', '#16A34A']}
+                  style={styles.chip}
+                >
+                  <View style={styles.leafIconContainer}>
+                    <Leaf size={12} color="#ffffff" />
+                  </View>
+                  <Text style={styles.chipText}>Vegan</Text>
+                </LinearGradient>
+                <LinearGradient
+                  colors={['#F59E0B', '#D97706']}
+                  style={styles.gfChip}
+                >
+                  <Text style={styles.gfText}>GF</Text>
+                </LinearGradient>
+              </View>
+            </BlurView>
+          </Animated.View>
+
+          <View style={styles.bottomSpacing} />
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#15803D',
+  },
+  backgroundGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  particlesContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  particle: {
+    position: 'absolute',
+    width: 3,
+    height: 3,
+    backgroundColor: '#60A5FA',
+    borderRadius: 1.5,
+    opacity: 0.7,
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#15803D',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   backButton: {
     marginRight: 16,
   },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#ffffff',
+    color: '#F8FAFC',
   },
   scrollView: {
     flex: 1,
   },
   card: {
-    backgroundColor: '#E6F4EA',
-    padding: 16,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-    margin: 16,
+    margin: 20,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  cardBlur: {
+    padding: 24,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   imageContainer: {
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 16,
   },
   broccoli: {
     width: 80,
@@ -118,7 +268,6 @@ const styles = StyleSheet.create({
     marginLeft: -8,
     width: 16,
     height: 30,
-    backgroundColor: '#86EFAC',
     borderRadius: 8,
   },
   broccoliTop: {
@@ -128,14 +277,12 @@ const styles = StyleSheet.create({
     marginLeft: -25,
     width: 50,
     height: 40,
-    backgroundColor: '#22C55E',
     borderRadius: 25,
   },
   broccoliFloret: {
     position: 'absolute',
     width: 20,
     height: 20,
-    backgroundColor: '#16A34A',
     borderRadius: 10,
   },
   floret1: {
@@ -155,14 +302,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
+    color: '#F8FAFC',
   },
   healthyBadge: {
-    backgroundColor: '#4CAF50',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
@@ -175,26 +322,28 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 8,
     fontWeight: '600',
-    color: '#4CAF50',
+    color: '#22C55E',
     fontSize: 16,
   },
   divider: {
     height: 2,
-    backgroundColor: '#4CAF50',
     marginVertical: 8,
+    borderRadius: 1,
+  },
+  factsContainer: {
+    marginBottom: 16,
   },
   fact: {
     fontSize: 16,
     marginVertical: 2,
+    color: '#CBD5E1',
   },
   tags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 10,
-    gap: 6,
+    gap: 8,
   },
   chip: {
-    backgroundColor: '#A5D6A7',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -202,24 +351,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     gap: 6,
   },
-  leafIcon: {
+  leafIconContainer: {
     width: 16,
     height: 16,
-    backgroundColor: '#4CAF50',
     borderRadius: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  leafText: {
-    fontSize: 10,
   },
   chipText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#2E7D32',
+    color: '#ffffff',
   },
   gfChip: {
-    backgroundColor: '#FFF59D',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -229,6 +374,9 @@ const styles = StyleSheet.create({
   gfText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#F57F17',
+    color: '#ffffff',
+  },
+  bottomSpacing: {
+    height: 40,
   },
 });
