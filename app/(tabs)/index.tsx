@@ -118,6 +118,7 @@ export default function HomeScreen() {
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Hero Section */}
           <Animated.View 
+            collapsable={false}
             style={[
               styles.heroSection,
               {
@@ -127,6 +128,7 @@ export default function HomeScreen() {
             ]}
           >
             <Animated.View
+              collapsable={false}
               style={[
                 styles.heroContent,
                 {
@@ -140,6 +142,7 @@ export default function HomeScreen() {
               </Text>
               
               <Animated.View
+                collapsable={false}
                 style={[
                   styles.startButtonContainer,
                   {

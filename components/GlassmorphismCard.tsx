@@ -40,7 +40,7 @@ export default function GlassmorphismCard({
         toValue: 0.98,
         tension: 300,
         friction: 10,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(shadowAnim, {
         toValue: shadowOpacity * 1.5,
@@ -58,7 +58,7 @@ export default function GlassmorphismCard({
         toValue: 1,
         tension: 300,
         friction: 10,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(shadowAnim, {
         toValue: shadowOpacity,
@@ -70,6 +70,7 @@ export default function GlassmorphismCard({
 
   return (
     <Animated.View
+      collapsable={false}
       style={[
         styles.container,
         {

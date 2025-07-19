@@ -133,6 +133,7 @@ export default function ProfileScreen() {
       <View style={styles.particlesContainer}>
         {[...Array(20)].map((_, i) => (
           <Animated.View
+            collapsable={false}
             key={i}
             style={[
               styles.particle,
@@ -166,6 +167,7 @@ export default function ProfileScreen() {
             style={[
               styles.userCard,
               {
+                collapsable: false,
                 transform: [{ translateY: floatingTransform }],
               },
             ]}
@@ -283,6 +285,7 @@ export default function ProfileScreen() {
             style={[
               styles.logoutSection,
               {
+                collapsable: false,
                 transform: [{ translateY: floatingTransform }],
               },
             ]}
