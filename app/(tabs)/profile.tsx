@@ -20,6 +20,14 @@ import StaggeredList from '@/components/StaggeredList';
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
+  const [dietaryPreferences, setDietaryPreferences] = useState({
+    glutenFree: true,
+    vegan: false,
+    diabeticFriendly: true,
+    keto: false,
+    paleo: false,
+    lowSodium: true,
+  });
   const floatAnim = React.useRef(new Animated.Value(0)).current;
   
   React.useEffect(() => {
@@ -58,20 +66,20 @@ export default function ProfileScreen() {
     {
       title: "Dietary Preferences",
       items: [
-        { icon: User, title: "Gluten-Free", subtitle: "Avoid gluten-containing ingredients", hasToggle: true, enabled: true },
-        { icon: User, title: "Vegan", subtitle: "Plant-based diet preferences", hasToggle: true, enabled: false },
-        { icon: User, title: "Diabetic-Friendly", subtitle: "Low sugar and carb options", hasToggle: true, enabled: true },
-        { icon: User, title: "Keto", subtitle: "High fat, low carb diet", hasToggle: true, enabled: false },
-        { icon: User, title: "Paleo", subtitle: "Whole foods diet", hasToggle: true, enabled: false },
-        { icon: User, title: "Low Sodium", subtitle: "Reduced sodium intake", hasToggle: true, enabled: true },
+        { icon: User, title: "Gluten-Free", subtitle: "Avoid gluten-containing ingredients", hasToggle: true, enabled: dietaryPreferences.glutenFree, key: 'glutenFree' },
+        { icon: User, title: "Vegan", subtitle: "Plant-based diet preferences", hasToggle: true, enabled: dietaryPreferences.vegan, key: 'vegan' },
+        { icon: User, title: "Diabetic-Friendly", subtitle: "Low sugar and carb options", hasToggle: true, enabled: dietaryPreferences.diabeticFriendly, key: 'diabeticFriendly' },
+        { icon: User, title: "Keto", subtitle: "High fat, low carb diet", hasToggle: true, enabled: dietaryPreferences.keto, key: 'keto' },
+        { icon: User, title: "Paleo", subtitle: "Whole foods diet", hasToggle: true, enabled: dietaryPreferences.paleo, key: 'paleo' },
+        { icon: User, title: "Low Sodium", subtitle: "Reduced sodium intake", hasToggle: true, enabled: dietaryPreferences.lowSodium, key: 'lowSodium' },
       ]
     },
     {
       title: "Account",
       items: [
         { icon: User, title: "Edit Profile", subtitle: "Update your personal information" },
-        { icon: Bell, title: "Notifications", subtitle: "Manage notification preferences", hasToggle: true, enabled: notifications },
-        { icon: Moon, title: "Dark Mode", subtitle: "Switch to dark theme", hasToggle: true, enabled: darkMode },
+        { icon: Bell, title: "Notifications", subtitle: "Manage notification preferences", hasToggle: true, enabled: notifications, key: 'notifications' },
+        { icon: Moon, title: "Dark Mode", subtitle: "Switch to dark theme", hasToggle: true, enabled: darkMode, key: 'darkMode' },
       ]
     },
     {
@@ -103,10 +111,16 @@ export default function ProfileScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     
     const item = menuSections[sectionIndex].items[itemIndex];
-    if (item.title === "Dark Mode") {
+    
+    if (item.key === "darkMode") {
       setDarkMode(!darkMode);
-    } else if (item.title === "Notifications") {
+    } else if (item.key === "notifications") {
       setNotifications(!notifications);
+    } else if (item.key && dietaryPreferences.hasOwnProperty(item.key)) {
+      setDietaryPreferences(prev => ({
+        ...prev,
+        [item.key]: !prev[item.key as keyof typeof prev]
+      }));
     }
   };
 
@@ -266,7 +280,7 @@ export default function ProfileScreen() {
                           <Switch
                             value={item.enabled}
                             onValueChange={() => handleToggle(sectionIndex, itemIndex)}
-                            trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#8B5CF6' }}
+                            trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#14B8A6' }}
                             thumbColor={'#ffffff'}
                           />
                         ) : (
