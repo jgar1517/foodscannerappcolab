@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, Sparkles, Star, Leaf, AlertTriangle, CheckCircle, XCircle } from 'lucide-react-native';
+import { ArrowLeft, Sparkles, Star, Leaf, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -525,14 +525,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: '#94A3B8',
-  },
-  bottomSpacing: {
-    height: 40,
-  },
-});
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#ffffff',
   },
   bottomSpacing: {
     height: 40,
