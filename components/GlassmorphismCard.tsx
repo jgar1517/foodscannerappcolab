@@ -89,7 +89,7 @@ export default function GlassmorphismCard({
     >
       {/* Gradient Border */}
       <LinearGradient
-        colors={['rgba(139, 92, 246, 0.3)', 'rgba(124, 58, 237, 0.1)', 'rgba(139, 92, 246, 0.3)']}
+        colors={['rgba(20, 184, 166, 0.3)', 'rgba(13, 148, 136, 0.1)', 'rgba(20, 184, 166, 0.3)']}
         style={[styles.gradientBorder, { borderRadius }]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

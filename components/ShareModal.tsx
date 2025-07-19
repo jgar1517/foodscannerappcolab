@@ -79,7 +79,7 @@ export default function ShareModal({ visible, onClose, scanData }: ShareModalPro
   const shareOptions = [
     { id: 'messages', icon: MessageCircle, label: 'Messages', color: ['#22C55E', '#16A34A'] },
     { id: 'email', icon: Mail, label: 'Email', color: ['#3B82F6', '#1D4ED8'] },
-    { id: 'copy', icon: Copy, label: 'Copy Link', color: ['#8B5CF6', '#7C3AED'] },
+    { id: 'copy', icon: Copy, label: 'Copy Link', color: ['#14B8A6', '#0D9488'] },
     { id: 'save', icon: Download, label: 'Save Image', color: ['#F59E0B', '#D97706'] },
   ];
 

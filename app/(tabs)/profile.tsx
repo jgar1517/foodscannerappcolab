@@ -174,7 +174,7 @@ export default function ProfileScreen() {
               <View style={styles.userInfo}>
                 <View style={styles.avatarContainer}>
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.avatarGradient}
                   >
                     <Image source={{ uri: userProfile.avatar }} style={styles.avatar} />
@@ -216,7 +216,7 @@ export default function ProfileScreen() {
                 </View>
                 <View style={styles.statItem}>
                   <LinearGradient
-                    colors={['#8B5CF6', '#7C3AED']}
+                    colors={['#14B8A6', '#0D9488']}
                     style={styles.statBadge}
                   >
                     <AnimatedCounter 
@@ -249,7 +249,7 @@ export default function ProfileScreen() {
                     >
                       <View style={styles.menuItemLeft}>
                         <LinearGradient
-                          colors={['#8B5CF6', '#7C3AED']}
+                          colors={['#14B8A6', '#0D9488']}
                           style={styles.menuIcon}
                         >
                           <item.icon size={20} color="#ffffff" />
