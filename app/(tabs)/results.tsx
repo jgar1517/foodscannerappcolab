@@ -8,10 +8,75 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, Sparkles, Star, Leaf } from 'lucide-react-native';
+import { ArrowLeft, Sparkles, Star, Leaf, AlertTriangle, CheckCircle, XCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+
+const ingredientResults = [
+  {
+    name: "Tomato Puree",
+    rating: "safe",
+    explanation: "Natural tomato product with no safety concerns",
+    confidence: 98
+  },
+  {
+    name: "Water",
+    rating: "safe", 
+    explanation: "Essential for life and poses no safety concerns",
+    confidence: 100
+  },
+  {
+    name: "Salt",
+    rating: "caution",
+    explanation: "High sodium content may contribute to hypertension",
+    confidence: 85
+  },
+  {
+    name: "Citric Acid",
+    rating: "safe",
+    explanation: "Natural preservative, generally recognized as safe",
+    confidence: 92
+  },
+  {
+    name: "Natural Flavors",
+    rating: "caution",
+    explanation: "Vague term that may contain allergens or additives",
+    confidence: 75
+  },
+  {
+    name: "Calcium Chloride",
+    rating: "avoid",
+    explanation: "May cause digestive issues in sensitive individuals",
+    confidence: 80
+  }
+];
+
+const getRatingColor = (rating: string) => {
+  switch (rating) {
+    case 'safe':
+      return ['#22C55E', '#16A34A'];
+    case 'caution':
+      return ['#F59E0B', '#D97706'];
+    case 'avoid':
+      return ['#EF4444', '#DC2626'];
+    default:
+      return ['#6B7280', '#4B5563'];
+  }
+};
+
+const getRatingIcon = (rating: string) => {
+  switch (rating) {
+    case 'safe':
+      return CheckCircle;
+    case 'caution':
+      return AlertTriangle;
+    case 'avoid':
+      return XCircle;
+    default:
+      return CheckCircle;
+  }
+};
 
 export default function ResultsScreen() {
   const router = useRouter();
@@ -48,6 +113,10 @@ export default function ResultsScreen() {
     inputRange: [0, 1],
     outputRange: [0, -8],
   });
+
+  const safeCount = ingredientResults.filter(i => i.rating === 'safe').length;
+  const cautionCount = ingredientResults.filter(i => i.rating === 'caution').length;
+  const avoidCount = ingredientResults.filter(i => i.rating === 'avoid').length;
 
   return (
     <View style={styles.container}>
@@ -91,21 +160,21 @@ export default function ResultsScreen() {
         </BlurView>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {/* Result Card */}
+          {/* Product Info Card */}
           <Animated.View
             style={[
-              styles.card,
+              styles.productCard,
               {
                 transform: [{ scale: scaleAnim }, { translateY: floatingTransform }],
               },
             ]}
           >
             <BlurView intensity={30} style={styles.cardBlur}>
-              {/* Broccoli Illustration */}
+              {/* Tomato Sauce Illustration */}
               <View style={styles.imageContainer}>
                 <Animated.View
                   style={[
-                    styles.broccoli,
+                    styles.tomatoSauce,
                     {
                       transform: [
                         {
@@ -119,68 +188,124 @@ export default function ResultsScreen() {
                   ]}
                 >
                   <LinearGradient
-                    colors={['#86EFAC', '#22C55E']}
-                    style={styles.broccoliStem}
+                    colors={['#DC2626', '#B91C1C']}
+                    style={styles.canBody}
                   />
                   <LinearGradient
-                    colors={['#22C55E', '#16A34A']}
-                    style={styles.broccoliTop}
+                    colors={['#F59E0B', '#D97706']}
+                    style={styles.canLabel}
                   />
                   <LinearGradient
-                    colors={['#16A34A', '#15803D']}
-                    style={[styles.broccoliFloret, styles.floret1]}
-                  />
-                  <LinearGradient
-                    colors={['#16A34A', '#15803D']}
-                    style={[styles.broccoliFloret, styles.floret2]}
-                  />
-                  <LinearGradient
-                    colors={['#16A34A', '#15803D']}
-                    style={[styles.broccoliFloret, styles.floret3]}
+                    colors={['#EF4444', '#DC2626']}
+                    style={styles.canTop}
                   />
                 </Animated.View>
               </View>
               
               {/* Title and Badge */}
               <View style={styles.titleContainer}>
-                <Text style={styles.title}>Broccoli</Text>
-                <LinearGradient
-                  colors={['#22C55E', '#16A34A']}
-                  style={styles.healthyBadge}
-                >
-                  <Text style={styles.healthyText}>Healthy</Text>
-                </LinearGradient>
-              </View>
-              
-              {/* Nutrition Facts */}
-              <Text style={styles.label}>Nutrition Facts</Text>
-              <LinearGradient
-                colors={['#22C55E', '#16A34A']}
-                style={styles.divider}
-              />
-              <View style={styles.factsContainer}>
-                <Text style={styles.fact}>Calories: 9 cal</Text>
-                <Text style={styles.fact}>Per Serving: 12%</Text>
-              </View>
-              
-              {/* Tags */}
-              <View style={styles.tags}>
-                <LinearGradient
-                  colors={['#22C55E', '#16A34A']}
-                  style={styles.chip}
-                >
-                  <View style={styles.leafIconContainer}>
-                    <Leaf size={12} color="#ffffff" />
-                  </View>
-                  <Text style={styles.chipText}>Vegan</Text>
-                </LinearGradient>
+                <Text style={styles.title}>H-E-B Tomato Sauce</Text>
                 <LinearGradient
                   colors={['#F59E0B', '#D97706']}
-                  style={styles.gfChip}
+                  style={styles.cautionBadge}
                 >
-                  <Text style={styles.gfText}>GF</Text>
+                  <Text style={styles.badgeText}>Mixed</Text>
                 </LinearGradient>
               </View>
+              
+              {/* Summary Stats */}
+              <Text style={styles.label}>Safety Summary</Text>
+              <LinearGradient
+                colors={['#60A5FA', '#3B82F6']}
+                style={styles.divider}
+              />
+              <View style={styles.summaryContainer}>
+                <View style={styles.summaryItem}>
+                  <LinearGradient
+                    colors={['#22C55E', '#16A34A']}
+                    style={styles.summaryBadge}
+                  >
+                    <Text style={styles.summaryCount}>{safeCount}</Text>
+                  </LinearGradient>
+                  <Text style={styles.summaryLabel}>Safe</Text>
+                </View>
+                <View style={styles.summaryItem}>
+                  <LinearGradient
+                    colors={['#F59E0B', '#D97706']}
+                    style={styles.summaryBadge}
+                  >
+                    <Text style={styles.summaryCount}>{cautionCount}</Text>
+                  </LinearGradient>
+                  <Text style={styles.summaryLabel}>Caution</Text>
+                </View>
+                <View style={styles.summaryItem}>
+                  <LinearGradient
+                    colors={['#EF4444', '#DC2626']}
+                    style={styles.summaryBadge}
+                  >
+                    <Text style={styles.summaryCount}>{avoidCount}</Text>
+                  </LinearGradient>
+                  <Text style={styles.summaryLabel}>Avoid</Text>
+                </View>
+              </View>
+            </BlurView>
+          </Animated.View>
+
+          {/* Ingredients Analysis */}
+          <Animated.View
+            style={[
+              styles.ingredientsCard,
+              {
+                transform: [
+                  {
+                    translateY: floatAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -3],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <BlurView intensity={30} style={styles.cardBlur}>
+              <Text style={styles.sectionTitle}>Ingredient Analysis</Text>
+              {ingredientResults.map((ingredient, index) => {
+                const RatingIcon = getRatingIcon(ingredient.rating);
+                return (
+                  <Animated.View
+                    key={index}
+                    style={[
+                      styles.ingredientItem,
+                      {
+                        transform: [
+                          {
+                            translateY: floatAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [0, -2 * index],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
+                  >
+                    <View style={styles.ingredientHeader}>
+                      <View style={styles.ingredientInfo}>
+                        <Text style={styles.ingredientName}>{ingredient.name}</Text>
+                        <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
+                      </View>
+                      <View style={styles.ratingContainer}>
+                        <LinearGradient
+                          colors={getRatingColor(ingredient.rating)}
+                          style={styles.ratingBadge}
+                        >
+                          <RatingIcon size={16} color="#ffffff" />
+                        </LinearGradient>
+                        <Text style={styles.confidenceText}>{ingredient.confidence}%</Text>
+                      </View>
+                    </View>
+                  </Animated.View>
+                );
+              })}
             </BlurView>
           </Animated.View>
 
@@ -241,7 +366,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  card: {
+  productCard: {
     margin: 20,
     borderRadius: 20,
     overflow: 'hidden',
@@ -256,47 +381,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  broccoli: {
+  tomatoSauce: {
     width: 80,
     height: 80,
     position: 'relative',
   },
-  broccoliStem: {
+  canBody: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 5,
     left: '50%',
-    marginLeft: -8,
-    width: 16,
-    height: 30,
-    borderRadius: 8,
+    marginLeft: -20,
+    width: 40,
+    height: 60,
+    borderRadius: 6,
   },
-  broccoliTop: {
+  canLabel: {
     position: 'absolute',
-    top: 10,
-    left: '50%',
-    marginLeft: -25,
-    width: 50,
-    height: 40,
-    borderRadius: 25,
-  },
-  broccoliFloret: {
-    position: 'absolute',
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-  },
-  floret1: {
-    top: 5,
-    left: 15,
-  },
-  floret2: {
-    top: 5,
-    right: 15,
-  },
-  floret3: {
     top: 20,
     left: '50%',
-    marginLeft: -10,
+    marginLeft: -18,
+    width: 36,
+    height: 25,
+    borderRadius: 4,
+  },
+  canTop: {
+    position: 'absolute',
+    top: 15,
+    left: '50%',
+    marginLeft: -20,
+    width: 40,
+    height: 8,
+    borderRadius: 4,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -308,13 +423,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#F8FAFC',
+    flex: 1,
   },
-  healthyBadge: {
+  cautionBadge: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
   },
-  healthyText: {
+  badgeText: {
     fontSize: 14,
     fontWeight: '600',
     color: '#ffffff',
@@ -322,7 +438,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 8,
     fontWeight: '600',
-    color: '#22C55E',
+    color: '#60A5FA',
     fontSize: 16,
   },
   divider: {
@@ -330,48 +446,90 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 1,
   },
-  factsContainer: {
+  summaryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginBottom: 16,
   },
-  fact: {
-    fontSize: 16,
-    marginVertical: 2,
-    color: '#CBD5E1',
-  },
-  tags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    flexDirection: 'row',
+  summaryItem: {
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    gap: 6,
   },
-  leafIconContainer: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  summaryBadge: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 8,
   },
-  chipText: {
-    fontSize: 14,
-    fontWeight: '600',
+  summaryCount: {
+    fontSize: 16,
+    fontWeight: '700',
     color: '#ffffff',
   },
-  gfChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+  summaryLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#CBD5E1',
+  },
+  ingredientsCard: {
+    marginHorizontal: 20,
+    marginTop: 16,
     borderRadius: 20,
-    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#F8FAFC',
+    marginBottom: 16,
+  },
+  ingredientItem: {
+    marginBottom: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  ingredientHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  gfText: {
+  ingredientInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  ingredientName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#F8FAFC',
+    marginBottom: 4,
+  },
+  ingredientExplanation: {
+    fontSize: 14,
+    color: '#CBD5E1',
+    lineHeight: 20,
+  },
+  ratingContainer: {
+    alignItems: 'center',
+  },
+  ratingBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  confidenceText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#94A3B8',
+  },
+  bottomSpacing: {
+    height: 40,
+  },
+});
     fontSize: 14,
     fontWeight: '700',
     color: '#ffffff',
