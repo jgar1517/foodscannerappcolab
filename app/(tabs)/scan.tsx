@@ -333,18 +333,22 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   permissionTitle: {
-    fontSize: 22,
+    fontSize: 24,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
     color: '#F8FAFC',
     marginBottom: 16,
     textAlign: 'center',
+    letterSpacing: 0.2,
   },
   permissionMessage: {
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Inter-Regular',
     color: '#CBD5E1',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 26,
     marginBottom: 32,
+    letterSpacing: 0.1,
   },
   permissionButton: {
     borderRadius: 25,
@@ -355,9 +359,11 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   permissionButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontFamily: 'Inter-SemiBold',
+    fontWeight: '700',
     color: '#ffffff',
+    letterSpacing: 0.3,
   },
   header: {
     flexDirection: 'row',
@@ -375,9 +381,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 24,
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '700',
     color: '#F8FAFC',
+    letterSpacing: 0.2,
   },
   cameraContainer: {
     flex: 1,
@@ -478,9 +486,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   instructionText: {
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '600',
     color: '#F8FAFC',
     textAlign: 'center',
+    letterSpacing: 0.1,
   },
   captureContainer: {
     alignItems: 'center',
