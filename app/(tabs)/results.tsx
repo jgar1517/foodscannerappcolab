@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'lucide-react-native';
@@ -25,64 +24,45 @@ export default function ResultsScreen() {
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Main Result Card */}
-        <View style={styles.resultCard}>
-          {/* Food Image and Info */}
-          <View style={styles.foodHeader}>
-            <View style={styles.broccoliContainer}>
-              <View style={styles.broccoli}>
-                <View style={styles.broccoliStem} />
-                <View style={styles.broccoliTop} />
-                <View style={[styles.broccoliFloret, styles.floret1]} />
-                <View style={[styles.broccoliFloret, styles.floret2]} />
-                <View style={[styles.broccoliFloret, styles.floret3]} />
-              </View>
-            </View>
-            <View style={styles.foodInfo}>
-              <Text style={styles.foodName}>Broccoli</Text>
-              <View style={styles.healthyBadge}>
-                <Text style={styles.healthyText}>Healthy</Text>
-              </View>
+        {/* Result Card */}
+        <View style={styles.card}>
+          {/* Broccoli Illustration */}
+          <View style={styles.imageContainer}>
+            <View style={styles.broccoli}>
+              <View style={styles.broccoliStem} />
+              <View style={styles.broccoliTop} />
+              <View style={[styles.broccoliFloret, styles.floret1]} />
+              <View style={[styles.broccoliFloret, styles.floret2]} />
+              <View style={[styles.broccoliFloret, styles.floret3]} />
             </View>
           </View>
-
+          
+          {/* Title and Badge */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Broccoli</Text>
+            <View style={styles.healthyBadge}>
+              <Text style={styles.healthyText}>Healthy</Text>
+            </View>
+          </View>
+          
           {/* Nutrition Facts */}
-          <View style={styles.nutritionSection}>
-            <Text style={styles.nutritionTitle}>Nutrition Facts</Text>
-            <View style={styles.nutritionDivider} />
-            
-            <View style={styles.nutritionRow}>
-              <Text style={styles.nutritionLabel}>Calories</Text>
-              <Text style={styles.nutritionValue}>9 cal</Text>
-            </View>
-            
-            <View style={styles.nutritionRow}>
-              <Text style={styles.nutritionLabel}>Per Serving</Text>
-              <Text style={styles.nutritionValue}>12%</Text>
-            </View>
-          </View>
-
-          {/* Diet Tags */}
-          <View style={styles.tagsSection}>
-            <View style={styles.veganTag}>
+          <Text style={styles.label}>Nutrition Facts</Text>
+          <View style={styles.divider} />
+          <Text style={styles.fact}>Calories: 9 cal</Text>
+          <Text style={styles.fact}>Per Serving: 12%</Text>
+          
+          {/* Tags */}
+          <View style={styles.tags}>
+            <View style={styles.chip}>
               <View style={styles.leafIcon}>
                 <Text style={styles.leafText}>🌿</Text>
               </View>
-              <Text style={styles.tagText}>Vegan</Text>
+              <Text style={styles.chipText}>Vegan</Text>
             </View>
-            
-            <View style={styles.gfTag}>
+            <View style={styles.gfChip}>
               <Text style={styles.gfText}>GF</Text>
             </View>
           </View>
-        </View>
-
-        {/* Additional Information */}
-        <View style={styles.additionalInfo}>
-          <Text style={styles.infoText}>
-            Broccoli is a nutrient-dense vegetable that's high in vitamins C and K, 
-            fiber, and antioxidants. It's naturally vegan and gluten-free.
-          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -112,24 +92,19 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  resultCard: {
-    backgroundColor: '#DCFCE7',
-    margin: 20,
-    borderRadius: 20,
-    padding: 20,
+  card: {
+    backgroundColor: '#E6F4EA',
+    padding: 16,
+    borderRadius: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 6,
+    elevation: 3,
+    margin: 16,
   },
-  foodHeader: {
-    flexDirection: 'row',
+  imageContainer: {
     alignItems: 'center',
-    marginBottom: 24,
-  },
-  broccoliContainer: {
-    marginRight: 16,
+    marginBottom: 10,
   },
   broccoli: {
     width: 80,
@@ -176,87 +151,75 @@ const styles = StyleSheet.create({
     left: '50%',
     marginLeft: -10,
   },
-  foodInfo: {
-    flex: 1,
-  },
-  foodName: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#14532D',
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 8,
   },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
   healthyBadge: {
-    backgroundColor: '#22C55E',
+    backgroundColor: '#4CAF50',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
-    alignSelf: 'flex-start',
   },
   healthyText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: '#ffffff',
   },
-  nutritionSection: {
-    marginBottom: 20,
-  },
-  nutritionTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#14532D',
-    marginBottom: 12,
-  },
-  nutritionDivider: {
-    height: 2,
-    backgroundColor: '#14532D',
-    marginBottom: 16,
-  },
-  nutritionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  nutritionLabel: {
-    fontSize: 16,
-    color: '#14532D',
-  },
-  nutritionValue: {
-    fontSize: 16,
+  label: {
+    marginTop: 8,
     fontWeight: '600',
-    color: '#14532D',
+    color: '#4CAF50',
+    fontSize: 16,
   },
-  tagsSection: {
+  divider: {
+    height: 2,
+    backgroundColor: '#4CAF50',
+    marginVertical: 8,
+  },
+  fact: {
+    fontSize: 16,
+    marginVertical: 2,
+  },
+  tags: {
     flexDirection: 'row',
-    gap: 12,
+    flexWrap: 'wrap',
+    marginTop: 10,
+    gap: 6,
   },
-  veganTag: {
+  chip: {
+    backgroundColor: '#A5D6A7',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#22C55E',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
     gap: 6,
   },
   leafIcon: {
-    width: 20,
-    height: 20,
-    backgroundColor: '#16A34A',
-    borderRadius: 10,
+    width: 16,
+    height: 16,
+    backgroundColor: '#4CAF50',
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   leafText: {
-    fontSize: 12,
+    fontSize: 10,
   },
-  tagText: {
-    fontSize: 16,
+  chipText: {
+    fontSize: 14,
     fontWeight: '600',
-    color: '#ffffff',
+    color: '#2E7D32',
   },
-  gfTag: {
-    backgroundColor: '#fbbf24',
+  gfChip: {
+    backgroundColor: '#FFF59D',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -264,18 +227,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gfText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
-    color: '#ffffff',
-  },
-  additionalInfo: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#DCFCE7',
-    lineHeight: 24,
-    textAlign: 'center',
+    color: '#F57F17',
   },
 });
