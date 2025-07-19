@@ -6,365 +6,84 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, ExternalLink, Lightbulb, Clock, Star, ShoppingCart, ChevronRight, Share } from 'lucide-react-native';
-
-const { width } = Dimensions.get('window');
-
-// Mock data for demonstration
-const mockScanResult = {
-  id: '1',
-  imageUrl: 'https://images.pexels.com/photos/4110008/pexels-photo-4110008.jpeg?auto=compress&cs=tinysrgb&w=400',
-  totalIngredients: 8,
-  safetyScore: 72,
-  processingTime: 4.2,
-  ingredients: [
-    {
-      name: 'Water',
-      rating: 'safe',
-      confidence: 100,
-      explanation: 'Water is essential for life and poses no safety concerns.',
-      sources: ['FDA', 'EWG'],
-      position: 1,
-    },
-    {
-      name: 'Organic Cane Sugar',
-      rating: 'caution',
-      confidence: 85,
-      explanation: 'High sugar content may contribute to weight gain and dental issues. Moderate consumption recommended.',
-      sources: ['EWG', 'WHO'],
-      position: 2,
-    },
-    {
-      name: 'Natural Flavors',
-      rating: 'caution',
-      confidence: 70,
-      explanation: 'While generally safe, "natural flavors" can be vague and may contain allergens or chemicals not listed.',
-      sources: ['FDA', 'EWG'],
-      position: 3,
-    },
-    {
-      name: 'Citric Acid',
-      rating: 'safe',
-      confidence: 95,
-      explanation: 'Commonly used preservative and flavor enhancer, generally recognized as safe by FDA.',
-      sources: ['FDA'],
-      position: 4,
-    },
-    {
-      name: 'Sodium Benzoate',
-      rating: 'avoid',
-      confidence: 80,
-      explanation: 'May form benzene (a carcinogen) when combined with vitamin C. Can cause hyperactivity in children.',
-      sources: ['EWG', 'Scientific Studies'],
-      position: 5,
-    },
-    {
-      name: 'Ascorbic Acid (Vitamin C)',
-      rating: 'safe',
-      confidence: 100,
-      explanation: 'Essential vitamin with antioxidant properties. Beneficial for immune system health.',
-      sources: ['FDA', 'NIH'],
-      position: 6,
-    },
-    {
-      name: 'Artificial Color Red 40',
-      rating: 'avoid',
-      confidence: 85,
-      explanation: 'Linked to hyperactivity in children and may cause allergic reactions. Banned in some countries.',
-      sources: ['EWG', 'European Food Safety Authority'],
-      position: 7,
-    },
-    {
-      name: 'Gum Arabic',
-      rating: 'safe',
-      confidence: 90,
-      explanation: 'Natural fiber that acts as a thickener and stabilizer. Generally safe for consumption.',
-      sources: ['FDA'],
-      position: 8,
-    },
-  ],
-  recommendations: [
-    {
-      rank: 1,
-      productName: 'Simply Organic Orange Juice',
-      brand: 'Simply Orange',
-      description: '100% pure orange juice with no added sugars or artificial ingredients',
-      imageUrl: 'https://images.pexels.com/photos/96974/pexels-photo-96974.jpeg?auto=compress&cs=tinysrgb&w=300',
-      retailer: 'Amazon',
-      price: 4.99,
-      safetyScore: 92,
-      reason: 'Contains only natural ingredients with no artificial additives',
-    },
-    {
-      rank: 2,
-      productName: 'Honest Kids Organic Juice',
-      brand: 'Honest Tea',
-      description: 'Organic fruit juice with no artificial flavors or preservatives',
-      imageUrl: 'https://images.pexels.com/photos/1233319/pexels-photo-1233319.jpeg?auto=compress&cs=tinysrgb&w=300',
-      retailer: 'Target',
-      price: 3.49,
-      safetyScore: 88,
-      reason: 'USDA organic certification ensures cleaner ingredients',
-    },
-  ],
-  recipes: [
-    {
-      name: 'Homemade Orange Refresher',
-      description: 'Fresh orange juice with natural sweeteners',
-      imageUrl: 'https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=300',
-      prepTime: 5,
-      difficulty: 'Easy',
-      ingredients: ['2 fresh oranges', '1 cup sparkling water', '1 tsp honey', 'Ice cubes'],
-    },
-  ],
-};
-
-const getRatingColor = (rating: string) => {
-  switch (rating) {
-    case 'safe':
-      return '#10b981';
-    case 'caution':
-      return '#f59e0b';
-    case 'avoid':
-      return '#ef4444';
-    default:
-      return '#6b7280';
-  }
-};
-
-const getRatingIcon = (rating: string) => {
-  switch (rating) {
-    case 'safe':
-      return CheckCircle;
-    case 'caution':
-      return AlertTriangle;
-    case 'avoid':
-      return XCircle;
-    default:
-      return CheckCircle;
-  }
-};
-
-const SafetyScoreCircle = ({ score }: { score: number }) => {
-  const color = score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444';
-  
-  return (
-    <View style={[styles.scoreCircle, { borderColor: color }]}>
-      <Text style={[styles.scoreText, { color }]}>{score}</Text>
-      <Text style={styles.scoreLabel}>Safety Score</Text>
-    </View>
-  );
-};
+import { ArrowLeft } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 
 export default function ResultsScreen() {
-  const [activeTab, setActiveTab] = useState('ingredients');
-  
-  const safetySummary = mockScanResult.ingredients.reduce((acc, ingredient) => {
-    acc[ingredient.rating] = (acc[ingredient.rating] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const renderIngredientItem = (ingredient: any) => {
-    const IconComponent = getRatingIcon(ingredient.rating);
-    const color = getRatingColor(ingredient.rating);
-    
-    return (
-      <View key={ingredient.name} style={styles.ingredientCard}>
-        <View style={styles.ingredientHeader}>
-          <View style={styles.ingredientInfo}>
-            <Text style={styles.ingredientName}>{ingredient.name}</Text>
-            <View style={styles.ingredientMeta}>
-              <Text style={styles.ingredientPosition}>Position #{ingredient.position}</Text>
-              <Text style={styles.ingredientConfidence}>
-                {ingredient.confidence}% confidence
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.ratingBadge, { backgroundColor: `${color}15` }]}>
-            <IconComponent size={16} color={color} />
-            <Text style={[styles.ratingText, { color }]}>
-              {ingredient.rating.charAt(0).toUpperCase() + ingredient.rating.slice(1)}
-            </Text>
-          </View>
-        </View>
-        
-        <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
-        
-        <View style={styles.sourcesContainer}>
-          <Text style={styles.sourcesLabel}>Sources:</Text>
-          <View style={styles.sourcesRow}>
-            {ingredient.sources.map((source: string, index: number) => (
-              <View key={index} style={styles.sourceTag}>
-                <Text style={styles.sourceText}>{source}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const renderRecommendations = () => (
-    <View style={styles.tabContent}>
-      <Text style={styles.sectionTitle}>Healthier Alternatives</Text>
-      {mockScanResult.recommendations.map((rec) => (
-        <View key={rec.rank} style={styles.recommendationCard}>
-          <Image source={{ uri: rec.imageUrl }} style={styles.recommendationImage} />
-          <View style={styles.recommendationContent}>
-            <View style={styles.recommendationHeader}>
-              <Text style={styles.recommendationName}>{rec.productName}</Text>
-              <View style={styles.recommendationScore}>
-                <Star size={12} color="#f59e0b" fill="#f59e0b" />
-                <Text style={styles.scoreValue}>{rec.safetyScore}</Text>
-              </View>
-            </View>
-            <Text style={styles.recommendationBrand}>{rec.brand}</Text>
-            <Text style={styles.recommendationDescription}>{rec.description}</Text>
-            <Text style={styles.recommendationReason}>{rec.reason}</Text>
-            
-            <View style={styles.recommendationFooter}>
-              <Text style={styles.recommendationPrice}>${rec.price}</Text>
-              <TouchableOpacity style={styles.buyButton}>
-                <ShoppingCart size={14} color="#10b981" />
-                <Text style={styles.buyButtonText}>Buy on {rec.retailer}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-
-  const renderRecipes = () => (
-    <View style={styles.tabContent}>
-      <Text style={styles.sectionTitle}>Homemade Alternatives</Text>
-      {mockScanResult.recipes.map((recipe, index) => (
-        <View key={index} style={styles.recipeCard}>
-          <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
-          <View style={styles.recipeContent}>
-            <Text style={styles.recipeName}>{recipe.name}</Text>
-            <Text style={styles.recipeDescription}>{recipe.description}</Text>
-            
-            <View style={styles.recipeDetails}>
-              <View style={styles.recipeDetail}>
-                <Clock size={14} color="#6b7280" />
-                <Text style={styles.recipeDetailText}>{recipe.prepTime} min</Text>
-              </View>
-              <View style={styles.recipeDetail}>
-                <Lightbulb size={14} color="#6b7280" />
-                <Text style={styles.recipeDetailText}>{recipe.difficulty}</Text>
-              </View>
-            </View>
-            
-            <View style={styles.ingredientsList}>
-              {recipe.ingredients.map((ingredient, idx) => (
-                <Text key={idx} style={styles.recipeIngredient}>• {ingredient}</Text>
-              ))}
-            </View>
-            
-            <TouchableOpacity style={styles.viewRecipeButton}>
-              <Text style={styles.viewRecipeText}>View Full Recipe</Text>
-              <ChevronRight size={14} color="#10b981" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      ))}
-    </View>
-  );
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <ArrowLeft size={24} color="#ffffff" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Results</Text>
+      </View>
+
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Image source={{ uri: mockScanResult.imageUrl }} style={styles.headerImage} />
-            <View style={styles.headerInfo}>
-              <Text style={styles.headerTitle}>Scan Results</Text>
-              <Text style={styles.headerSubtitle}>
-                {mockScanResult.totalIngredients} ingredients analyzed in {mockScanResult.processingTime}s
-              </Text>
-            </View>
-            <TouchableOpacity style={styles.shareButton}>
-              <Share size={20} color="#10b981" />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Safety Overview */}
-        <View style={styles.overviewSection}>
-          <SafetyScoreCircle score={mockScanResult.safetyScore} />
-          
-          <View style={styles.summaryRow}>
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIcon, { backgroundColor: '#10b98115' }]}>
-                <CheckCircle size={16} color="#10b981" />
+        {/* Main Result Card */}
+        <View style={styles.resultCard}>
+          {/* Food Image and Info */}
+          <View style={styles.foodHeader}>
+            <View style={styles.broccoliContainer}>
+              <View style={styles.broccoli}>
+                <View style={styles.broccoliStem} />
+                <View style={styles.broccoliTop} />
+                <View style={[styles.broccoliFloret, styles.floret1]} />
+                <View style={[styles.broccoliFloret, styles.floret2]} />
+                <View style={[styles.broccoliFloret, styles.floret3]} />
               </View>
-              <Text style={styles.summaryCount}>{safetySummary.safe || 0}</Text>
-              <Text style={styles.summaryLabel}>Safe</Text>
+            </View>
+            <View style={styles.foodInfo}>
+              <Text style={styles.foodName}>Broccoli</Text>
+              <View style={styles.healthyBadge}>
+                <Text style={styles.healthyText}>Healthy</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Nutrition Facts */}
+          <View style={styles.nutritionSection}>
+            <Text style={styles.nutritionTitle}>Nutrition Facts</Text>
+            <View style={styles.nutritionDivider} />
+            
+            <View style={styles.nutritionRow}>
+              <Text style={styles.nutritionLabel}>Calories</Text>
+              <Text style={styles.nutritionValue}>9 cal</Text>
             </View>
             
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIcon, { backgroundColor: '#f59e0b15' }]}>
-                <AlertTriangle size={16} color="#f59e0b" />
+            <View style={styles.nutritionRow}>
+              <Text style={styles.nutritionLabel}>Per Serving</Text>
+              <Text style={styles.nutritionValue}>12%</Text>
+            </View>
+          </View>
+
+          {/* Diet Tags */}
+          <View style={styles.tagsSection}>
+            <View style={styles.veganTag}>
+              <View style={styles.leafIcon}>
+                <Text style={styles.leafText}>🌿</Text>
               </View>
-              <Text style={styles.summaryCount}>{safetySummary.caution || 0}</Text>
-              <Text style={styles.summaryLabel}>Caution</Text>
+              <Text style={styles.tagText}>Vegan</Text>
             </View>
             
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIcon, { backgroundColor: '#ef444415' }]}>
-                <XCircle size={16} color="#ef4444" />
-              </View>
-              <Text style={styles.summaryCount}>{safetySummary.avoid || 0}</Text>
-              <Text style={styles.summaryLabel}>Avoid</Text>
+            <View style={styles.gfTag}>
+              <Text style={styles.gfText}>GF</Text>
             </View>
           </View>
         </View>
 
-        {/* Tabs */}
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'ingredients' && styles.activeTab]}
-            onPress={() => setActiveTab('ingredients')}
-          >
-            <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
-              Ingredients
-            </Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'alternatives' && styles.activeTab]}
-            onPress={() => setActiveTab('alternatives')}
-          >
-            <Text style={[styles.tabText, activeTab === 'alternatives' && styles.activeTabText]}>
-              Alternatives
-            </Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'recipes' && styles.activeTab]}
-            onPress={() => setActiveTab('recipes')}
-          >
-            <Text style={[styles.tabText, activeTab === 'recipes' && styles.activeTabText]}>
-              Recipes
-            </Text>
-          </TouchableOpacity>
+        {/* Additional Information */}
+        <View style={styles.additionalInfo}>
+          <Text style={styles.infoText}>
+            Broccoli is a nutrient-dense vegetable that's high in vitamins C and K, 
+            fiber, and antioxidants. It's naturally vegan and gluten-free.
+          </Text>
         </View>
-
-        {/* Tab Content */}
-        {activeTab === 'ingredients' && (
-          <View style={styles.tabContent}>
-            {mockScanResult.ingredients.map(renderIngredientItem)}
-          </View>
-        )}
-        
-        {activeTab === 'alternatives' && renderRecommendations()}
-        
-        {activeTab === 'recipes' && renderRecipes()}
       </ScrollView>
     </SafeAreaView>
   );
@@ -375,357 +94,188 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#15803D',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#15803D',
+  },
+  backButton: {
+    marginRight: 16,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
   scrollView: {
     flex: 1,
   },
-  header: {
+  resultCard: {
     backgroundColor: '#DCFCE7',
-    paddingHorizontal: 24,
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#BBF7D0',
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  headerImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 12,
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#14532D',
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#15803D',
-  },
-  shareButton: {
-    width: 40,
-    height: 40,
+    margin: 20,
     borderRadius: 20,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  overviewSection: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    paddingHorizontal: 24,
-  },
-  scoreCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 4,
-    justifyContent: 'center',
+  foodHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
   },
-  scoreText: {
-    fontSize: 32,
-    fontWeight: '800',
+  broccoliContainer: {
+    marginRight: 16,
   },
-  scoreLabel: {
-    fontSize: 12,
-    color: '#15803D',
-    fontWeight: '600',
+  broccoli: {
+    width: 80,
+    height: 80,
+    position: 'relative',
   },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+  broccoliStem: {
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -8,
+    width: 16,
+    height: 30,
+    backgroundColor: '#86EFAC',
+    borderRadius: 8,
   },
-  summaryItem: {
-    alignItems: 'center',
-    gap: 8,
+  broccoliTop: {
+    position: 'absolute',
+    top: 10,
+    left: '50%',
+    marginLeft: -25,
+    width: 50,
+    height: 40,
+    backgroundColor: '#22C55E',
+    borderRadius: 25,
   },
-  summaryIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+  broccoliFloret: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
+    backgroundColor: '#16A34A',
+    borderRadius: 10,
   },
-  summaryCount: {
+  floret1: {
+    top: 5,
+    left: 15,
+  },
+  floret2: {
+    top: 5,
+    right: 15,
+  },
+  floret3: {
+    top: 20,
+    left: '50%',
+    marginLeft: -10,
+  },
+  foodInfo: {
+    flex: 1,
+  },
+  foodName: {
     fontSize: 22,
     fontWeight: '700',
     color: '#14532D',
+    marginBottom: 8,
   },
-  summaryLabel: {
-    fontSize: 12,
-    color: '#15803D',
-    fontWeight: '600',
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#DCFCE7',
-    marginHorizontal: 24,
-    borderRadius: 12,
-    padding: 4,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-    borderRadius: 8,
-  },
-  activeTab: {
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#15803D',
-  },
-  activeTabText: {
-    color: '#15803D',
-  },
-  tabContent: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#14532D',
-    marginBottom: 16,
-  },
-  ingredientCard: {
-    backgroundColor: '#DCFCE7',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
-  },
-  ingredientHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  ingredientInfo: {
-    flex: 1,
-  },
-  ingredientName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-    marginBottom: 4,
-  },
-  ingredientMeta: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  ingredientPosition: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  ingredientConfidence: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  ratingBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 16,
-    gap: 4,
-  },
-  ratingText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  ingredientExplanation: {
-    fontSize: 16,
-    color: '#15803D',
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  sourcesContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  sourcesLabel: {
-    fontSize: 12,
-    color: '#15803D',
-    fontWeight: '600',
-  },
-  sourcesRow: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  sourceTag: {
-    backgroundColor: '#BBF7D0',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  sourceText: {
-    fontSize: 10,
-    color: '#14532D',
-    fontWeight: '600',
-  },
-  recommendationCard: {
-    backgroundColor: '#DCFCE7',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
-    flexDirection: 'row',
-    gap: 12,
-  },
-  recommendationImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-  },
-  recommendationContent: {
-    flex: 1,
-  },
-  recommendationHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 4,
-  },
-  recommendationName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-    flex: 1,
-  },
-  recommendationScore: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  scoreValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-  },
-  recommendationBrand: {
-    fontSize: 16,
-    color: '#15803D',
-    marginBottom: 6,
-  },
-  recommendationDescription: {
-    fontSize: 16,
-    color: '#15803D',
-    lineHeight: 18,
-    marginBottom: 6,
-  },
-  recommendationReason: {
-    fontSize: 12,
-    color: '#22C55E',
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  recommendationFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  recommendationPrice: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#14532D',
-  },
-  buyButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#22C55E15',
+  healthyBadge: {
+    backgroundColor: '#22C55E',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 20,
-    gap: 4,
+    borderRadius: 15,
+    alignSelf: 'flex-start',
   },
-  buyButtonText: {
-    fontSize: 12,
+  healthyText: {
+    fontSize: 16,
     fontWeight: '600',
-    color: '#15803D',
+    color: '#ffffff',
   },
-  recipeCard: {
-    backgroundColor: '#DCFCE7',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
+  nutritionSection: {
+    marginBottom: 20,
   },
-  recipeImage: {
-    width: '100%',
-    height: 160,
-    borderRadius: 8,
+  nutritionTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#14532D',
     marginBottom: 12,
   },
-  recipeContent: {
-    gap: 8,
+  nutritionDivider: {
+    height: 2,
+    backgroundColor: '#14532D',
+    marginBottom: 16,
   },
-  recipeName: {
-    fontSize: 18,
+  nutritionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  nutritionLabel: {
+    fontSize: 16,
+    color: '#14532D',
+  },
+  nutritionValue: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#14532D',
   },
-  recipeDescription: {
-    fontSize: 16,
-    color: '#15803D',
-  },
-  recipeDetails: {
+  tagsSection: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 12,
   },
-  recipeDetail: {
+  veganTag: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    backgroundColor: '#22C55E',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    gap: 6,
   },
-  recipeDetailText: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  ingredientsList: {
-    gap: 2,
-  },
-  recipeIngredient: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  viewRecipeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  leafIcon: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#16A34A',
+    borderRadius: 10,
     justifyContent: 'center',
-    backgroundColor: '#22C55E15',
-    paddingVertical: 12,
-    borderRadius: 8,
-    gap: 4,
+    alignItems: 'center',
   },
-  viewRecipeText: {
+  leafText: {
+    fontSize: 12,
+  },
+  tagText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#15803D',
+    color: '#ffffff',
+  },
+  gfTag: {
+    backgroundColor: '#fbbf24',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gfText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  additionalInfo: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#DCFCE7',
+    lineHeight: 24,
+    textAlign: 'center',
   },
 });

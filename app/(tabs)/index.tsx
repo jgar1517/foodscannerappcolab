@@ -5,13 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
   Dimensions,
-  ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Shield, Zap, Users, TrendingUp, Camera, ChevronRight, Star, CircleCheck as CheckCircle, ChevronDown, ChevronUp } from 'lucide-react-native';
+import { Camera, Shield, Zap, Users, TrendingUp } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
@@ -21,13 +18,13 @@ const features = [
     icon: Shield,
     title: 'AI-Powered Safety Analysis',
     description: 'Get instant safety ratings for every ingredient based on trusted scientific sources',
-    color: '#10b981',
+    color: '#22C55E',
   },
   {
     icon: Zap,
     title: 'Instant Results',
     description: 'Scan any ingredient label and get results in under 5 seconds',
-    color: '#f59e0b',
+    color: '#fbbf24',
   },
   {
     icon: Users,
@@ -43,29 +40,7 @@ const features = [
   },
 ];
 
-const testimonials = [
-  {
-    name: 'Sarah M.',
-    role: 'Mom of 2',
-    text: 'Finally, an app that makes ingredient labels simple to understand!',
-    rating: 5,
-  },
-  {
-    name: 'Dr. James L.',
-    role: 'Nutritionist',
-    text: 'Accurate, science-based information that I recommend to my patients.',
-    rating: 5,
-  },
-  {
-    name: 'Mike R.',
-    role: 'Fitness Enthusiast',
-    text: 'Helped me identify hidden ingredients affecting my performance.',
-    rating: 5,
-  },
-];
-
 export default function HomeScreen() {
-  const [featuresExpanded, setFeaturesExpanded] = React.useState(false);
   const router = useRouter();
 
   const handleScanPress = () => {
@@ -79,127 +54,108 @@ export default function HomeScreen() {
         <View style={styles.heroSection}>
           <View style={styles.heroContent}>
             <Text style={styles.heroTitle}>
-              Scan with{'\n'}
-              <Text style={styles.heroTitleAccent}>Confidence</Text>
+              Food Scanner App
             </Text>
             <Text style={styles.heroSubtitle}>
               AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
             </Text>
             
             <TouchableOpacity 
-              style={styles.ctaButton}
+              style={styles.scanButton}
               onPress={handleScanPress}
               activeOpacity={0.9}
             >
-              <Camera size={20} color="#10b981" />
-              <Text style={styles.ctaButtonText}>Start Scanning</Text>
-              <ChevronRight size={20} color="#10b981" />
+              <Text style={styles.scanButtonText}>SCAN FOOD</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Color Palette Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Color Palette</Text>
+          <View style={styles.colorPalette}>
+            <View style={[styles.colorSwatch, { backgroundColor: '#14532D' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#15803D' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#22C55E' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#4ADE80' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#86EFAC' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#BBF7D0' }]} />
+            <View style={[styles.colorSwatch, { backgroundColor: '#DCFCE7' }]} />
+          </View>
+        </View>
+
+        {/* Typography Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Typography</Text>
+          <View style={styles.typographyExamples}>
+            <View style={styles.buttonExample}>
+              <Text style={styles.buttonExampleText}>SCAN FOOD</Text>
+            </View>
+            <TouchableOpacity style={styles.cameraButtonExample}>
+              <Camera size={24} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Components Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Components</Text>
+          <View style={styles.componentsGrid}>
+            {/* Scan Food Component */}
+            <View style={styles.componentCard}>
+              <View style={styles.scanComponent}>
+                <View style={styles.scanFrame}>
+                  <View style={styles.appleIcon}>
+                    <View style={styles.appleBody} />
+                    <View style={styles.appleLeaf} />
+                  </View>
+                </View>
+                <Text style={styles.componentLabel}>SCAN FOOD</Text>
+              </View>
+              <Text style={styles.componentTitle}>Theme exmust</Text>
+            </View>
+
+            {/* Broccoli Result Component */}
+            <View style={styles.componentCard}>
+              <View style={styles.resultComponent}>
+                <View style={styles.broccoliIcon}>
+                  <View style={styles.broccoliStem} />
+                  <View style={styles.broccoliTop} />
+                </View>
+                <View style={styles.resultInfo}>
+                  <Text style={styles.resultTitle}>Broccoli</Text>
+                  <View style={styles.healthyBadge}>
+                    <Text style={styles.healthyText}>Healthy</Text>
+                  </View>
+                  <View style={styles.tagRow}>
+                    <View style={styles.veganTag}>
+                      <Text style={styles.tagText}>🌿</Text>
+                    </View>
+                    <View style={styles.gfTag}>
+                      <Text style={styles.gfTagText}>GF</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <Text style={styles.componentTitle}>Theme switch</Text>
+            </View>
           </View>
         </View>
 
         {/* Features Section */}
         <View style={styles.section}>
-          <TouchableOpacity 
-            style={styles.dropdownHeader}
-            onPress={() => setFeaturesExpanded(!featuresExpanded)}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.dropdownTitle}>Why Choose Food Safety Scanner?</Text>
-            {featuresExpanded ? (
-              <ChevronUp size={24} color="#10b981" />
-            ) : (
-              <ChevronDown size={24} color="#10b981" />
-            )}
-          </TouchableOpacity>
-          
-          {featuresExpanded && (
-            <View style={styles.featuresGrid}>
-              {features.map((feature, index) => (
-                <View key={index} style={styles.featureCard}>
-                  <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
-                    <feature.icon size={24} color={feature.color} />
-                  </View>
-                  <Text style={styles.featureTitle}>{feature.title}</Text>
-                  <Text style={styles.featureDescription}>{feature.description}</Text>
+          <Text style={styles.sectionTitle}>Why Choose Food Safety Scanner?</Text>
+          <View style={styles.featuresGrid}>
+            {features.map((feature, index) => (
+              <View key={index} style={styles.featureCard}>
+                <View style={[styles.featureIcon, { backgroundColor: `${feature.color}15` }]}>
+                  <feature.icon size={24} color={feature.color} />
                 </View>
-              ))}
-            </View>
-          )}
-        </View>
-
-        {/* How It Works Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>How It Works</Text>
-          <View style={styles.stepsContainer}>
-            <View style={styles.stepCard}>
-              <View style={styles.stepNumber}>
-                <Text style={styles.stepNumberText}>1</Text>
+                <Text style={styles.featureTitle}>{feature.title}</Text>
+                <Text style={styles.featureDescription}>{feature.description}</Text>
               </View>
-              <Text style={styles.stepTitle}>Scan or Upload</Text>
-              <Text style={styles.stepDescription}>
-                Take a photo of any ingredient label or upload from your gallery
-              </Text>
-            </View>
-            
-            <View style={styles.stepCard}>
-              <View style={styles.stepNumber}>
-                <Text style={styles.stepNumberText}>2</Text>
-              </View>
-              <Text style={styles.stepTitle}>AI Analysis</Text>
-              <Text style={styles.stepDescription}>
-                Our AI identifies each ingredient and cross-references safety databases
-              </Text>
-            </View>
-            
-            <View style={styles.stepCard}>
-              <View style={styles.stepNumber}>
-                <Text style={styles.stepNumberText}>3</Text>
-              </View>
-              <Text style={styles.stepTitle}>Get Results</Text>
-              <Text style={styles.stepDescription}>
-                Receive safety ratings, explanations, and healthier alternatives
-              </Text>
-            </View>
+            ))}
           </View>
-        </View>
-
-        {/* Trust Indicators */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Trusted by Health Professionals</Text>
-          <View style={styles.trustIndicators}>
-            <View style={styles.trustItem}>
-              <CheckCircle size={20} color="#10b981" />
-              <Text style={styles.trustText}>FDA Database Integration</Text>
-            </View>
-            <View style={styles.trustItem}>
-              <CheckCircle size={20} color="#10b981" />
-              <Text style={styles.trustText}>EWG Food Scores</Text>
-            </View>
-            <View style={styles.trustItem}>
-              <CheckCircle size={20} color="#10b981" />
-              <Text style={styles.trustText}>Scientific Research Backed</Text>
-            </View>
-            <View style={styles.trustItem}>
-              <CheckCircle size={20} color="#10b981" />
-              <Text style={styles.trustText}>Regular Database Updates</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Final CTA */}
-        <View style={styles.finalCTA}>
-          <Text style={styles.finalCTATitle}>Ready to eat with confidence?</Text>
-          <Text style={styles.finalCTASubtitle}>
-            Join thousands of users making safer food choices every day
-          </Text>
-          <TouchableOpacity 
-            style={styles.finalCTAButton}
-            onPress={handleScanPress}
-            activeOpacity={0.9}
-          >
-            <Text style={styles.finalCTAButtonText}>Start Your First Scan</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -209,98 +165,250 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#15803D',
+    backgroundColor: '#f8f9fa',
   },
   scrollView: {
     flex: 1,
   },
   heroSection: {
-    height: 400,
-    marginBottom: 32,
-    backgroundColor: '#15803D',
-    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 40,
+    paddingHorizontal: 24,
     alignItems: 'center',
   },
   heroContent: {
     alignItems: 'center',
-    paddingHorizontal: 24,
+    maxWidth: 400,
   },
   heroTitle: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: '800',
-    color: '#ffffff',
+    color: '#14532D',
     textAlign: 'center',
     marginBottom: 16,
-    lineHeight: 44,
-  },
-  heroTitleAccent: {
-    color: '#22C55E',
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#DCFCE7',
+    color: '#6b7280',
     textAlign: 'center',
     marginBottom: 32,
     lineHeight: 24,
-    paddingHorizontal: 8,
   },
-  ctaButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 24,
+  scanButton: {
+    backgroundColor: '#15803D',
+    paddingHorizontal: 32,
     paddingVertical: 16,
-    borderRadius: 32,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
-    gap: 8,
+    borderRadius: 25,
   },
-  ctaButtonText: {
+  scanButtonText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#15803D',
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 1,
   },
   section: {
     paddingHorizontal: 24,
-    marginBottom: 40,
+    paddingVertical: 32,
+    backgroundColor: '#ffffff',
+    marginBottom: 1,
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: '700',
     color: '#14532D',
     marginBottom: 24,
-    textAlign: 'center',
   },
-  dropdownHeader: {
+  colorPalette: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 12,
+    flexWrap: 'wrap',
+  },
+  colorSwatch: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  typographyExamples: {
+    flexDirection: 'row',
+    gap: 16,
     alignItems: 'center',
-    backgroundColor: '#DCFCE7',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+  },
+  buttonExample: {
+    backgroundColor: '#15803D',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  buttonExampleText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 1,
+  },
+  cameraButtonExample: {
+    backgroundColor: '#15803D',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  componentsGrid: {
+    flexDirection: 'row',
+    gap: 20,
+  },
+  componentCard: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  scanComponent: {
+    backgroundColor: '#15803D',
+    padding: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginBottom: 12,
+    width: '100%',
+  },
+  scanFrame: {
+    width: 80,
+    height: 80,
+    borderWidth: 2,
+    borderColor: '#ffffff',
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 16,
   },
-  dropdownTitle: {
-    fontSize: 22,
+  appleIcon: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+  },
+  appleBody: {
+    width: 40,
+    height: 35,
+    backgroundColor: '#ef4444',
+    borderRadius: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  appleLeaf: {
+    position: 'absolute',
+    top: -3,
+    right: 12,
+    width: 12,
+    height: 8,
+    backgroundColor: '#22C55E',
+    borderRadius: 6,
+    transform: [{ rotate: '45deg' }],
+  },
+  componentLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 1,
+  },
+  resultComponent: {
+    backgroundColor: '#DCFCE7',
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12,
+    width: '100%',
+  },
+  broccoliIcon: {
+    width: 40,
+    height: 40,
+    position: 'relative',
+    marginBottom: 12,
+    alignSelf: 'center',
+  },
+  broccoliStem: {
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -4,
+    width: 8,
+    height: 15,
+    backgroundColor: '#86EFAC',
+    borderRadius: 4,
+  },
+  broccoliTop: {
+    position: 'absolute',
+    top: 5,
+    left: '50%',
+    marginLeft: -15,
+    width: 30,
+    height: 20,
+    backgroundColor: '#22C55E',
+    borderRadius: 15,
+  },
+  resultInfo: {
+    alignItems: 'center',
+  },
+  resultTitle: {
+    fontSize: 16,
     fontWeight: '700',
     color: '#14532D',
-    flex: 1,
+    marginBottom: 6,
+  },
+  healthyBadge: {
+    backgroundColor: '#22C55E',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    marginBottom: 8,
+  },
+  healthyText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  tagRow: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  veganTag: {
+    backgroundColor: '#22C55E',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tagText: {
+    fontSize: 10,
+  },
+  gfTag: {
+    backgroundColor: '#fbbf24',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  gfTagText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  componentTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#14532D',
+    textAlign: 'center',
   },
   featuresGrid: {
     gap: 20,
   },
   featureCard: {
-    backgroundColor: '#DCFCE7',
+    backgroundColor: '#f8f9fa',
     padding: 20,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#BBF7D0',
+    borderColor: '#e5e7eb',
   },
   featureIcon: {
     width: 48,
@@ -318,91 +426,7 @@ const styles = StyleSheet.create({
   },
   featureDescription: {
     fontSize: 16,
-    color: '#15803D',
+    color: '#6b7280',
     lineHeight: 20,
-  },
-  stepsContainer: {
-    gap: 20,
-  },
-  stepCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 16,
-  },
-  stepNumber: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#15803D',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4,
-  },
-  stepNumberText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  stepTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#14532D',
-    marginBottom: 4,
-    flex: 1,
-  },
-  stepDescription: {
-    fontSize: 16,
-    color: '#15803D',
-    lineHeight: 20,
-    flex: 1,
-  },
-  trustIndicators: {
-    gap: 12,
-  },
-  trustItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  trustText: {
-    fontSize: 16,
-    color: '#14532D',
-    fontWeight: '500',
-  },
-  finalCTA: {
-    backgroundColor: '#DCFCE7',
-    padding: 32,
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#BBF7D0',
-  },
-  finalCTATitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#14532D',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  finalCTASubtitle: {
-    fontSize: 16,
-    color: '#15803D',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  finalCTAButton: {
-    backgroundColor: '#15803D',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 32,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  finalCTAButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
   },
 });

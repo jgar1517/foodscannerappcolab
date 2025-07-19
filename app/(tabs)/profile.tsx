@@ -9,302 +9,129 @@ import {
   Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Settings, Heart, Shield, Star, FileText, CircleHelp as HelpCircle, LogOut, ChevronRight, Crown, Zap, Calendar, ChartBar as BarChart3 } from 'lucide-react-native';
-
-const dietaryOptions = [
-  { id: 'gluten-free', label: 'Gluten-Free', active: true },
-  { id: 'vegan', label: 'Vegan', active: false },
-  { id: 'vegetarian', label: 'Vegetarian', active: false },
-  { id: 'diabetic', label: 'Diabetic-Friendly', active: true },
-  { id: 'keto', label: 'Keto', active: false },
-  { id: 'paleo', label: 'Paleo', active: false },
-  { id: 'low-sodium', label: 'Low Sodium', active: false },
-  { id: 'dairy-free', label: 'Dairy-Free', active: false },
-];
-
-const customAvoidances = [
-  'Artificial colors',
-  'High fructose corn syrup',
-  'Sodium benzoate',
-];
-
-const userStats = {
-  totalScans: 127,
-  scansThisWeek: 8,
-  safetyScore: 85,
-  memberSince: 'January 2025',
-};
+import { User, Settings, Heart, Shield, Star, FileText, CircleHelp as HelpCircle, LogOut, ChevronRight, Crown, Zap, Calendar, ChartBar as BarChart3, Sun, Moon } from 'lucide-react-native';
 
 export default function ProfileScreen() {
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [dietaryPreferences, setDietaryPreferences] = useState(dietaryOptions);
-
-  const toggleDietaryPreference = (id: string) => {
-    setDietaryPreferences(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, active: !item.active } : item
-      )
-    );
-  };
-
-  const MenuSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <View style={styles.menuSection}>
-      <Text style={styles.sectionTitle}>{title}</Text>
-      {children}
-    </View>
-  );
-
-  const MenuItem = ({ 
-    icon: Icon, 
-    title, 
-    subtitle, 
-    onPress, 
-    rightElement 
-  }: {
-    icon: any;
-    title: string;
-    subtitle?: string;
-    onPress?: () => void;
-    rightElement?: React.ReactNode;
-  }) => (
-    <TouchableOpacity 
-      style={styles.menuItem}
-      onPress={onPress}
-      disabled={!onPress}
-    >
-      <View style={styles.menuItemLeft}>
-        <View style={styles.menuItemIcon}>
-          <Icon size={20} color="#10b981" />
-        </View>
-        <View style={styles.menuItemContent}>
-          <Text style={styles.menuItemTitle}>{title}</Text>
-          {subtitle && <Text style={styles.menuItemSubtitle}>{subtitle}</Text>}
-        </View>
-      </View>
-      {rightElement || <ChevronRight size={16} color="#9ca3af" />}
-    </TouchableOpacity>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Profile Header */}
-        <View style={styles.profileHeader}>
-          <View style={styles.profileImageContainer}>
-            <Image
-              source={{ uri: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=300' }}
-              style={styles.profileImage}
-            />
-            <TouchableOpacity style={styles.editImageButton}>
-              <Settings size={16} color="#ffffff" />
-            </TouchableOpacity>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Appearance</Text>
+        </View>
+
+        {/* Theme Toggle Card */}
+        <View style={styles.themeCard}>
+          <View style={styles.themeHeader}>
+            <View style={styles.themeIconContainer}>
+              {darkMode ? (
+                <Moon size={24} color="#15803D" />
+              ) : (
+                <Sun size={24} color="#15803D" />
+              )}
+            </View>
+            <Text style={styles.themeTitle}>Dark Mode</Text>
           </View>
           
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Sarah Johnson</Text>
-            <Text style={styles.profileEmail}>sarah.johnson@email.com</Text>
-            <View style={styles.membershipBadge}>
-              <Star size={14} color="#f59e0b" fill="#f59e0b" />
-              <Text style={styles.membershipText}>Free Member</Text>
+          <View style={styles.toggleContainer}>
+            <View style={[styles.toggle, darkMode && styles.toggleActive]}>
+              <View style={[styles.toggleThumb, darkMode && styles.toggleThumbActive]} />
             </View>
           </View>
         </View>
 
-        {/* Stats Overview */}
-        <View style={styles.statsContainer}>
-          <View style={styles.statsGrid}>
-            <View style={styles.statCard}>
-              <View style={styles.statIcon}>
-                <Zap size={20} color="#10b981" />
+        {/* Visual Style Guide Section */}
+        <View style={styles.styleGuideSection}>
+          <Text style={styles.sectionTitle}>Food Scanner App - Visual Style Guide</Text>
+          
+          {/* Color Palette */}
+          <View style={styles.subsection}>
+            <Text style={styles.subsectionTitle}>Color Palette</Text>
+            <View style={styles.colorGrid}>
+              <View style={styles.colorRow}>
+                <View style={[styles.colorSwatch, { backgroundColor: '#14532D' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#15803D' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#22C55E' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#4ADE80' }]} />
               </View>
-              <Text style={styles.statValue}>{userStats.totalScans}</Text>
-              <Text style={styles.statLabel}>Total Scans</Text>
-            </View>
-            
-            <View style={styles.statCard}>
-              <View style={styles.statIcon}>
-                <Calendar size={20} color="#3b82f6" />
+              <View style={styles.colorRow}>
+                <View style={[styles.colorSwatch, { backgroundColor: '#86EFAC' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#BBF7D0' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#DCFCE7' }]} />
+                <View style={[styles.colorSwatch, { backgroundColor: '#f8f9fa' }]} />
               </View>
-              <Text style={styles.statValue}>{userStats.scansThisWeek}</Text>
-              <Text style={styles.statLabel}>This Week</Text>
-            </View>
-            
-            <View style={styles.statCard}>
-              <View style={styles.statIcon}>
-                <Shield size={20} color="#f59e0b" />
-              </View>
-              <Text style={styles.statValue}>{userStats.safetyScore}</Text>
-              <Text style={styles.statLabel}>Safety Score</Text>
             </View>
           </View>
-        </View>
 
-        {/* Upgrade Banner */}
-        <View style={styles.upgradeCard}>
-          <View style={styles.upgradeIcon}>
-            <Crown size={24} color="#fbbf24" />
-          </View>
-          <View style={styles.upgradeContent}>
-            <Text style={styles.upgradeTitle}>Upgrade to Premium</Text>
-            <Text style={styles.upgradeDescription}>
-              Get unlimited scans, advanced analytics, and priority support
-            </Text>
-          </View>
-          <TouchableOpacity style={styles.upgradeButton}>
-            <Text style={styles.upgradeButtonText}>Upgrade</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Dietary Preferences */}
-        <MenuSection title="Dietary Preferences">
-          <View style={styles.dietaryGrid}>
-            {dietaryPreferences.map((preference) => (
-              <TouchableOpacity
-                key={preference.id}
-                style={[
-                  styles.dietaryChip,
-                  preference.active && styles.dietaryChipActive,
-                ]}
-                onPress={() => toggleDietaryPreference(preference.id)}
-              >
-                <Text
-                  style={[
-                    styles.dietaryChipText,
-                    preference.active && styles.dietaryChipTextActive,
-                  ]}
-                >
-                  {preference.label}
-                </Text>
+          {/* Typography */}
+          <View style={styles.subsection}>
+            <Text style={styles.subsectionTitle}>Typography</Text>
+            <View style={styles.typographyExamples}>
+              <View style={styles.buttonExample}>
+                <Text style={styles.buttonText}>SCAN FOOD</Text>
+              </View>
+              <TouchableOpacity style={styles.cameraButton}>
+                <Text style={styles.cameraButtonText}>📷</Text>
               </TouchableOpacity>
-            ))}
+            </View>
           </View>
-          
-          <View style={styles.customAvoidances}>
-            <Text style={styles.customAvoidancesTitle}>Custom Ingredients to Avoid:</Text>
-            {customAvoidances.map((item, index) => (
-              <View key={index} style={styles.avoidanceItem}>
-                <Text style={styles.avoidanceText}>• {item}</Text>
+
+          {/* Components */}
+          <View style={styles.subsection}>
+            <Text style={styles.subsectionTitle}>Components</Text>
+            <View style={styles.componentsRow}>
+              {/* Scan Component */}
+              <View style={styles.componentExample}>
+                <View style={styles.scanComponentCard}>
+                  <View style={styles.scanFrame}>
+                    <View style={styles.appleIcon}>
+                      <View style={styles.appleBody} />
+                      <View style={styles.appleLeaf} />
+                    </View>
+                  </View>
+                  <Text style={styles.scanLabel}>SCAN FOOD</Text>
+                </View>
+                <Text style={styles.componentLabel}>Theme exmust</Text>
               </View>
-            ))}
-            <TouchableOpacity style={styles.addAvoidanceButton}>
-              <Text style={styles.addAvoidanceText}>+ Add Custom Ingredient</Text>
+
+              {/* Result Component */}
+              <View style={styles.componentExample}>
+                <View style={styles.resultComponentCard}>
+                  <View style={styles.broccoliContainer}>
+                    <View style={styles.broccoli}>
+                      <View style={styles.broccoliStem} />
+                      <View style={styles.broccoliTop} />
+                    </View>
+                    <View style={styles.resultInfo}>
+                      <Text style={styles.broccoliText}>Broccoli</Text>
+                      <View style={styles.healthyBadge}>
+                        <Text style={styles.healthyText}>Healthy</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.tags}>
+                    <View style={styles.veganTag}>
+                      <Text style={styles.leafEmoji}>🌿</Text>
+                    </View>
+                    <View style={styles.gfTag}>
+                      <Text style={styles.gfText}>GF</Text>
+                    </View>
+                  </View>
+                </View>
+                <Text style={styles.componentLabel}>Theme switch</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Export Section */}
+          <View style={styles.exportSection}>
+            <Text style={styles.exportTitle}>Export visual style guide</Text>
+            <TouchableOpacity style={styles.exportButton}>
+              <Text style={styles.exportButtonText}>Export Guide</Text>
             </TouchableOpacity>
           </View>
-        </MenuSection>
-
-        {/* Account Settings */}
-        <MenuSection title="Account">
-          <MenuItem
-            icon={User}
-            title="Edit Profile"
-            subtitle="Update your personal information"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={Settings}
-            title="Notifications"
-            subtitle="Push notifications and alerts"
-            rightElement={
-              <Switch
-                value={notificationsEnabled}
-                onValueChange={setNotificationsEnabled}
-                trackColor={{ false: '#e5e7eb', true: '#10b981' }}
-                thumbColor={notificationsEnabled ? '#ffffff' : '#f3f4f6'}
-              />
-            }
-          />
-          <MenuItem
-            icon={Settings}
-            title="Dark Mode"
-            subtitle="Toggle app appearance"
-            rightElement={
-              <Switch
-                value={darkMode}
-                onValueChange={setDarkMode}
-                trackColor={{ false: '#e5e7eb', true: '#10b981' }}
-                thumbColor={darkMode ? '#ffffff' : '#f3f4f6'}
-              />
-            }
-          />
-        </MenuSection>
-
-        {/* Health & Safety */}
-        <MenuSection title="Health & Safety">
-          <MenuItem
-            icon={Heart}
-            title="Health Goals"
-            subtitle="Set your wellness objectives"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={BarChart3}
-            title="Safety Analytics"
-            subtitle="View your dietary safety trends"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={Shield}
-            title="Data Privacy"
-            subtitle="Manage your data and privacy settings"
-            onPress={() => {}}
-          />
-        </MenuSection>
-
-        {/* Support */}
-        <MenuSection title="Support">
-          <MenuItem
-            icon={HelpCircle}
-            title="Help Center"
-            subtitle="Get answers to common questions"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={FileText}
-            title="Send Feedback"
-            subtitle="Help us improve the app"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={Star}
-            title="Rate the App"
-            subtitle="Share your experience"
-            onPress={() => {}}
-          />
-        </MenuSection>
-
-        {/* Legal */}
-        <MenuSection title="Legal">
-          <MenuItem
-            icon={FileText}
-            title="Terms of Service"
-            subtitle="View our terms and conditions"
-            onPress={() => {}}
-          />
-          <MenuItem
-            icon={FileText}
-            title="Privacy Policy"
-            subtitle="How we handle your data"
-            onPress={() => {}}
-          />
-        </MenuSection>
-
-        {/* Logout */}
-        <View style={styles.logoutContainer}>
-          <TouchableOpacity style={styles.logoutButton}>
-            <LogOut size={20} color="#ef4444" />
-            <Text style={styles.logoutText}>Sign Out</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* App Info */}
-        <View style={styles.appInfo}>
-          <Text style={styles.appInfoText}>
-            Food Safety Scanner v1.0.0
-          </Text>
-          <Text style={styles.appInfoText}>
-            Member since {userStats.memberSince}
-          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -314,271 +141,324 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#15803D',
+    backgroundColor: '#f8f9fa',
   },
   scrollView: {
     flex: 1,
   },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  header: {
+    backgroundColor: '#ffffff',
     paddingHorizontal: 24,
-    paddingVertical: 24,
-    backgroundColor: '#DCFCE7',
+    paddingVertical: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#BBF7D0',
+    borderBottomColor: '#e5e7eb',
   },
-  profileImageContainer: {
-    position: 'relative',
-    marginRight: 16,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  editImageButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#15803D',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileName: {
+  headerTitle: {
     fontSize: 22,
     fontWeight: '700',
     color: '#14532D',
-    marginBottom: 4,
   },
-  profileEmail: {
-    fontSize: 16,
-    color: '#15803D',
-    marginBottom: 8,
+  themeCard: {
+    backgroundColor: '#ffffff',
+    marginHorizontal: 24,
+    marginTop: 20,
+    padding: 20,
+    borderRadius: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  membershipBadge: {
+  themeHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fef3c7',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    alignSelf: 'flex-start',
-    gap: 4,
   },
-  membershipText: {
-    fontSize: 12,
-    color: '#f59e0b',
+  themeIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#DCFCE7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  themeTitle: {
+    fontSize: 18,
     fontWeight: '600',
+    color: '#14532D',
   },
-  statsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+  toggleContainer: {
+    padding: 4,
   },
-  statsGrid: {
+  toggle: {
+    width: 60,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#e5e7eb',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  toggleActive: {
+    backgroundColor: '#15803D',
+  },
+  toggleThumb: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  toggleThumbActive: {
+    transform: [{ translateX: 28 }],
+  },
+  styleGuideSection: {
+    backgroundColor: '#ffffff',
+    margin: 24,
+    padding: 24,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#14532D',
+    marginBottom: 24,
+  },
+  subsection: {
+    marginBottom: 32,
+  },
+  subsectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#14532D',
+    marginBottom: 16,
+  },
+  colorGrid: {
+    gap: 12,
+  },
+  colorRow: {
     flexDirection: 'row',
     gap: 12,
   },
-  statCard: {
-    flex: 1,
-    backgroundColor: '#DCFCE7',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
+  colorSwatch: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  statIcon: {
-    width: 40,
-    height: 40,
+  typographyExamples: {
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+  },
+  buttonExample: {
+    backgroundColor: '#15803D',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 20,
-    backgroundColor: '#ffffff',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 1,
+  },
+  cameraButton: {
+    backgroundColor: '#15803D',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cameraButtonText: {
+    fontSize: 20,
+  },
+  componentsRow: {
+    flexDirection: 'row',
+    gap: 20,
+  },
+  componentExample: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  scanComponentCard: {
+    backgroundColor: '#15803D',
+    padding: 16,
+    borderRadius: 16,
+    alignItems: 'center',
+    marginBottom: 8,
+    width: '100%',
+  },
+  scanFrame: {
+    width: 60,
+    height: 60,
+    borderWidth: 2,
+    borderColor: '#ffffff',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  appleIcon: {
+    position: 'relative',
+    width: 30,
+    height: 30,
+  },
+  appleBody: {
+    width: 30,
+    height: 26,
+    backgroundColor: '#ef4444',
+    borderRadius: 15,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  appleLeaf: {
+    position: 'absolute',
+    top: -2,
+    right: 9,
+    width: 10,
+    height: 6,
+    backgroundColor: '#22C55E',
+    borderRadius: 5,
+    transform: [{ rotate: '45deg' }],
+  },
+  scanLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 1,
+  },
+  resultComponentCard: {
+    backgroundColor: '#DCFCE7',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    width: '100%',
+  },
+  broccoliContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
   },
-  statValue: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#14532D',
-    marginBottom: 4,
+  broccoli: {
+    width: 30,
+    height: 30,
+    position: 'relative',
+    marginRight: 8,
   },
-  statLabel: {
-    fontSize: 12,
-    color: '#15803D',
-    textAlign: 'center',
+  broccoliStem: {
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -3,
+    width: 6,
+    height: 12,
+    backgroundColor: '#86EFAC',
+    borderRadius: 3,
   },
-  upgradeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fef3c7',
-    marginHorizontal: 24,
-    marginBottom: 24,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#fbbf24',
+  broccoliTop: {
+    position: 'absolute',
+    top: 3,
+    left: '50%',
+    marginLeft: -10,
+    width: 20,
+    height: 15,
+    backgroundColor: '#22C55E',
+    borderRadius: 10,
   },
-  upgradeIcon: {
-    marginRight: 12,
-  },
-  upgradeContent: {
+  resultInfo: {
     flex: 1,
   },
-  upgradeTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-    marginBottom: 4,
-  },
-  upgradeDescription: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  upgradeButton: {
-    backgroundColor: '#fbbf24',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  upgradeButtonText: {
+  broccoliText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#ffffff',
-  },
-  menuSection: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
     color: '#14532D',
-    marginBottom: 16,
-    paddingHorizontal: 24,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-  },
-  menuItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  menuItemIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#DCFCE7',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  menuItemContent: {
-    flex: 1,
-  },
-  menuItemTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-    marginBottom: 2,
-  },
-  menuItemSubtitle: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-  dietaryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    paddingHorizontal: 24,
-    marginBottom: 16,
-  },
-  dietaryChip: {
-    backgroundColor: '#BBF7D0',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#86EFAC',
-  },
-  dietaryChipActive: {
-    backgroundColor: '#15803D',
-    borderColor: '#15803D',
-  },
-  dietaryChipText: {
-    fontSize: 12,
-    color: '#15803D',
-    fontWeight: '600',
-  },
-  dietaryChipTextActive: {
-    color: '#ffffff',
-  },
-  customAvoidances: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#f3f4f6',
-  },
-  customAvoidancesTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#14532D',
-    marginBottom: 8,
-  },
-  avoidanceItem: {
     marginBottom: 4,
   },
-  avoidanceText: {
-    fontSize: 16,
-    color: '#15803D',
-  },
-  addAvoidanceButton: {
-    marginTop: 8,
-  },
-  addAvoidanceText: {
-    fontSize: 16,
-    color: '#22C55E',
-    fontWeight: '600',
-  },
-  logoutContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fef2f2',
-    paddingVertical: 12,
+  healthyBadge: {
+    backgroundColor: '#22C55E',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     borderRadius: 8,
-    gap: 8,
+    alignSelf: 'flex-start',
   },
-  logoutText: {
+  healthyText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  tags: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  veganTag: {
+    backgroundColor: '#22C55E',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  leafEmoji: {
+    fontSize: 12,
+  },
+  gfTag: {
+    backgroundColor: '#fbbf24',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gfText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
+  componentLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#14532D',
+    textAlign: 'center',
+  },
+  exportSection: {
+    alignItems: 'center',
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#e5e7eb',
+  },
+  exportTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#14532D',
+    marginBottom: 16,
+  },
+  exportButton: {
+    backgroundColor: '#15803D',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  exportButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#ef4444',
-  },
-  appInfo: {
-    alignItems: 'center',
-    paddingVertical: 24,
-    paddingHorizontal: 24,
-  },
-  appInfoText: {
-    fontSize: 12,
-    color: '#86EFAC',
-    textAlign: 'center',
+    color: '#ffffff',
   },
 });
