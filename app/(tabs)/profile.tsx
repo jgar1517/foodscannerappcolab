@@ -10,14 +10,28 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Sun, Moon, Calendar, Target, History, Sparkles, Star } from 'lucide-react-native';
+import { 
+  User, 
+  Bell, 
+  Moon, 
+  Shield, 
+  BarChart3, 
+  Eye, 
+  HelpCircle, 
+  MessageSquare, 
+  Star, 
+  FileText, 
+  LogOut,
+  ChevronRight,
+  Sparkles
+} from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
+  const [notifications, setNotifications] = useState(true);
   const floatAnim = React.useRef(new Animated.Value(0)).current;
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
   
   React.useEffect(() => {
     // Floating animation
@@ -38,46 +52,72 @@ export default function ProfileScreen() {
   }, []);
 
   const userProfile = {
-    "id": "user_001",
-    "name": "Joseph Days",
-    "email": "jdays@email.com",
-    "avatar": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?w=150&h=150&fit=crop&crop=face",
-    "preferences": ["Vegan", "Gluten-Free"],
-    "scanCount": 14,
-    "theme": "light",
-    "joinedDate": "2024-03-15T10:20:00Z",
-    "lastLogin": "2025-07-18T16:30:00Z",
-    "goal": "Track sugar and calorie intake",
-    "history": [
-      { "item": "Broccoli", "date": "2025-07-16", "rating": "Healthy" },
-      { "item": "Protein Bar", "date": "2025-07-14", "rating": "Moderate" }
-    ],
-    "settings": {
-      "notifications": true,
-      "language": "en"
-    }
-  };
-
-  const toggleDarkMode = () => {
-    Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 0.95,
-        duration: 100,
-        useNativeDriver: true,
-      }),
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 100,
-        useNativeDriver: true,
-      }),
-    ]).start();
-    setDarkMode(!darkMode);
+    name: "Sarah Johnson",
+    email: "sarah.johnson@email.com",
+    avatar: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=150&h=150&fit=crop&crop=face",
+    totalScans: 127,
+    healthGoals: 8,
+    streakDays: 85,
   };
 
   const floatingTransform = floatAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0, -8],
   });
+
+  const menuSections = [
+    {
+      title: "Dietary Preferences",
+      items: [
+        { icon: User, title: "Gluten-Free", subtitle: "Avoid gluten-containing ingredients", hasToggle: true, enabled: true },
+        { icon: User, title: "Vegan", subtitle: "Plant-based diet preferences", hasToggle: true, enabled: false },
+        { icon: User, title: "Diabetic-Friendly", subtitle: "Low sugar and carb options", hasToggle: true, enabled: true },
+        { icon: User, title: "Keto", subtitle: "High fat, low carb diet", hasToggle: true, enabled: false },
+        { icon: User, title: "Paleo", subtitle: "Whole foods diet", hasToggle: true, enabled: false },
+        { icon: User, title: "Low Sodium", subtitle: "Reduced sodium intake", hasToggle: true, enabled: true },
+      ]
+    },
+    {
+      title: "Account",
+      items: [
+        { icon: User, title: "Edit Profile", subtitle: "Update your personal information" },
+        { icon: Bell, title: "Notifications", subtitle: "Manage notification preferences", hasToggle: true, enabled: notifications },
+        { icon: Moon, title: "Dark Mode", subtitle: "Switch to dark theme", hasToggle: true, enabled: darkMode },
+      ]
+    },
+    {
+      title: "Health & Safety",
+      items: [
+        { icon: BarChart3, title: "Health Goals", subtitle: "Set and track health objectives" },
+        { icon: Shield, title: "Safety Analytics", subtitle: "View your safety score trends" },
+        { icon: Eye, title: "Data Privacy", subtitle: "Control your data and privacy settings" },
+      ]
+    },
+    {
+      title: "Support",
+      items: [
+        { icon: HelpCircle, title: "Help Center", subtitle: "Get help and support" },
+        { icon: MessageSquare, title: "Send Feedback", subtitle: "Help us improve the app" },
+        { icon: Star, title: "Rate the App", subtitle: "Share your experience" },
+      ]
+    },
+    {
+      title: "Legal",
+      items: [
+        { icon: FileText, title: "Terms of Service", subtitle: "Read our terms and conditions" },
+        { icon: FileText, title: "Privacy Policy", subtitle: "Learn about our privacy practices" },
+      ]
+    }
+  ];
+
+  const handleToggle = (sectionIndex: number, itemIndex: number) => {
+    const item = menuSections[sectionIndex].items[itemIndex];
+    if (item.title === "Dark Mode") {
+      setDarkMode(!darkMode);
+    } else if (item.title === "Notifications") {
+      setNotifications(!notifications);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -88,7 +128,7 @@ export default function ProfileScreen() {
       
       {/* Floating particles */}
       <View style={styles.particlesContainer}>
-        {[...Array(15)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <Animated.View
             key={i}
             style={[
@@ -140,167 +180,119 @@ export default function ProfileScreen() {
                 <View style={styles.userDetails}>
                   <Text style={styles.userName}>{userProfile.name}</Text>
                   <Text style={styles.userEmail}>{userProfile.email}</Text>
-                  <View style={styles.preferencesContainer}>
-                    {userProfile.preferences.map((preference, index) => (
-                      <LinearGradient
-                        key={index}
-                        colors={['#8B5CF6', '#7C3AED']}
-                        style={styles.preferenceChip}
-                      >
-                        <Text style={styles.preferenceText}>{preference}</Text>
-                      </LinearGradient>
-                    ))}
-                  </View>
                 </View>
               </View>
-            </BlurView>
-          </Animated.View>
-
-          {/* Stats Card */}
-          <Animated.View
-            style={[
-              styles.statsCard,
-              {
-                transform: [
-                  {
-                    translateY: floatAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -5],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <BlurView intensity={30} style={styles.cardBlur}>
-              <Text style={styles.sectionTitle}>Statistics</Text>
+              
+              {/* Stats Row */}
               <View style={styles.statsRow}>
                 <View style={styles.statItem}>
                   <LinearGradient
                     colors={['#22C55E', '#16A34A']}
-                    style={styles.statNumberContainer}
+                    style={styles.statBadge}
                   >
-                    <Text style={styles.statNumber}>{userProfile.scanCount}</Text>
+                    <Text style={styles.statNumber}>{userProfile.totalScans}</Text>
                   </LinearGradient>
                   <Text style={styles.statLabel}>Total Scans</Text>
                 </View>
                 <View style={styles.statItem}>
-                  <View style={styles.statIconContainer}>
-                    <Calendar size={24} color="#60A5FA" />
-                  </View>
-                  <Text style={styles.statLabel}>Member Since</Text>
-                  <Text style={styles.statValue}>Mar 2024</Text>
-                </View>
-              </View>
-            </BlurView>
-          </Animated.View>
-
-          {/* Goal Card */}
-          <Animated.View
-            style={[
-              styles.goalCard,
-              {
-                transform: [
-                  {
-                    translateY: floatAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -3],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <BlurView intensity={30} style={styles.cardBlur}>
-              <View style={styles.goalHeader}>
-                <LinearGradient
-                  colors={['#F59E0B', '#D97706']}
-                  style={styles.goalIconContainer}
-                >
-                  <Target size={24} color="#ffffff" />
-                </LinearGradient>
-                <Text style={styles.sectionTitle}>Current Goal</Text>
-              </View>
-              <Text style={styles.goalText}>{userProfile.goal}</Text>
-            </BlurView>
-          </Animated.View>
-
-          {/* Recent History Card */}
-          <Animated.View
-            style={[
-              styles.historyCard,
-              {
-                transform: [
-                  {
-                    translateY: floatAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -6],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <BlurView intensity={30} style={styles.cardBlur}>
-              <View style={styles.historyHeader}>
-                <LinearGradient
-                  colors={['#8B5CF6', '#7C3AED']}
-                  style={styles.historyIconContainer}
-                >
-                  <History size={24} color="#ffffff" />
-                </LinearGradient>
-                <Text style={styles.sectionTitle}>Recent Scans</Text>
-              </View>
-              {userProfile.history.map((item, index) => (
-                <View key={index} style={styles.historyItem}>
-                  <View style={styles.historyInfo}>
-                    <Text style={styles.historyItemName}>{item.item}</Text>
-                    <Text style={styles.historyDate}>{item.date}</Text>
-                  </View>
                   <LinearGradient
-                    colors={item.rating === 'Healthy' ? ['#22C55E', '#16A34A'] : ['#F59E0B', '#D97706']}
-                    style={styles.ratingBadge}
+                    colors={['#F59E0B', '#D97706']}
+                    style={styles.statBadge}
                   >
-                    <Text style={styles.ratingText}>{item.rating}</Text>
+                    <Text style={styles.statNumber}>{userProfile.healthGoals}</Text>
                   </LinearGradient>
+                  <Text style={styles.statLabel}>Health Goals</Text>
                 </View>
-              ))}
+                <View style={styles.statItem}>
+                  <LinearGradient
+                    colors={['#8B5CF6', '#7C3AED']}
+                    style={styles.statBadge}
+                  >
+                    <Text style={styles.statNumber}>{userProfile.streakDays}</Text>
+                  </LinearGradient>
+                  <Text style={styles.statLabel}>Day Streak</Text>
+                </View>
+              </View>
             </BlurView>
           </Animated.View>
 
-          {/* Theme Toggle Card */}
+          {/* Menu Sections */}
+          {menuSections.map((section, sectionIndex) => (
+            <Animated.View
+              key={sectionIndex}
+              style={[
+                styles.menuSection,
+                {
+                  transform: [
+                    {
+                      translateY: floatAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -3 * sectionIndex],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              <BlurView intensity={30} style={styles.sectionBlur}>
+                <Text style={styles.sectionTitle}>{section.title}</Text>
+                {section.items.map((item, itemIndex) => (
+                  <TouchableOpacity
+                    key={itemIndex}
+                    style={styles.menuItem}
+                    onPress={() => item.hasToggle && handleToggle(sectionIndex, itemIndex)}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.menuItemLeft}>
+                      <LinearGradient
+                        colors={['#3B82F6', '#1D4ED8']}
+                        style={styles.menuIcon}
+                      >
+                        <item.icon size={20} color="#ffffff" />
+                      </LinearGradient>
+                      <View style={styles.menuItemText}>
+                        <Text style={styles.menuItemTitle}>{item.title}</Text>
+                        <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.menuItemRight}>
+                      {item.hasToggle ? (
+                        <Switch
+                          value={item.enabled}
+                          onValueChange={() => handleToggle(sectionIndex, itemIndex)}
+                          trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#3B82F6' }}
+                          thumbColor={'#ffffff'}
+                        />
+                      ) : (
+                        <ChevronRight size={20} color="#60A5FA" />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </BlurView>
+            </Animated.View>
+          ))}
+
+          {/* Logout Button */}
           <Animated.View
             style={[
-              styles.themeCard,
+              styles.logoutSection,
               {
-                transform: [{ scale: scaleAnim }, { translateY: floatingTransform }],
+                transform: [{ translateY: floatingTransform }],
               },
             ]}
           >
-            <BlurView intensity={30} style={styles.themeCardBlur}>
-              <View style={styles.themeHeader}>
+            <TouchableOpacity style={styles.logoutButton} activeOpacity={0.8}>
+              <BlurView intensity={30} style={styles.logoutBlur}>
                 <LinearGradient
-                  colors={darkMode ? ['#1E293B', '#0F172A'] : ['#F59E0B', '#D97706']}
-                  style={styles.themeIconContainer}
+                  colors={['#EF4444', '#DC2626']}
+                  style={styles.logoutIcon}
                 >
-                  {darkMode ? (
-                    <Moon size={24} color="#60A5FA" />
-                  ) : (
-                    <Sun size={24} color="#ffffff" />
-                  )}
+                  <LogOut size={20} color="#ffffff" />
                 </LinearGradient>
-                <Text style={styles.themeTitle}>Dark Mode</Text>
-              </View>
-              
-              <View style={styles.toggleContainer}>
-                <Switch 
-                  value={darkMode} 
-                  onValueChange={toggleDarkMode}
-                  trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#3B82F6' }}
-                  thumbColor={'#ffffff'}
-                />
-              </View>
-            </BlurView>
+                <Text style={styles.logoutText}>Sign Out</Text>
+              </BlurView>
+            </TouchableOpacity>
           </Animated.View>
 
           <View style={styles.bottomSpacing} />
@@ -370,6 +362,7 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 24,
   },
   avatarContainer: {
     borderRadius: 44,
@@ -397,40 +390,6 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 16,
     color: '#CBD5E1',
-    marginBottom: 12,
-  },
-  preferencesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  preferenceChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  preferenceText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  statsCard: {
-    marginHorizontal: 24,
-    marginTop: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  cardBlur: {
-    padding: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#F8FAFC',
-    marginBottom: 16,
   },
   statsRow: {
     flexDirection: 'row',
@@ -440,147 +399,109 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  statNumberContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+  statBadge: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
   },
   statNumber: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
     color: '#ffffff',
   },
-  statIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(96, 165, 250, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
   statLabel: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#CBD5E1',
     textAlign: 'center',
   },
-  statValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#F8FAFC',
-    marginTop: 4,
-  },
-  goalCard: {
+  menuSection: {
     marginHorizontal: 24,
     marginTop: 16,
     borderRadius: 20,
     overflow: 'hidden',
   },
-  goalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-    gap: 12,
-  },
-  goalIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  goalText: {
-    fontSize: 16,
-    color: '#CBD5E1',
-    lineHeight: 24,
-  },
-  historyCard: {
-    marginHorizontal: 24,
-    marginTop: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  historyHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 12,
-  },
-  historyIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  historyItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  historyInfo: {
-    flex: 1,
-  },
-  historyItemName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#F8FAFC',
-    marginBottom: 4,
-  },
-  historyDate: {
-    fontSize: 14,
-    color: '#CBD5E1',
-  },
-  ratingBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  ratingText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  themeCard: {
-    marginHorizontal: 24,
-    marginTop: 16,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  themeCardBlur: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 24,
+  sectionBlur: {
+    padding: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
   },
-  themeHeader: {
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#F8FAFC',
+    marginBottom: 16,
+  },
+  menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
-  themeIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+  menuItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  menuIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 12,
   },
-  themeTitle: {
-    fontSize: 18,
+  menuItemText: {
+    flex: 1,
+  },
+  menuItemTitle: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#F8FAFC',
+    marginBottom: 2,
   },
-  toggleContainer: {
-    padding: 4,
+  menuItemSubtitle: {
+    fontSize: 14,
+    color: '#CBD5E1',
+  },
+  menuItemRight: {
+    marginLeft: 12,
+  },
+  logoutSection: {
+    marginHorizontal: 24,
+    marginTop: 24,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  logoutButton: {
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  logoutBlur: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  logoutIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  logoutText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#F8FAFC',
   },
   bottomSpacing: {
     height: 40,
