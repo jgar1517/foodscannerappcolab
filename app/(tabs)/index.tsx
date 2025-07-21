@@ -391,8 +391,8 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     fontSize: 48,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
     color: '#ffffff',
     textAlign: 'center',
     letterSpacing: 0.5,
