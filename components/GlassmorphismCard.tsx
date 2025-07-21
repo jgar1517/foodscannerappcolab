@@ -40,7 +40,7 @@ export default function GlassmorphismCard({
         toValue: 0.98,
         tension: 300,
         friction: 10,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }),
       Animated.timing(shadowAnim, {
         toValue: shadowOpacity * 1.5,
@@ -58,7 +58,7 @@ export default function GlassmorphismCard({
         toValue: 1,
         tension: 300,
         friction: 10,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }),
       Animated.timing(shadowAnim, {
         toValue: shadowOpacity,
@@ -74,7 +74,7 @@ export default function GlassmorphismCard({
         styles.container,
         {
           borderRadius,
-          transform: [{ scale: scaleAnim }],
+          transform: animated ? [{ scale: scaleAnim }] : [],
           shadowColor,
           shadowOpacity: animated ? shadowAnim : shadowOpacity,
           shadowOffset: { width: 0, height: 4 },
@@ -83,9 +83,9 @@ export default function GlassmorphismCard({
         },
         style,
       ]}
-      onTouchStart={handlePressIn}
-      onTouchEnd={handlePressOut}
-      onTouchCancel={handlePressOut}
+      onTouchStart={animated ? handlePressIn : undefined}
+      onTouchEnd={animated ? handlePressOut : undefined}
+      onTouchCancel={animated ? handlePressOut : undefined}
     >
       {/* Gradient Border */}
       <LinearGradient
