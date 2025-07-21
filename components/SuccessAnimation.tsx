@@ -35,12 +35,12 @@ export default function SuccessAnimation({ visible, onComplete }: SuccessAnimati
             toValue: 1,
             tension: 50,
             friction: 6,
-            useNativeDriver: true,
+            useNativeDriver: false,
           }),
           Animated.timing(opacityAnim, {
             toValue: 1,
             duration: 300,
-            useNativeDriver: true,
+            useNativeDriver: false,
           }),
         ]),
         // Particle explosion
@@ -56,22 +56,22 @@ export default function SuccessAnimation({ visible, onComplete }: SuccessAnimati
                 toValue: 1,
                 tension: 50,
                 friction: 6,
-                useNativeDriver: true,
+                useNativeDriver: false,
               }),
               Animated.timing(anim.translateX, {
                 toValue: x,
                 duration: 800,
-                useNativeDriver: true,
+                useNativeDriver: false,
               }),
               Animated.timing(anim.translateY, {
                 toValue: y,
                 duration: 800,
-                useNativeDriver: true,
+                useNativeDriver: false,
               }),
               Animated.timing(anim.opacity, {
                 toValue: 0,
                 duration: 800,
-                useNativeDriver: true,
+                useNativeDriver: false,
               }),
             ]);
           }),

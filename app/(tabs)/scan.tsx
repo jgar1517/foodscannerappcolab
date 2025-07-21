@@ -38,12 +38,12 @@ export default function ScanScreen() {
         Animated.timing(pulseAnim, {
           toValue: 1.1,
           duration: 1500,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(pulseAnim, {
           toValue: 1,
           duration: 1500,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();
@@ -54,12 +54,12 @@ export default function ScanScreen() {
         Animated.timing(floatAnim, {
           toValue: 1,
           duration: 3000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(floatAnim, {
           toValue: 0,
           duration: 3000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();
@@ -69,7 +69,7 @@ export default function ScanScreen() {
       Animated.timing(scanLineAnim, {
         toValue: 1,
         duration: 2000,
-        useNativeDriver: true,
+        useNativeDriver: false,
       })
     ).start();
   }, []);

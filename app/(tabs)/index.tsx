@@ -30,12 +30,12 @@ export default function HomeScreen() {
         Animated.timing(floatAnim, {
           toValue: 1,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(floatAnim, {
           toValue: 0,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();
@@ -46,12 +46,12 @@ export default function HomeScreen() {
         Animated.timing(pulseAnim, {
           toValue: 1.05,
           duration: 2000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(pulseAnim, {
           toValue: 1,
           duration: 2000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();
@@ -61,12 +61,12 @@ export default function HomeScreen() {
       Animated.timing(slideAnim, {
         toValue: 0,
         duration: 800,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(opacityAnim, {
         toValue: 1,
         duration: 800,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
   }, []);

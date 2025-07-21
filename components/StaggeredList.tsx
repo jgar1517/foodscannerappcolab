@@ -32,14 +32,14 @@ export default function StaggeredList({
           toValue: 1,
           duration: 600,
           delay: initialDelay + index * staggerDelay,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.spring(animations[index].translateY, {
           toValue: 0,
           tension: 50,
           friction: 8,
           delay: initialDelay + index * staggerDelay,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     );

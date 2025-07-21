@@ -37,12 +37,12 @@ export default function ProfileScreen() {
         Animated.timing(floatAnim, {
           toValue: 1,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(floatAnim, {
           toValue: 0,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ])
     ).start();

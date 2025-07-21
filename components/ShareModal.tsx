@@ -39,12 +39,12 @@ export default function ShareModal({ visible, onClose, scanData }: ShareModalPro
           toValue: 0,
           tension: 50,
           friction: 8,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(opacityAnim, {
           toValue: 1,
           duration: 300,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]).start();
     } else {
@@ -52,12 +52,12 @@ export default function ShareModal({ visible, onClose, scanData }: ShareModalPro
         Animated.timing(slideAnim, {
           toValue: height,
           duration: 250,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(opacityAnim, {
           toValue: 0,
           duration: 250,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]).start();
     }
