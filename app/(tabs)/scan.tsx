@@ -190,7 +190,7 @@ export default function ScanScreen() {
         const photo = await cameraRef.current.takePictureAsync();
         if (photo?.uri) {
           setCapturedImage(photo.uri);
-          setIsProcessing(true);
+          router.push('/results?fromScan=true');
           
           // Success haptic feedback
           await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

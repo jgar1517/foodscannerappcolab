@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Share2, CircleCheck as CheckCircle, TriangleAlert as AlertTriangle, Circle as XCircle } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import ShareModal from '@/components/ShareModal';
@@ -111,14 +111,13 @@ const getRatingIcon = (rating: string) => {
 
 export default function ResultsScreen() {
   const router = useRouter();
+  const { fromScan } = useLocalSearchParams();
   const [shareModalVisible, setShareModalVisible] = useState(false);
-  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(!!fromScan);
   const [activeTab, setActiveTab] = useState('ingredients');
   const floatAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
-    setShowSuccessAnimation(true);
-    
     Animated.loop(
       Animated.sequence([
         Animated.timing(floatAnim, {
