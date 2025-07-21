@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   summaryLabel: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
     color: '#CBD5E1',
