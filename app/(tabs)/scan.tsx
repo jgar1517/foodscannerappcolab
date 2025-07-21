@@ -16,6 +16,7 @@ import { BlurView } from 'expo-blur';
 import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as Haptics from 'expo-haptics';
 
 const { width, height } = Dimensions.get('window');
@@ -239,7 +240,25 @@ export default function ScanScreen() {
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Sparkles size={20} color="#60A5FA" />
-            <Text style={styles.headerTitle}>Scan Food</Text>
+            <MaskedView
+              style={{ flex: 1 }}
+              maskElement={
+                <Text style={[styles.headerTitle, { backgroundColor: 'transparent' }]}>
+                  Scan Food
+                </Text>
+              }
+            >
+              <LinearGradient
+                colors={['#A78BFA', '#8B5CF6', '#7C3AED']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1 }}
+              >
+                <Text style={[styles.headerTitle, { opacity: 0 }]}>
+                  Scan Food
+                </Text>
+              </LinearGradient>
+            </MaskedView>
             <Zap size={20} color="#F59E0B" />
           </View>
         </View>
@@ -424,10 +443,13 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 26,
-    fontFamily: 'Poppins-SemiBold',
-    fontWeight: '700',
-    color: '#F8FAFC',
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
+    color: '#ffffff',
     letterSpacing: 0.3,
+    textShadowColor: '#A78BFA',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
   },
   cameraContainer: {
     flex: 1,

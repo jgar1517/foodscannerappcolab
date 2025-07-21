@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as Haptics from 'expo-haptics';
 import GlassmorphismCard from '@/components/GlassmorphismCard';
 import AnimatedCounter from '@/components/AnimatedCounter';
@@ -177,7 +178,25 @@ export default function ProfileScreen() {
           <View style={styles.header}>
             <View style={styles.headerTitleContainer}>
               <Sparkles size={24} color="#60A5FA" />
-              <Text style={styles.headerTitle}>Profile</Text>
+              <MaskedView
+                style={{ flex: 1 }}
+                maskElement={
+                  <Text style={[styles.headerTitle, { backgroundColor: 'transparent' }]}>
+                    Profile
+                  </Text>
+                }
+              >
+                <LinearGradient
+                  colors={['#A78BFA', '#8B5CF6', '#7C3AED']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{ flex: 1 }}
+                >
+                  <Text style={[styles.headerTitle, { opacity: 0 }]}>
+                    Profile
+                  </Text>
+                </LinearGradient>
+              </MaskedView>
               <Star size={20} color="#F59E0B" />
             </View>
           </View>
@@ -379,10 +398,13 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
-    color: '#F8FAFC',
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
+    color: '#ffffff',
     letterSpacing: 0.5,
+    textShadowColor: '#A78BFA',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
   },
   userCard: {
     marginHorizontal: 24,
