@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Share2, CircleCheck as CheckCircle, TriangleAlert as AlertTriangle, Circle as XCircle } from 'lucide-react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as Haptics from 'expo-haptics';
 import GlassmorphismCard from '@/components/GlassmorphismCard';
 import ShareModal from '@/components/ShareModal';
@@ -194,6 +195,27 @@ export default function ResultsScreen() {
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
+          <View style={styles.headerTitleContainer}>
+            <MaskedView
+              style={{ flex: 1 }}
+              maskElement={
+                <Text style={[styles.headerTitle, { backgroundColor: 'transparent' }]}>
+                  Scan Results
+                </Text>
+              }
+            >
+              <LinearGradient
+                colors={['#A78BFA', '#8B5CF6', '#7C3AED']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1 }}
+              >
+                <Text style={[styles.headerTitle, { opacity: 0 }]}>
+                  Scan Results
+                </Text>
+              </LinearGradient>
+            </MaskedView>
+          </View>
           <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
             <Share2 size={24} color="#60A5FA" />
           </TouchableOpacity>
@@ -393,6 +415,23 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 4,
+  },
+  headerTitleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 16,
+  },
+  headerTitle: {
+    fontSize: 26,
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
+    color: '#ffffff',
+    letterSpacing: 0.3,
+    textShadowColor: '#A78BFA',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
+    textAlign: 'center',
   },
   shareButton: {
     padding: 4,
