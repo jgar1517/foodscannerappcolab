@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { Camera, FlashOff, FlashOn, RotateCcw } from 'lucide-react-native';
+import { Camera, FlashlightOff as FlashOff, Slash as FlashOn, RotateCcw } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { useOCR } from '@/hooks/useOCR';
 
