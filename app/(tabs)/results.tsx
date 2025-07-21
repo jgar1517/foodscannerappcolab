@@ -422,6 +422,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#F8FAFC',
     marginBottom: 4,
+    letterSpacing: 0.5,
+    textShadowColor: '#A78BFA',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
   },
   productSubtitle: {
     fontSize: 16,
