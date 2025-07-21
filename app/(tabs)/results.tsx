@@ -418,8 +418,8 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: 24,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
     color: '#F8FAFC',
     marginBottom: 4,
   },
