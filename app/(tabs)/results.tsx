@@ -230,19 +230,19 @@ export default function ResultsScreen() {
             <View style={styles.summaryContainer}>
               <View style={styles.summaryItem}>
                 <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.2)' }]}>
-                  <CheckCircle size={20} color="#22C55E" />
+                  <CheckCircle size={30} color="#22C55E" />
                 </View>
                 <Text style={styles.summaryLabel}>Safe</Text>
               </View>
               <View style={styles.summaryItem}>
                 <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.2)' }]}>
-                  <AlertTriangle size={20} color="#F59E0B" />
+                  <AlertTriangle size={30} color="#F59E0B" />
                 </View>
                 <Text style={styles.summaryLabel}>Caution</Text>
               </View>
               <View style={styles.summaryItem}>
                 <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.2)' }]}>
-                  <XCircle size={20} color="#EF4444" />
+                  <XCircle size={30} color="#EF4444" />
                 </View>
                 <Text style={styles.summaryLabel}>Avoid</Text>
               </View>
