@@ -135,6 +135,7 @@ export default function HomeScreen() {
               ]}
             >
               <Text style={styles.heroTitle}>Scan with</Text>
+              <Text style={styles.appName}>FoodScan AI</Text>
               <Text style={styles.heroDescription}>
                 AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
               </Text>
@@ -395,6 +396,19 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     textAlign: 'center',
     letterSpacing: 0.5,
+  },
+  appName: {
+    fontSize: 52,
+    fontFamily: 'Poppins-Medium',
+    fontWeight: '500',
+    fontStyle: 'italic',
+    color: '#A78BFA',
+    textAlign: 'center',
+    marginBottom: 24,
+    letterSpacing: 0.8,
+    textShadowColor: 'rgba(167, 139, 250, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
   },
   heroSubtitle: {
     fontSize: 48,
