@@ -13,6 +13,7 @@ import { ArrowLeft, Share2, CircleCheck as CheckCircle, TriangleAlert as AlertTr
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
+import GlassmorphismCard from '@/components/GlassmorphismCard';
 import ShareModal from '@/components/ShareModal';
 import SuccessAnimation from '@/components/SuccessAnimation';
 
@@ -201,124 +202,141 @@ export default function ResultsScreen() {
         {/* Content */}
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           {/* Product Header */}
-          <View style={styles.productHeader}>
-            <Image 
-              source={{ uri: 'https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?w=80&h=80&fit=crop' }}
-              style={styles.productImage}
-            />
-            <View style={styles.productInfo}>
-              <Text style={styles.productTitle}>Scan Results</Text>
-              <Text style={styles.productSubtitle}>8 ingredients analyzed in 4.2s</Text>
+          <GlassmorphismCard style={styles.productHeaderCard}>
+            <View style={styles.productHeader}>
+              <Image 
+                source={{ uri: 'https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?w=80&h=80&fit=crop' }}
+                style={styles.productImage}
+              />
+              <View style={styles.productInfo}>
+                <Text style={styles.productTitle}>Scan Results</Text>
+                <Text style={styles.productSubtitle}>8 ingredients analyzed in 4.2s</Text>
+              </View>
             </View>
-          </View>
+          </GlassmorphismCard>
 
           {/* Safety Score Circle */}
-          <View style={styles.scoreContainer}>
-            <View style={styles.scoreCircle}>
-              <Text style={styles.scoreNumber}>72</Text>
-              <Text style={styles.scoreLabel}>Safety Score</Text>
+          <GlassmorphismCard style={styles.scoreCard}>
+            <View style={styles.scoreContainer}>
+              <View style={styles.scoreCircle}>
+                <Text style={styles.scoreNumber}>72</Text>
+                <Text style={styles.scoreLabel}>Safety Score</Text>
+              </View>
             </View>
-          </View>
+          </GlassmorphismCard>
 
           {/* Summary Stats */}
-          <View style={styles.summaryContainer}>
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
-                <CheckCircle size={20} color="#22C55E" />
+          <GlassmorphismCard style={styles.summaryCard}>
+            <View style={styles.summaryContainer}>
+              <View style={styles.summaryItem}>
+                <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.2)' }]}>
+                  <CheckCircle size={20} color="#22C55E" />
+                </View>
+                <Text style={styles.summaryCount}>{safeCount}</Text>
+                <Text style={styles.summaryLabel}>Safe</Text>
               </View>
-              <Text style={styles.summaryLabel}>Safe</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
-                <AlertTriangle size={20} color="#F59E0B" />
+              <View style={styles.summaryItem}>
+                <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.2)' }]}>
+                  <AlertTriangle size={20} color="#F59E0B" />
+                </View>
+                <Text style={styles.summaryCount}>{cautionCount}</Text>
+                <Text style={styles.summaryLabel}>Caution</Text>
               </View>
-              <Text style={styles.summaryLabel}>Caution</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
-                <XCircle size={20} color="#EF4444" />
+              <View style={styles.summaryItem}>
+                <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.2)' }]}>
+                  <XCircle size={20} color="#EF4444" />
+                </View>
+                <Text style={styles.summaryCount}>{avoidCount}</Text>
+                <Text style={styles.summaryLabel}>Avoid</Text>
               </View>
-              <Text style={styles.summaryLabel}>Avoid</Text>
             </View>
-          </View>
+          </GlassmorphismCard>
 
           {/* Tab Navigation */}
-          <View style={styles.tabContainer}>
-            <TouchableOpacity 
-              style={[styles.tab, activeTab === 'ingredients' && styles.activeTab]}
-              onPress={() => setActiveTab('ingredients')}
-            >
-              <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
-                Ingredients
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.tab, activeTab === 'alternatives' && styles.activeTab]}
-              onPress={() => setActiveTab('alternatives')}
-            >
-              <Text style={[styles.tabText, activeTab === 'alternatives' && styles.activeTabText]}>
-                Alternatives
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.tab, activeTab === 'recipes' && styles.activeTab]}
-              onPress={() => setActiveTab('recipes')}
-            >
-              <Text style={[styles.tabText, activeTab === 'recipes' && styles.activeTabText]}>
-                Recipes
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <GlassmorphismCard style={styles.tabCard}>
+            <View style={styles.tabContainer}>
+              <TouchableOpacity 
+                style={[styles.tab, activeTab === 'ingredients' && styles.activeTab]}
+                onPress={() => setActiveTab('ingredients')}
+              >
+                <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
+                  Ingredients
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.tab, activeTab === 'alternatives' && styles.activeTab]}
+                onPress={() => setActiveTab('alternatives')}
+              >
+                <Text style={[styles.tabText, activeTab === 'alternatives' && styles.activeTabText]}>
+                  Alternatives
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.tab, activeTab === 'recipes' && styles.activeTab]}
+                onPress={() => setActiveTab('recipes')}
+              >
+                <Text style={[styles.tabText, activeTab === 'recipes' && styles.activeTabText]}>
+                  Recipes
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </GlassmorphismCard>
 
           {activeTab === 'ingredients' && (
             <View style={styles.ingredientsContainer}>
               {ingredientResults.map((ingredient, index) => {
                 const RatingIcon = getRatingIcon(ingredient.rating);
                 return (
-                  <View key={index} style={styles.ingredientCard}>
-                    <View style={styles.ingredientHeader}>
-                      <View style={styles.ingredientInfo}>
-                        <Text style={styles.ingredientName}>{ingredient.name}</Text>
-                        <Text style={styles.ingredientMeta}>
-                          Position #{ingredient.position} • {ingredient.confidence}% confidence
-                        </Text>
-                      </View>
-                      <View style={styles.ratingBadge}>
-                        <View style={[styles.ratingIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
-                          <RatingIcon size={16} color={getRatingColor(ingredient.rating)} />
+                  <GlassmorphismCard key={index} style={styles.ingredientCard}>
+                    <View style={styles.ingredientContent}>
+                      <View style={styles.ingredientHeader}>
+                        <View style={styles.ingredientInfo}>
+                          <Text style={styles.ingredientName}>{ingredient.name}</Text>
+                          <Text style={styles.ingredientMeta}>
+                            Position #{ingredient.position} • {ingredient.confidence}% confidence
+                          </Text>
                         </View>
-                        <Text style={[styles.ratingText, { color: getRatingColor(ingredient.rating) }]}>
-                          {ingredient.rating.charAt(0).toUpperCase() + ingredient.rating.slice(1)}
-                        </Text>
+                        <View style={styles.ratingBadge}>
+                          <View style={[styles.ratingIconContainer, { backgroundColor: `${getRatingColor(ingredient.rating)}20` }]}>
+                            <RatingIcon size={16} color={getRatingColor(ingredient.rating)} />
+                          </View>
+                          <Text style={[styles.ratingText, { color: getRatingColor(ingredient.rating) }]}>
+                            {ingredient.rating.charAt(0).toUpperCase() + ingredient.rating.slice(1)}
+                          </Text>
+                        </View>
+                      </View>
+                      
+                      <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
+                      
+                      <View style={styles.sourcesContainer}>
+                        <Text style={styles.sourcesLabel}>Sources:</Text>
+                        {ingredient.sources.map((source, idx) => (
+                          <View key={idx} style={styles.sourceTag}>
+                            <Text style={styles.sourceText}>{source}</Text>
+                          </View>
+                        ))}
                       </View>
                     </View>
-                    
-                    <Text style={styles.ingredientExplanation}>{ingredient.explanation}</Text>
-                    
-                    <View style={styles.sourcesContainer}>
-                      <Text style={styles.sourcesLabel}>Sources:</Text>
-                      {ingredient.sources.map((source, idx) => (
-                        <View key={idx} style={styles.sourceTag}>
-                          <Text style={styles.sourceText}>{source}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
+                  </GlassmorphismCard>
                 );
               })}
             </View>
           )}
 
           {activeTab === 'alternatives' && (
-            <View style={styles.placeholderContainer}>
-              <Text style={styles.placeholderText}>Alternative products coming soon...</Text>
-            </View>
+            <GlassmorphismCard style={styles.placeholderCard}>
+              <View style={styles.placeholderContainer}>
+                <Text style={styles.placeholderText}>Alternative products coming soon...</Text>
+              </View>
+            </GlassmorphismCard>
           )}
 
           {activeTab === 'recipes' && (
-            <View style={styles.placeholderContainer}>
-              <Text style={styles.placeholderText}>Recipe suggestions coming soon...</Text>
-            </View>
+            <GlassmorphismCard style={styles.placeholderCard}>
+              <View style={styles.placeholderContainer}>
+                <Text style={styles.placeholderText}>Recipe suggestions coming soon...</Text>
+              </View>
+            </GlassmorphismCard>
           )}
 
           <View style={styles.bottomSpacing} />
@@ -382,11 +400,15 @@ const styles = StyleSheet.create({
   shareButton: {
     padding: 4,
   },
+  productHeaderCard: {
+    marginHorizontal: 20,
+    marginTop: 16,
+  },
   productHeader: {
-    flexDirection: 'row',
+    flexDirection: 'row', 
     alignItems: 'center',
-    paddingHorizontal: 20,
     paddingVertical: 20,
+    paddingHorizontal: 20,
   },
   productImage: {
     width: 60,
@@ -410,13 +432,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#CBD5E1',
   },
+  scoreCard: {
+    marginHorizontal: 20,
+    marginVertical: 16,
+  },
   scoreContainer: {
     alignItems: 'center',
     paddingVertical: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    marginHorizontal: 20,
-    marginVertical: 16,
   },
   scoreCircle: {
     width: 120,
@@ -441,16 +463,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#6B7280',
   },
+  summaryCard: {
+    marginHorizontal: 20,
+    marginBottom: 16,
+  },
   summaryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 24,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   summaryItem: {
     alignItems: 'center',
+  },
+  summaryCount: {
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold',
+    fontWeight: '700',
+    color: '#F8FAFC',
+    marginBottom: 4,
   },
   summaryIconContainer: {
     width: 40,
@@ -460,26 +490,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  summaryCount: {
-    fontSize: 24,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
-    color: '#1F2937',
-    marginBottom: 4,
-  },
   summaryLabel: {
     fontSize: 14,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
     color: '#CBD5E1',
   },
-  tabContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 20,
+  tabCard: {
     marginHorizontal: 20,
-    borderRadius: 16,
     marginBottom: 16,
+  },
+  tabContainer: {
+    flexDirection: 'row', 
+    paddingHorizontal: 4,
+    paddingVertical: 4,
   },
   tab: {
     flex: 1,
@@ -509,16 +533,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   ingredientCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 20,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  },
+  ingredientContent: {
+    padding: 20,
   },
   ingredientHeader: {
     flexDirection: 'row',
@@ -534,13 +552,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
-    color: '#1F2937',
+    color: '#F8FAFC',
     marginBottom: 4,
   },
   ingredientMeta: {
     fontSize: 14,
     fontFamily: 'Inter-Regular',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   ratingBadge: {
     flexDirection: 'row',
@@ -562,7 +580,7 @@ const styles = StyleSheet.create({
   ingredientExplanation: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
-    color: '#374151',
+    color: '#E2E8F0',
     lineHeight: 24,
     marginBottom: 16,
   },
@@ -576,10 +594,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   sourceTag: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
@@ -588,10 +606,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#374151',
+    color: '#F8FAFC',
+  },
+  placeholderCard: {
+    marginHorizontal: 20,
   },
   placeholderContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 60,
