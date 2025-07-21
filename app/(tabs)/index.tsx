@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera, CircleCheck as CheckCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as Haptics from 'expo-haptics';
 import GlassmorphismCard from '@/components/GlassmorphismCard';
 import StaggeredList from '@/components/StaggeredList';
@@ -134,7 +135,25 @@ export default function HomeScreen() {
                 },
               ]}
             >
-              <Text style={styles.heroTitle}>Scan with</Text>
+              <MaskedView
+                style={{ flex: 1 }}
+                maskElement={
+                  <Text style={[styles.heroTitle, { backgroundColor: 'transparent' }]}>
+                    Scan with
+                  </Text>
+                }
+              >
+                <LinearGradient
+                  colors={['#A78BFA', '#8B5CF6', '#7C3AED']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{ flex: 1 }}
+                >
+                  <Text style={[styles.heroTitle, { opacity: 0 }]}>
+                    Scan with
+                  </Text>
+                </LinearGradient>
+              </MaskedView>
               <Text style={styles.appName}>FoodScan AI</Text>
               <Text style={styles.heroDescription}>
                 AI-powered ingredient safety analysis at your fingertips. Make informed dietary decisions with trusted scientific insights.
