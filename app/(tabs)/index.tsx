@@ -406,9 +406,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
     letterSpacing: 0.8,
-    textShadowColor: 'rgba(167, 139, 250, 0.3)',
+    textShadowColor: 'rgba(255, 255, 255, 0.8)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 8,
+    textShadowRadius: 12,
   },
   heroSubtitle: {
     fontSize: 48,
