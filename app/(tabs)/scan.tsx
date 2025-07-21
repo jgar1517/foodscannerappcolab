@@ -261,20 +261,19 @@ export default function ScanScreen() {
               ]}
             >
               <View style={styles.frameCorner} />
-                      transform: [{ scale: pulseAnim }],
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={['#EF4444', '#DC2626']}
-                    style={styles.appleBody}
-                  />
-                  <LinearGradient
-                    colors={['#22C55E', '#16A34A']}
-                    style={styles.appleLeaf}
-                  />
-                </Animated.View>
-              </View>
+              <View style={[styles.frameCorner, styles.topRight]} />
+              <View style={[styles.frameCorner, styles.bottomLeft]} />
+              <View style={[styles.frameCorner, styles.bottomRight]} />
+              
+              {/* Animated scan line */}
+              <Animated.View
+                style={[
+                  styles.scanLine,
+                  {
+                    transform: [{ translateY: scanLineTransform }],
+                  },
+                ]}
+              />
             </Animated.View>
           </CameraView>
         </View>
