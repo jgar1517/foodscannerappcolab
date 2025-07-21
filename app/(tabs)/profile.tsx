@@ -116,7 +116,7 @@ export default function ProfileScreen() {
       setDarkMode(!darkMode);
     } else if (item.key === 'notifications') {
       setNotifications(!notifications);
-    } else if (item.key && item.key in dietaryPreferences) {
+    } else if (item.key && Object.prototype.hasOwnProperty.call(dietaryPreferences, item.key)) {
       setDietaryPreferences(prev => ({
         ...prev,
         [item.key]: !prev[item.key as keyof typeof prev]
