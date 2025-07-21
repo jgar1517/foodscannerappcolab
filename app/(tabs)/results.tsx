@@ -158,14 +158,43 @@ export default function ResultsScreen() {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={['#2A1A3E', '#3D2A52', '#503A66']}
+        style={styles.backgroundGradient}
+      />
+
+      {/* Floating particles */}
+      <View style={styles.particlesContainer}>
+        {[...Array(20)].map((_, i) => (
+          <Animated.View
+            key={i}
+            style={[
+              styles.particle,
+              {
+                left: Math.random() * 400,
+                top: Math.random() * 800,
+                transform: [
+                  {
+                    translateY: floatAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -8],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+        ))}
+      </View>
+
       <SafeAreaView style={styles.safeArea}>
         {/* Header with back button and share */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <ArrowLeft size={24} color="#1F2937" />
+            <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-            <Share2 size={24} color="#14B8A6" />
+            <Share2 size={24} color="#60A5FA" />
           </TouchableOpacity>
         </View>
 
@@ -315,7 +344,26 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+  },
+  backgroundGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  particlesContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  particle: {
+    position: 'absolute',
+    width: 3,
+    height: 3,
+    backgroundColor: '#60A5FA',
+    borderRadius: 1.5,
+    opacity: 0.7,
   },
   safeArea: {
     flex: 1,
@@ -326,7 +374,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(42, 26, 62, 0.9)',
   },
   backButton: {
     padding: 4,
@@ -353,19 +401,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Poppins-Bold',
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#F8FAFC',
     marginBottom: 4,
   },
   productSubtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   scoreContainer: {
     alignItems: 'center',
     paddingVertical: 32,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 16,
   },
   scoreCircle: {
     width: 120,
@@ -375,7 +426,7 @@ const styles = StyleSheet.create({
     borderColor: '#F59E0B',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   scoreNumber: {
     fontSize: 36,
@@ -420,12 +471,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     paddingHorizontal: 20,
+    marginHorizontal: 20,
+    borderRadius: 16,
+    marginBottom: 16,
   },
   tab: {
     flex: 1,
@@ -441,10 +495,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   activeTabText: {
-    color: '#14B8A6',
+    color: '#60A5FA',
     fontWeight: '600',
   },
   scrollView: {
@@ -464,8 +518,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
-    borderWidth: 1,
-    borderColor: '#F3F4F6',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
   },
   ingredientHeader: {
     flexDirection: 'row',
@@ -547,7 +600,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-Medium',
     fontWeight: '500',
-    color: '#6B7280',
+    color: '#CBD5E1',
   },
   bottomSpacing: {
     height: 40,
