@@ -170,81 +170,81 @@ export default function ResultsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Product Header */}
-        <View style={styles.productHeader}>
-          <Image 
-            source={{ uri: 'https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?w=80&h=80&fit=crop' }}
-            style={styles.productImage}
-          />
-          <View style={styles.productInfo}>
-            <Text style={styles.productTitle}>Scan Results</Text>
-            <Text style={styles.productSubtitle}>8 ingredients analyzed in 4.2s</Text>
-          </View>
-        </View>
-
-        {/* Safety Score Circle */}
-        <View style={styles.scoreContainer}>
-          <View style={styles.scoreCircle}>
-            <Text style={styles.scoreNumber}>72</Text>
-            <Text style={styles.scoreLabel}>Safety Score</Text>
-          </View>
-        </View>
-
-        {/* Summary Stats */}
-        <View style={styles.summaryContainer}>
-          <View style={styles.summaryItem}>
-            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
-              <CheckCircle size={20} color="#22C55E" />
-            </View>
-            <Text style={styles.summaryCount}>{safeCount}</Text>
-            <Text style={styles.summaryLabel}>Safe</Text>
-          </View>
-          <View style={styles.summaryItem}>
-            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
-              <AlertTriangle size={20} color="#F59E0B" />
-            </View>
-            <Text style={styles.summaryCount}>{cautionCount}</Text>
-            <Text style={styles.summaryLabel}>Caution</Text>
-          </View>
-          <View style={styles.summaryItem}>
-            <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
-              <XCircle size={20} color="#EF4444" />
-            </View>
-            <Text style={styles.summaryCount}>{avoidCount}</Text>
-            <Text style={styles.summaryLabel}>Avoid</Text>
-          </View>
-        </View>
-
-        {/* Tab Navigation */}
-        <View style={styles.tabContainer}>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'ingredients' && styles.activeTab]}
-            onPress={() => setActiveTab('ingredients')}
-          >
-            <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
-              Ingredients
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'alternatives' && styles.activeTab]}
-            onPress={() => setActiveTab('alternatives')}
-          >
-            <Text style={[styles.tabText, activeTab === 'alternatives' && styles.activeTabText]}>
-              Alternatives
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.tab, activeTab === 'recipes' && styles.activeTab]}
-            onPress={() => setActiveTab('recipes')}
-          >
-            <Text style={[styles.tabText, activeTab === 'recipes' && styles.activeTabText]}>
-              Recipes
-            </Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Content */}
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {/* Product Header */}
+          <View style={styles.productHeader}>
+            <Image 
+              source={{ uri: 'https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?w=80&h=80&fit=crop' }}
+              style={styles.productImage}
+            />
+            <View style={styles.productInfo}>
+              <Text style={styles.productTitle}>Scan Results</Text>
+              <Text style={styles.productSubtitle}>8 ingredients analyzed in 4.2s</Text>
+            </View>
+          </View>
+
+          {/* Safety Score Circle */}
+          <View style={styles.scoreContainer}>
+            <View style={styles.scoreCircle}>
+              <Text style={styles.scoreNumber}>72</Text>
+              <Text style={styles.scoreLabel}>Safety Score</Text>
+            </View>
+          </View>
+
+          {/* Summary Stats */}
+          <View style={styles.summaryContainer}>
+            <View style={styles.summaryItem}>
+              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.1)' }]}>
+                <CheckCircle size={20} color="#22C55E" />
+              </View>
+              <Text style={styles.summaryCount}>{safeCount}</Text>
+              <Text style={styles.summaryLabel}>Safe</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
+                <AlertTriangle size={20} color="#F59E0B" />
+              </View>
+              <Text style={styles.summaryCount}>{cautionCount}</Text>
+              <Text style={styles.summaryLabel}>Caution</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <View style={[styles.summaryIconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
+                <XCircle size={20} color="#EF4444" />
+              </View>
+              <Text style={styles.summaryCount}>{avoidCount}</Text>
+              <Text style={styles.summaryLabel}>Avoid</Text>
+            </View>
+          </View>
+
+          {/* Tab Navigation */}
+          <View style={styles.tabContainer}>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'ingredients' && styles.activeTab]}
+              onPress={() => setActiveTab('ingredients')}
+            >
+              <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
+                Ingredients
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'alternatives' && styles.activeTab]}
+              onPress={() => setActiveTab('alternatives')}
+            >
+              <Text style={[styles.tabText, activeTab === 'alternatives' && styles.activeTabText]}>
+                Alternatives
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.tab, activeTab === 'recipes' && styles.activeTab]}
+              onPress={() => setActiveTab('recipes')}
+            >
+              <Text style={[styles.tabText, activeTab === 'recipes' && styles.activeTabText]}>
+                Recipes
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           {activeTab === 'ingredients' && (
             <View style={styles.ingredientsContainer}>
               {ingredientResults.map((ingredient, index) => {
@@ -343,7 +343,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 20,
-    backgroundColor: '#FFFFFF',
   },
   productImage: {
     width: 60,
