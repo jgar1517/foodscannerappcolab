@@ -20,6 +20,7 @@ import StaggeredList from '@/components/StaggeredList';
 export default function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
+  const [fontSize, setFontSize] = useState('medium'); // 'small', 'medium', 'large'
   const [dietaryPreferences, setDietaryPreferences] = useState({
     glutenFree: true,
     vegan: false,
@@ -78,6 +79,7 @@ export default function ProfileScreen() {
       title: "Account",
       items: [
         { icon: User, title: "Edit Profile", subtitle: "Update your personal information" },
+        { icon: User, title: "Font Size", subtitle: "Adjust text size for better readability", hasToggle: false, hasSelector: true, value: fontSize, key: 'fontSize' },
         { icon: Bell, title: "Notifications", subtitle: "Manage notification preferences", hasToggle: true, enabled: notifications, key: 'notifications' },
         { icon: Moon, title: "Dark Mode", subtitle: "Switch to dark theme", hasToggle: true, enabled: darkMode, key: 'darkMode' },
       ]
@@ -116,6 +118,11 @@ export default function ProfileScreen() {
       setDarkMode(!darkMode);
     } else if (item.key === 'notifications') {
       setNotifications(!notifications);
+    } else if (item.key === 'fontSize') {
+      const sizes = ['small', 'medium', 'large'];
+      const currentIndex = sizes.indexOf(fontSize);
+      const nextIndex = (currentIndex + 1) % sizes.length;
+      setFontSize(sizes[nextIndex]);
     } else if (item.key && item.key in dietaryPreferences) {
       setDietaryPreferences(prev => ({
         ...prev,
@@ -282,6 +289,16 @@ export default function ProfileScreen() {
                             trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: '#14B8A6' }}
                             thumbColor={'#ffffff'}
                           />
+                        ) : item.hasSelector ? (
+                          <TouchableOpacity 
+                            style={styles.fontSizeSelector}
+                            onPress={() => handleToggle(sectionIndex, itemIndex)}
+                          >
+                            <Text style={styles.fontSizeText}>
+                              {item.value?.charAt(0).toUpperCase() + item.value?.slice(1)}
+                            </Text>
+                            <ChevronRight size={16} color="#A78BFA" />
+                          </TouchableOpacity>
                         ) : (
                           <ChevronRight size={20} color="#A78BFA" />
                         )}
@@ -524,5 +541,21 @@ const styles = StyleSheet.create({
   },
   bottomSpacing: {
     height: 40,
+  },
+  fontSizeSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    gap: 4,
+  },
+  fontSizeText: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+    fontWeight: '500',
+    color: '#F8FAFC',
+    letterSpacing: 0.2,
   },
 });
