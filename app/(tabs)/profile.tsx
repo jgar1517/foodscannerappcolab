@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight } from 'lucide-react-native';
+import { User, Bell, Moon, Shield, ChartBar as BarChart3, Eye, CircleHelp as HelpCircle, MessageSquare, Star, FileText, LogOut, ChevronRight, Sparkles } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import * as Haptics from 'expo-haptics';
@@ -177,6 +177,7 @@ export default function ProfileScreen() {
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerTitleContainer}>
+              <Sparkles size={24} color="#60A5FA" />
               <MaskedView
                 style={{ flex: 1 }}
                 maskElement={
@@ -196,6 +197,7 @@ export default function ProfileScreen() {
                   </Text>
                 </LinearGradient>
               </MaskedView>
+              <Star size={20} color="#F59E0B" />
             </View>
           </View>
 

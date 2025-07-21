@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { BlurView } from 'expo-blur';
-import { Camera, ArrowLeft } from 'lucide-react-native';
+import { Camera, ArrowLeft, Sparkles, Zap } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -239,6 +239,7 @@ export default function ScanScreen() {
             <ArrowLeft size={24} color="#F8FAFC" />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
+            <Sparkles size={20} color="#60A5FA" />
             <MaskedView
               style={{ flex: 1 }}
               maskElement={
@@ -258,6 +259,7 @@ export default function ScanScreen() {
                 </Text>
               </LinearGradient>
             </MaskedView>
+            <Zap size={20} color="#F59E0B" />
           </View>
         </View>
 
