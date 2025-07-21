@@ -261,26 +261,6 @@ export default function ScanScreen() {
               ]}
             >
               <View style={styles.frameCorner} />
-              <View style={[styles.frameCorner, styles.topRight]} />
-              <View style={[styles.frameCorner, styles.bottomLeft]} />
-              <View style={[styles.frameCorner, styles.bottomRight]} />
-              
-              {/* Animated scan line */}
-              <Animated.View
-                style={[
-                  styles.scanLine,
-                  {
-                    transform: [{ translateY: scanLineTransform }],
-                  },
-                ]}
-              />
-              
-              {/* Apple illustration in center */}
-              <View style={styles.appleContainer}>
-                <Animated.View
-                  style={[
-                    styles.apple,
-                    {
                       transform: [{ scale: pulseAnim }],
                     },
                   ]}
@@ -516,31 +496,6 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: '#60A5FA',
     opacity: 0.8,
-  },
-  appleContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  apple: {
-    position: 'relative',
-    width: 80,
-    height: 80,
-  },
-  appleBody: {
-    width: 80,
-    height: 70,
-    borderRadius: 40,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  appleLeaf: {
-    position: 'absolute',
-    top: -5,
-    right: 25,
-    width: 20,
-    height: 15,
-    borderRadius: 10,
-    transform: [{ rotate: '45deg' }],
   },
   instructionContainer: {
     paddingHorizontal: 20,
