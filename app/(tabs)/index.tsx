@@ -415,6 +415,9 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     textAlign: 'center',
     letterSpacing: 0.5,
+    textShadowColor: '#A78BFA',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
   },
   appName: {
     fontSize: 52,
