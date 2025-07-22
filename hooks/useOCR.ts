@@ -1,152 +1,163 @@
-# Memory Bank - Food Ingredient Safety Scanner
+import { useState } from 'react';
+import { OCRService } from '../services/OCRService';
+import { TextProcessor } from '../services/TextProcessor';
 
-## **Previous Tasks Completed**
+export interface OCRResult {
+  extractedText: string;
+  ingredients: ProcessedIngredient[];
+  confidence: number;
+  processingTime: number;
+}
 
-### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
-- ✅ Professional landing page with hero section and animations
-- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
-- ✅ Camera integration with permissions handling
-- ✅ UI component system with GlassmorphismCard, animations
-- ✅ Consistent header styling with purple gradients and glow effects
-- ✅ Responsive design with proper mobile optimization
-- ✅ Font system integration (Inter + Poppins)
-- ✅ Color system and spacing consistency
+export interface ProcessedIngredient {
+  name: string;
+  safetyRating: 'safe' | 'caution' | 'avoid';
+  confidence: number;
+  explanation: string;
+  allergens?: string[];
+  concerns?: string[];
+}
 
----
+interface ValidationResult {
+  isValid: boolean;
+  error?: string;
+}
 
-## **Current Task**
-**Phase 2: OCR & Ingredient Analysis Development**
+export const useOCR = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<OCRResult | null>(null);
 
-### **Current Focus**
-- Implementing text extraction from captured images
-- Creating ingredient parsing and identification system
-- Building basic safety rating logic and database
-- Developing results display interface
+  const ocrService = new OCRService();
+  const textProcessor = new TextProcessor();
 
-### **Current Progress**
-- ⏳ OCR service integration pending
-- ⏳ Text processing and ingredient parsing pending
-- ⏳ Safety rating database setup pending
-- ⏳ Results display enhancement pending
+  // Validate OCR extraction result
+  const validateOCRResult = (text: string): ValidationResult => {
+    if (!text || typeof text !== 'string') {
+      return { isValid: false, error: 'No text was extracted from the image' };
+    }
 
-### **Current Challenges**
-- Achieving high OCR accuracy across different label formats
-- Parsing ingredient lists with various formatting styles
-- Building comprehensive ingredient safety database
-- Creating reliable ingredient matching algorithms
+    if (text.trim().length < 3) {
+      return { isValid: false, error: 'Text too short - please try again with better lighting' };
+    }
 
-### **Current Decisions Made**
-- OCR: Google ML Kit (primary) with Tesseract fallback
-- Database: Supabase PostgreSQL with comprehensive schemas
-- Text Processing: Custom parsing algorithms for ingredient lists
-- Safety Data: Integration with FDA, EWG, and Open Food Facts APIs
+    // Check for common OCR artifacts that indicate poor quality
+    const ocrArtifacts = /^[^a-zA-Z]*$|^\W+$|^[\d\s\W]*$/;
+    if (ocrArtifacts.test(text.trim())) {
+      return { isValid: false, error: 'Could not read text clearly - please ensure the label is well-lit and in focus' };
+    }
 
----
+    return { isValid: true };
+  };
 
-## **Next Tasks (Phase 2 Implementation)**
+  // Validate processed ingredients result
+  const validateIngredientsResult = (ingredients: any[]): ValidationResult => {
+    if (!Array.isArray(ingredients)) {
+      return { isValid: false, error: 'Failed to process ingredients - please try again' };
+    }
 
-### **Immediate Next Steps**
-1. **OCR Service Integration**
-   - Set up Google ML Kit or Tesseract for text extraction
-   - Implement image preprocessing for better accuracy
-   - Add error handling for poor image quality
-   - Create fallback mechanisms for OCR failures
+    if (ingredients.length === 0) {
+      return { isValid: false, error: 'No ingredients found - please ensure the ingredient list is visible and clear' };
+    }
 
-2. **Text Processing System**
-   - Build ingredient list parser for various formats
-   - Create text cleaning and normalization functions
-   - Implement ingredient boundary detection
-   - Handle common label formatting variations
+    // Validate individual ingredients
+    const invalidIngredients = ingredients.filter(ingredient => 
+      !ingredient || 
+      typeof ingredient.name !== 'string' || 
+      ingredient.name.trim().length === 0 ||
+      !['safe', 'caution', 'avoid'].includes(ingredient.safetyRating)
+    );
 
-3. **Safety Rating Database**
-   - Set up Supabase tables for ingredients and ratings
-   - Import initial ingredient safety data from trusted sources
-   - Create data update and synchronization mechanisms
-   - Implement caching for performance optimization
+    if (invalidIngredients.length > 0) {
+      return { isValid: false, error: 'Some ingredients could not be analyzed properly - please try again' };
+    }
 
-4. **Results Display Enhancement**
-   - Enhance results screen with parsed ingredient data
-   - Display safety ratings with color-coded indicators
-   - Add detailed explanations and source attributions
-   - Implement loading states during processing
+    return { isValid: true };
+  };
 
-### **Phase 2 Success Criteria**
-- [ ] OCR accurately extracts text from ingredient labels (>90% accuracy)
-- [ ] Ingredient parsing correctly identifies individual ingredients
-- [ ] Safety ratings display with proper color coding and explanations
-- [ ] Results screen shows comprehensive analysis within 5 seconds
-- [ ] Error handling gracefully manages OCR and parsing failures
+  // Convert technical errors to user-friendly messages
+  const getUserFriendlyError = (error: any): string => {
+    const errorMessage = error?.message || error?.toString() || 'Unknown error';
+    
+    if (errorMessage.includes('permission')) {
+      return 'Camera permission is required to scan ingredients';
+    }
+    
+    if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+      return 'Network error - please check your connection and try again';
+    }
+    
+    if (errorMessage.includes('timeout')) {
+      return 'Processing took too long - please try again';
+    }
+    
+    if (errorMessage.includes('format') || errorMessage.includes('invalid')) {
+      return 'Image format not supported - please try a different photo';
+    }
+    
+    return 'Something went wrong - please try taking another photo';
+  };
 
----
+  const processImage = async (imageUri: string): Promise<OCRResult | null> => {
+    setIsProcessing(true);
+    setError(null);
+    setResult(null);
 
-## **Future Phases Overview**
+    try {
+      const startTime = Date.now();
 
-### **Phase 2: OCR & Ingredient Analysis**
-- Text extraction from ingredient label photos
-- Ingredient parsing and identification
-- Basic safety rating system implementation
-- Results display interface
+      // Step 1: Extract text from image
+      const extractedText = await ocrService.extractText(imageUri);
+      
+      // Step 2: Validate OCR result
+      const ocrValidation = validateOCRResult(extractedText);
+      if (!ocrValidation.isValid) {
+        throw new Error(ocrValidation.error);
+      }
 
-### **Phase 3: Dietary Profiles & Personalization**
-- User dietary profile management
-- Personalized safety rating adjustments
-- Custom ingredient avoidance features
-- Preference management UI
+      // Step 3: Process ingredients
+      const ingredients = await textProcessor.parseIngredients(extractedText);
+      
+      // Step 4: Validate ingredients result
+      const ingredientsValidation = validateIngredientsResult(ingredients);
+      if (!ingredientsValidation.isValid) {
+        throw new Error(ingredientsValidation.error);
+      }
 
-### **Phase 4: Recommendations & Recipes**
-- Alternative product suggestions
-- Recipe recommendations with images
-- Retailer integration and links
-- Enhanced results display
+      const processingTime = Date.now() - startTime;
+      
+      // Step 5: Calculate overall confidence
+      const avgConfidence = ingredients.reduce((sum, ing) => sum + ing.confidence, 0) / ingredients.length;
+      
+      const ocrResult: OCRResult = {
+        extractedText,
+        ingredients,
+        confidence: Math.round(avgConfidence),
+        processingTime
+      };
 
-### **Phase 5: Testing & Launch**
-- Comprehensive testing across devices
-- Performance optimization
-- App store preparation
-- Launch marketing execution
+      setResult(ocrResult);
+      return ocrResult;
 
----
+    } catch (err) {
+      const friendlyError = getUserFriendlyError(err);
+      setError(friendlyError);
+      return null;
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
-## **Key Technical Decisions**
+  const clearResults = () => {
+    setResult(null);
+    setError(null);
+  };
 
-### **Architecture Decisions**
-- **Frontend:** React Native with Expo SDK 52
-- **Backend:** Supabase for database and authentication
-- **OCR:** Google ML Kit (primary) with Tesseract fallback
-- **State Management:** React Context with local storage
-- **Navigation:** Expo Router with tab-based navigation
-
-### **Design Decisions**
-- **Color System:** Health-focused green primary with safety-coded colors
-- **Typography:** Modern, readable font system with proper hierarchy
-- **Icons:** Lucide React Native for consistent iconography
-- **Layout:** Mobile-first responsive design with 8px spacing system
-
-### **Data Strategy**
-- **Ingredient Database:** Open Food Facts + EWG Food Scores + FDA lists
-- **User Data:** Encrypted local storage with optional cloud sync
-- **Caching:** Aggressive caching for ingredient data and scan results
-- **Offline Support:** Core functionality available offline
-
----
-
-## **Questions & Decisions Pending**
-- Final color palette selection for safety ratings
-- Specific wording for safety explanations
-- Integration details for retailer APIs
-- Subscription model pricing structure
-- App store category and keywords strategy
-
----
-
-## **Resources & References**
-- [Expo Documentation](https://docs.expo.dev/)
-)
-- [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
-)
-- [Supabase Documentation](https://supabase.com/docs)
-)
-- [Open Food Facts API](https://world.openfoodfacts.org/data)
-)
-- [EWG Food Scores Database](https://www.ewg.org/foodscores/)
-)
+  return {
+    processImage,
+    clearResults,
+    isProcessing,
+    error,
+    result
+  };
+};

@@ -1,157 +1,240 @@
-# Memory Bank - Food Ingredient Safety Scanner
+import type { ProcessedIngredient } from '../hooks/useOCR';
 
-## **Previous Tasks Completed**
+export class TextProcessor {
+  private commonIngredients = new Map([
+    // Safe ingredients
+    ['water', { rating: 'safe', explanation: 'Pure water is completely safe and essential for hydration.' }],
+    ['salt', { rating: 'caution', explanation: 'Essential mineral, but excessive consumption may lead to health issues.' }],
+    ['sugar', { rating: 'caution', explanation: 'Natural sweetener, but high consumption may contribute to health issues.' }],
+    ['citric acid', { rating: 'safe', explanation: 'Natural preservative and flavor enhancer, generally recognized as safe.' }],
+    ['ascorbic acid', { rating: 'safe', explanation: 'Vitamin C, essential vitamin and antioxidant, beneficial for health.' }],
+    ['vitamin c', { rating: 'safe', explanation: 'Essential vitamin and antioxidant, beneficial for health.' }],
+    
+    // Caution ingredients
+    ['natural flavors', { rating: 'caution', explanation: 'Generally safe but can be vague term covering many compounds.' }],
+    ['artificial flavors', { rating: 'caution', explanation: 'Synthetic compounds that may cause sensitivities in some people.' }],
+    ['corn syrup', { rating: 'caution', explanation: 'High fructose sweetener linked to various health concerns.' }],
+    ['modified corn starch', { rating: 'caution', explanation: 'Processed starch that may contain traces of chemicals.' }],
+    
+    // Avoid ingredients
+    ['sodium benzoate', { rating: 'avoid', explanation: 'Preservative that may form benzene when combined with vitamin C.' }],
+    ['potassium sorbate', { rating: 'caution', explanation: 'Preservative that is generally safe but may cause allergic reactions.' }],
+    ['red dye 40', { rating: 'avoid', explanation: 'Artificial coloring linked to hyperactivity in children.' }],
+    ['yellow dye 5', { rating: 'avoid', explanation: 'Artificial coloring that may cause allergic reactions.' }],
+    ['bha', { rating: 'avoid', explanation: 'Preservative classified as a possible human carcinogen.' }],
+    ['bht', { rating: 'avoid', explanation: 'Preservative with potential health risks and hormone disruption.' }],
+  ]);
 
-### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
-- ✅ Professional landing page with hero section and animations
-- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
-- ✅ Camera integration with permissions handling
-- ✅ UI component system with GlassmorphismCard, animations
-### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
-- ✅ Professional landing page with hero section and animations
-- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
-- ✅ Camera integration with permissions handling
-- ✅ UI component system with GlassmorphismCard, animations
-- ✅ Consistent header styling with purple gradients and glow effects
-- ✅ Responsive design with proper mobile optimization
-- ✅ Font system integration (Inter + Poppins)
-- ✅ Color system and spacing consistency
+  private allergenKeywords = [
+    'milk', 'eggs', 'fish', 'shellfish', 'tree nuts', 'peanuts', 'wheat', 'soybeans',
+    'dairy', 'lactose', 'gluten', 'casein', 'whey'
+  ];
 
----
+  async parseIngredients(text: string): Promise<ProcessedIngredient[]> {
+    if (!text || typeof text !== 'string') {
+      return [];
+    }
 
-## **Current Task**
-**Phase 2: OCR & Ingredient Analysis Development**
+    try {
+      // Clean and normalize the text
+      const cleanedText = this.cleanText(text);
+      
+      // Extract ingredient list from the text
+      const ingredientText = this.extractIngredientList(cleanedText);
+      
+      // Split into individual ingredients
+      const rawIngredients = this.splitIngredients(ingredientText);
+      
+      // Process each ingredient
+      const processedIngredients = rawIngredients
+        .map(ingredient => this.processIngredient(ingredient))
+        .filter(ingredient => ingredient !== null) as ProcessedIngredient[];
 
-### **Current Focus**
-- Implementing text extraction from captured images
-- Creating ingredient parsing and identification system
-- Building basic safety rating logic and database
-- Developing results display interface
+      return processedIngredients;
+    } catch (error) {
+      console.error('Error parsing ingredients:', error);
+      return [];
+    }
+  }
 
-### **Current Progress**
-- ⏳ OCR service integration pending
-- ⏳ Text processing and ingredient parsing pending
-- ⏳ Safety rating database setup pending
-- ⏳ Results display enhancement pending
+  private cleanText(text: string): string {
+    return text
+      .replace(/\n/g, ' ')
+      .replace(/\s+/g, ' ')
+      .replace(/[""'']/g, '"')
+      .trim();
+  }
 
-### **Current Challenges**
-- Achieving high OCR accuracy across different label formats
-- Parsing ingredient lists with various formatting styles
-- Building comprehensive ingredient safety database
-- Creating reliable ingredient matching algorithms
+  private extractIngredientList(text: string): string {
+    // Look for common ingredient list indicators
+    const indicators = [
+      /ingredients?\s*:?\s*(.+)/i,
+      /contains?\s*:?\s*(.+)/i,
+      /made with\s*:?\s*(.+)/i
+    ];
 
-### **Current Decisions Made**
-- OCR: Google ML Kit (primary) with Tesseract fallback
-- Database: Supabase PostgreSQL with comprehensive schemas
-- Text Processing: Custom parsing algorithms for ingredient lists
-- Safety Data: Integration with FDA, EWG, and Open Food Facts APIs
+    for (const indicator of indicators) {
+      const match = text.match(indicator);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
 
----
+    // If no indicator found, assume the entire text is ingredients
+    return text;
+  }
 
-## **Next Tasks (Phase 2 Implementation)**
+  private splitIngredients(text: string): string[] {
+    // Split by commas, but be smart about parentheses
+    const ingredients: string[] = [];
+    let current = '';
+    let parenDepth = 0;
 
-### **Immediate Next Steps**
-1. **OCR Service Integration**
-   - Set up Google ML Kit or Tesseract for text extraction
-   - Implement image preprocessing for better accuracy
-   - Add error handling for poor image quality
-   - Create fallback mechanisms for OCR failures
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      
+      if (char === '(') {
+        parenDepth++;
+      } else if (char === ')') {
+        parenDepth--;
+      } else if (char === ',' && parenDepth === 0) {
+        if (current.trim()) {
+          ingredients.push(current.trim());
+        }
+        current = '';
+        continue;
+      }
+      
+      current += char;
+    }
 
-2. **Text Processing System**
-   - Build ingredient list parser for various formats
-   - Create text cleaning and normalization functions
-   - Implement ingredient boundary detection
-   - Handle common label formatting variations
+    // Add the last ingredient
+    if (current.trim()) {
+      ingredients.push(current.trim());
+    }
 
-3. **Safety Rating Database**
-   - Set up Supabase tables for ingredients and ratings
-   - Import initial ingredient safety data from trusted sources
-   - Create data update and synchronization mechanisms
-   - Implement caching for performance optimization
+    return ingredients.filter(ing => ing.length > 0);
+  }
 
-4. **Results Display Enhancement**
-   - Enhance results screen with parsed ingredient data
-   - Display safety ratings with color-coded indicators
-   - Add detailed explanations and source attributions
-   - Implement loading states during processing
+  private processIngredient(rawIngredient: string): ProcessedIngredient | null {
+    if (!rawIngredient || rawIngredient.trim().length === 0) {
+      return null;
+    }
 
-### **Phase 2 Success Criteria**
-- [ ] OCR accurately extracts text from ingredient labels (>90% accuracy)
-- [ ] Ingredient parsing correctly identifies individual ingredients
-- [ ] Safety ratings display with proper color coding and explanations
-- [ ] Results screen shows comprehensive analysis within 5 seconds
-- [ ] Error handling gracefully manages OCR and parsing failures
+    // Clean the ingredient name
+    const cleanName = this.cleanIngredientName(rawIngredient);
+    
+    if (cleanName.length < 2) {
+      return null;
+    }
 
----
+    // Get safety information
+    const safetyInfo = this.getSafetyInfo(cleanName);
+    
+    // Detect allergens
+    const allergens = this.detectAllergens(cleanName);
+    
+    // Generate concerns based on safety rating
+    const concerns = this.generateConcerns(cleanName, safetyInfo.rating);
 
-## **Future Phases Overview**
+    return {
+      name: cleanName,
+      safetyRating: safetyInfo.rating,
+      confidence: this.calculateConfidence(cleanName, safetyInfo.rating),
+      explanation: safetyInfo.explanation,
+      allergens,
+      concerns
+    };
+  }
 
-### **Phase 2: OCR & Ingredient Analysis**
-- Text extraction from ingredient label photos
-- Ingredient parsing and identification
-- Basic safety rating system implementation
-- Results display interface
+  private cleanIngredientName(ingredient: string): string {
+    return ingredient
+      .replace(/\([^)]*\)/g, '') // Remove parentheses content
+      .replace(/\[[^\]]*\]/g, '') // Remove bracket content
+      .replace(/[.,;]/g, '') // Remove punctuation
+      .trim()
+      .toLowerCase();
+  }
 
-### **Phase 3: Dietary Profiles & Personalization**
-- User dietary profile management
-- Personalized safety rating adjustments
-- Custom ingredient avoidance features
-- Preference management UI
+  private getSafetyInfo(ingredient: string): { rating: 'safe' | 'caution' | 'avoid', explanation: string } {
+    // Check exact matches first
+    const exactMatch = this.commonIngredients.get(ingredient);
+    if (exactMatch) {
+      return exactMatch;
+    }
 
-### **Phase 4: Recommendations & Recipes**
-- Alternative product suggestions
-- Recipe recommendations with images
-- Retailer integration and links
-- Enhanced results display
+    // Check partial matches
+    for (const [key, value] of this.commonIngredients.entries()) {
+      if (ingredient.includes(key) || key.includes(ingredient)) {
+        return value;
+      }
+    }
 
-### **Phase 5: Testing & Launch**
-- Comprehensive testing across devices
-- Performance optimization
-- App store preparation
-- Launch marketing execution
+    // Default for unknown ingredients
+    return {
+      rating: 'caution',
+      explanation: 'This ingredient is not in our database. Generally, simpler ingredient lists are preferable.'
+    };
+  }
 
----
+  private detectAllergens(ingredient: string): string[] {
+    const detectedAllergens: string[] = [];
+    
+    for (const allergen of this.allergenKeywords) {
+      if (ingredient.includes(allergen.toLowerCase())) {
+        detectedAllergens.push(allergen);
+      }
+    }
 
-## **Key Technical Decisions**
+    return detectedAllergens;
+  }
 
-### **Architecture Decisions**
-- **Frontend:** React Native with Expo SDK 52
-- **Backend:** Supabase for database and authentication
-- **OCR:** Google ML Kit (primary) with Tesseract fallback
-- **State Management:** React Context with local storage
-- **Navigation:** Expo Router with tab-based navigation
+  private generateConcerns(ingredient: string, rating: 'safe' | 'caution' | 'avoid'): string[] {
+    const concerns: string[] = [];
 
-### **Design Decisions**
-- **Color System:** Health-focused green primary with safety-coded colors
-- **Typography:** Modern, readable font system with proper hierarchy
-- **Icons:** Lucide React Native for consistent iconography
-- **Layout:** Mobile-first responsive design with 8px spacing system
+    if (rating === 'avoid') {
+      concerns.push('May pose health risks');
+      concerns.push('Consider avoiding this ingredient');
+    } else if (rating === 'caution') {
+      concerns.push('Consume in moderation');
+    }
 
-### **Data Strategy**
-- **Ingredient Database:** Open Food Facts + EWG Food Scores + FDA lists
-- **User Data:** Encrypted local storage with optional cloud sync
-- **Caching:** Aggressive caching for ingredient data and scan results
-- **Offline Support:** Core functionality available offline
+    // Add specific concerns based on ingredient type
+    if (ingredient.includes('artificial') || ingredient.includes('synthetic')) {
+      concerns.push('Artificially produced');
+    }
 
----
+    if (ingredient.includes('preservative')) {
+      concerns.push('Chemical preservative');
+    }
 
-## **Questions & Decisions Pending**
-- Final color palette selection for safety ratings
-- Specific wording for safety explanations
-- Integration details for retailer APIs
-- Subscription model pricing structure
-- App store category and keywords strategy
+    if (ingredient.includes('color') || ingredient.includes('dye')) {
+      concerns.push('Artificial coloring');
+    }
 
----
+    return concerns;
+  }
 
-## **Resources & References**
-- [Expo Documentation](https://docs.expo.dev/)
-)
-- [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
-)
-- [Supabase Documentation](https://supabase.com/docs)
-)
-- [Open Food Facts API](https://world.openfoodfacts.org/data)
-)
-- [EWG Food Scores Database](https://www.ewg.org/foodscores/)
-)
+  private calculateConfidence(ingredient: string, rating: 'safe' | 'caution' | 'avoid'): number {
+    let confidence = 70; // Base confidence
+
+    // Higher confidence for known ingredients
+    if (this.commonIngredients.has(ingredient)) {
+      confidence += 20;
+    }
+
+    // Adjust based on ingredient complexity
+    if (ingredient.split(' ').length === 1) {
+      confidence += 10; // Simple ingredients are easier to identify
+    }
+
+    // Adjust based on rating certainty
+    if (rating === 'safe') {
+      confidence += 5;
+    } else if (rating === 'avoid') {
+      confidence += 10; // We're more certain about problematic ingredients
+    }
+
+    return Math.min(confidence, 98); // Cap at 98%
+  }
+}
