@@ -142,3 +142,5 @@ export class OCRService {
 }
 
 export const ocrService = new OCRService();
+
+export default OCRService
