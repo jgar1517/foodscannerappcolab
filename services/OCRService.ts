@@ -146,7 +146,12 @@
 
 ## **Resources & References**
 - [Expo Documentation](https://docs.expo.dev/)
+)
 - [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
+)
 - [Supabase Documentation](https://supabase.com/docs)
+)
 - [Open Food Facts API](https://world.openfoodfacts.org/data)
+)
 - [EWG Food Scores Database](https://www.ewg.org/foodscores/)
+)
