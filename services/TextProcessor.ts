@@ -162,4 +162,4 @@ export class TextProcessor {
   }
 }
 
-export default TextProcessor;
+export default TextProcessor

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { OCRService } from '@/services/OCRService';
+import { TextProcessor } from '@/services/TextProcessor';
 
 export interface OCRResult {
   ingredients: string[];
@@ -16,31 +17,25 @@ export function useOCR() {
     setError(null);
 
     try {
-      console.log('Starting OCR processing for image:', imageUri);
-      
-      // Initialize OCR service
+      // Initialize services
       const ocrService = new OCRService();
+      const textProcessor = new TextProcessor();
 
-      // Process the image
-      const result = await ocrService.processImage(imageUri);
+      // Extract text from image
+      const extractedText = await ocrService.extractText(imageUri);
       
-      console.log('OCR processing completed:', result);
-      
-      if (!result.ingredients || result.ingredients.length === 0) {
-        throw new Error('No ingredients found in the image');
+      if (!extractedText || extractedText.trim().length === 0) {
+        throw new Error('No text found in the image');
       }
 
-      // Transform the result to match expected format
-      const ocrResult: OCRResult = {
-        ingredients: result.ingredients.map(ing => ing.name),
-        confidence: result.confidence,
-        rawText: result.extractedText
-      };
+      // Parse ingredients from text
+      const result = textProcessor.parseIngredients(extractedText);
+      
+      if (!textProcessor.validateIngredientList(result)) {
+        throw new Error('Could not identify valid ingredients in the text');
+      }
 
-      // Cleanup
-      await ocrService.cleanup();
-
-      return ocrResult;
+      return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'OCR processing failed';
       setError(errorMessage);
