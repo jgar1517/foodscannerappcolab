@@ -24,8 +24,8 @@
 - Developing results display interface
 
 ### **Current Progress**
-- ✅ OCR service integration completed
-- ✅ Text processing and ingredient parsing implemented
+- ⏳ OCR service integration pending
+- ⏳ Text processing and ingredient parsing pending
 - ⏳ Safety rating database setup pending
 - ⏳ Results display enhancement pending
 
@@ -46,34 +46,36 @@
 ## **Next Tasks (Phase 2 Implementation)**
 
 ### **Immediate Next Steps**
-1. **Safety Rating Database**
+1. **OCR Service Integration**
+   - Set up Google ML Kit or Tesseract for text extraction
+   - Implement image preprocessing for better accuracy
+   - Add error handling for poor image quality
+   - Create fallback mechanisms for OCR failures
+
+2. **Text Processing System**
+   - Build ingredient list parser for various formats
+   - Create text cleaning and normalization functions
+   - Implement ingredient boundary detection
+   - Handle common label formatting variations
+
+3. **Safety Rating Database**
    - Set up Supabase tables for ingredients and ratings
    - Import initial ingredient safety data from trusted sources
    - Create data update and synchronization mechanisms
    - Implement caching for performance optimization
 
-2. **Results Display Enhancement**
+4. **Results Display Enhancement**
    - Enhance results screen with parsed ingredient data
    - Display safety ratings with color-coded indicators
    - Add detailed explanations and source attributions
    - Implement loading states during processing
 
-3. **OCR Optimization**
-   - Fine-tune image preprocessing for better accuracy
-   - Improve error handling for poor image quality
-   - Enhance fallback mechanisms for OCR failures
-
-4. **Text Processing Improvements**
-   - Refine ingredient list parser for edge cases
-   - Improve text cleaning and normalization functions
-   - Handle more label formatting variations
-
 ### **Phase 2 Success Criteria**
-- [x] OCR accurately extracts text from ingredient labels (>90% accuracy)
-- [x] Ingredient parsing correctly identifies individual ingredients
+- [ ] OCR accurately extracts text from ingredient labels (>90% accuracy)
+- [ ] Ingredient parsing correctly identifies individual ingredients
 - [ ] Safety ratings display with proper color coding and explanations
 - [ ] Results screen shows comprehensive analysis within 5 seconds
-- [x] Error handling gracefully manages OCR and parsing failures
+- [ ] Error handling gracefully manages OCR and parsing failures
 
 ---
 
@@ -139,7 +141,12 @@
 
 ## **Resources & References**
 - [Expo Documentation](https://docs.expo.dev/)
+)
 - [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
+)
 - [Supabase Documentation](https://supabase.com/docs)
+)
 - [Open Food Facts API](https://world.openfoodfacts.org/data)
+)
 - [EWG Food Scores Database](https://www.ewg.org/foodscores/)
+)
