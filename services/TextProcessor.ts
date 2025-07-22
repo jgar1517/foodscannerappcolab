@@ -1,157 +1,163 @@
-# Memory Bank - Food Ingredient Safety Scanner
+export interface TextProcessingResult {
+  ingredients: string[];
+  confidence: number;
+  rawText: string;
+}
 
-## **Previous Tasks Completed**
+export interface IngredientInfo {
+  name: string;
+  confidence: number;
+}
 
-### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
-- ✅ Professional landing page with hero section and animations
-- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
-- ✅ Camera integration with permissions handling
-- ✅ UI component system with GlassmorphismCard, animations
-### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
-- ✅ Professional landing page with hero section and animations
-- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
-- ✅ Camera integration with permissions handling
-- ✅ UI component system with GlassmorphismCard, animations
-- ✅ Consistent header styling with purple gradients and glow effects
-- ✅ Responsive design with proper mobile optimization
-- ✅ Font system integration (Inter + Poppins)
-- ✅ Color system and spacing consistency
+export class TextProcessor {
+  private static instance: TextProcessor;
 
----
+  private constructor() {}
 
-## **Current Task**
-**Phase 2: OCR & Ingredient Analysis Development**
+  public static getInstance(): TextProcessor {
+    if (!TextProcessor.instance) {
+      TextProcessor.instance = new TextProcessor();
+    }
+    return TextProcessor.instance;
+  }
 
-### **Current Focus**
-- Implementing text extraction from captured images
-- Creating ingredient parsing and identification system
-- Building basic safety rating logic and database
-- Developing results display interface
+  public parseIngredients(text: string): TextProcessingResult {
+    // Clean and normalize the text
+    const cleanedText = this.cleanText(text);
+    
+    // Extract ingredients from the cleaned text
+    const ingredients = this.extractIngredients(cleanedText);
+    
+    // Calculate confidence based on ingredient quality
+    const confidence = this.calculateConfidence(ingredients, cleanedText);
+    
+    return {
+      ingredients: ingredients.map(ing => ing.name),
+      confidence,
+      rawText: text
+    };
+  }
 
-### **Current Progress**
-- ⏳ OCR service integration pending
-- ⏳ Text processing and ingredient parsing pending
-- ⏳ Safety rating database setup pending
-- ⏳ Results display enhancement pending
+  public validateIngredientList(result: TextProcessingResult): boolean {
+    // Check if we have any ingredients
+    if (!result.ingredients || result.ingredients.length === 0) {
+      return false;
+    }
 
-### **Current Challenges**
-- Achieving high OCR accuracy across different label formats
-- Parsing ingredient lists with various formatting styles
-- Building comprehensive ingredient safety database
-- Creating reliable ingredient matching algorithms
+    // Check if confidence is above minimum threshold
+    if (result.confidence < 0.3) {
+      return false;
+    }
 
-### **Current Decisions Made**
-- OCR: Google ML Kit (primary) with Tesseract fallback
-- Database: Supabase PostgreSQL with comprehensive schemas
-- Text Processing: Custom parsing algorithms for ingredient lists
-- Safety Data: Integration with FDA, EWG, and Open Food Facts APIs
+    // Check if we have at least one meaningful ingredient
+    const meaningfulIngredients = result.ingredients.filter(ingredient => 
+      ingredient.length > 2 && 
+      !this.isCommonNoise(ingredient)
+    );
 
----
+    return meaningfulIngredients.length > 0;
+  }
 
-## **Next Tasks (Phase 2 Implementation)**
+  private cleanText(text: string): string {
+    return text
+      .replace(/\n/g, ' ')
+      .replace(/\s+/g, ' ')
+      .replace(/[^\w\s,().-]/g, '')
+      .trim();
+  }
 
-### **Immediate Next Steps**
-1. **OCR Service Integration**
-   - Set up Google ML Kit or Tesseract for text extraction
-   - Implement image preprocessing for better accuracy
-   - Add error handling for poor image quality
-   - Create fallback mechanisms for OCR failures
+  private extractIngredients(text: string): IngredientInfo[] {
+    // Look for ingredient list patterns
+    const ingredientPatterns = [
+      /ingredients?\s*:?\s*(.+)/i,
+      /contains?\s*:?\s*(.+)/i,
+      /made\s+with\s*:?\s*(.+)/i
+    ];
 
-2. **Text Processing System**
-   - Build ingredient list parser for various formats
-   - Create text cleaning and normalization functions
-   - Implement ingredient boundary detection
-   - Handle common label formatting variations
+    let ingredientText = text;
+    
+    // Try to find ingredient section
+    for (const pattern of ingredientPatterns) {
+      const match = text.match(pattern);
+      if (match) {
+        ingredientText = match[1];
+        break;
+      }
+    }
 
-3. **Safety Rating Database**
-   - Set up Supabase tables for ingredients and ratings
-   - Import initial ingredient safety data from trusted sources
-   - Create data update and synchronization mechanisms
-   - Implement caching for performance optimization
+    // Split by common separators
+    const rawIngredients = ingredientText
+      .split(/[,;]/)
+      .map(ingredient => ingredient.trim())
+      .filter(ingredient => ingredient.length > 0);
 
-4. **Results Display Enhancement**
-   - Enhance results screen with parsed ingredient data
-   - Display safety ratings with color-coded indicators
-   - Add detailed explanations and source attributions
-   - Implement loading states during processing
+    // Process each ingredient
+    return rawIngredients.map(ingredient => ({
+      name: this.normalizeIngredient(ingredient),
+      confidence: this.calculateIngredientConfidence(ingredient)
+    }));
+  }
 
-### **Phase 2 Success Criteria**
-- [ ] OCR accurately extracts text from ingredient labels (>90% accuracy)
-- [ ] Ingredient parsing correctly identifies individual ingredients
-- [ ] Safety ratings display with proper color coding and explanations
-- [ ] Results screen shows comprehensive analysis within 5 seconds
-- [ ] Error handling gracefully manages OCR and parsing failures
+  private normalizeIngredient(ingredient: string): string {
+    return ingredient
+      .replace(/\([^)]*\)/g, '') // Remove parentheses content
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase()
+      .replace(/^\w/, c => c.toUpperCase()); // Capitalize first letter
+  }
 
----
+  private calculateIngredientConfidence(ingredient: string): number {
+    let confidence = 0.5; // Base confidence
 
-## **Future Phases Overview**
+    // Boost confidence for common ingredient patterns
+    if (/^[a-zA-Z\s]+$/.test(ingredient)) {
+      confidence += 0.2;
+    }
 
-### **Phase 2: OCR & Ingredient Analysis**
-- Text extraction from ingredient label photos
-- Ingredient parsing and identification
-- Basic safety rating system implementation
-- Results display interface
+    // Reduce confidence for very short or very long ingredients
+    if (ingredient.length < 3) {
+      confidence -= 0.3;
+    } else if (ingredient.length > 50) {
+      confidence -= 0.2;
+    }
 
-### **Phase 3: Dietary Profiles & Personalization**
-- User dietary profile management
-- Personalized safety rating adjustments
-- Custom ingredient avoidance features
-- Preference management UI
+    // Boost confidence for known ingredient words
+    const knownIngredients = ['water', 'sugar', 'salt', 'oil', 'flour', 'milk', 'egg'];
+    if (knownIngredients.some(known => ingredient.toLowerCase().includes(known))) {
+      confidence += 0.2;
+    }
 
-### **Phase 4: Recommendations & Recipes**
-- Alternative product suggestions
-- Recipe recommendations with images
-- Retailer integration and links
-- Enhanced results display
+    return Math.max(0, Math.min(1, confidence));
+  }
 
-### **Phase 5: Testing & Launch**
-- Comprehensive testing across devices
-- Performance optimization
-- App store preparation
-- Launch marketing execution
+  private calculateConfidence(ingredients: IngredientInfo[], rawText: string): number {
+    if (ingredients.length === 0) {
+      return 0;
+    }
 
----
+    // Average ingredient confidence
+    const avgIngredientConfidence = ingredients.reduce((sum, ing) => sum + ing.confidence, 0) / ingredients.length;
+    
+    // Text quality factors
+    let textQuality = 0.5;
+    
+    // Boost for ingredient keywords
+    if (/ingredients?\s*:/i.test(rawText)) {
+      textQuality += 0.2;
+    }
+    
+    // Boost for reasonable length
+    if (rawText.length > 20 && rawText.length < 500) {
+      textQuality += 0.1;
+    }
+    
+    // Combine factors
+    return (avgIngredientConfidence * 0.7) + (textQuality * 0.3);
+  }
 
-## **Key Technical Decisions**
-
-### **Architecture Decisions**
-- **Frontend:** React Native with Expo SDK 52
-- **Backend:** Supabase for database and authentication
-- **OCR:** Google ML Kit (primary) with Tesseract fallback
-- **State Management:** React Context with local storage
-- **Navigation:** Expo Router with tab-based navigation
-
-### **Design Decisions**
-- **Color System:** Health-focused green primary with safety-coded colors
-- **Typography:** Modern, readable font system with proper hierarchy
-- **Icons:** Lucide React Native for consistent iconography
-- **Layout:** Mobile-first responsive design with 8px spacing system
-
-### **Data Strategy**
-- **Ingredient Database:** Open Food Facts + EWG Food Scores + FDA lists
-- **User Data:** Encrypted local storage with optional cloud sync
-- **Caching:** Aggressive caching for ingredient data and scan results
-- **Offline Support:** Core functionality available offline
-
----
-
-## **Questions & Decisions Pending**
-- Final color palette selection for safety ratings
-- Specific wording for safety explanations
-- Integration details for retailer APIs
-- Subscription model pricing structure
-- App store category and keywords strategy
-
----
-
-## **Resources & References**
-- [Expo Documentation](https://docs.expo.dev/)
-)
-- [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
-)
-- [Supabase Documentation](https://supabase.com/docs)
-)
-- [Open Food Facts API](https://world.openfoodfacts.org/data)
-)
-- [EWG Food Scores Database](https://www.ewg.org/foodscores/)
-)
+  private isCommonNoise(ingredient: string): boolean {
+    const noiseWords = ['and', 'or', 'the', 'a', 'an', 'of', 'in', 'on', 'at', 'to', 'for'];
+    return noiseWords.includes(ingredient.toLowerCase()) || ingredient.length < 2;
+  }
+}
