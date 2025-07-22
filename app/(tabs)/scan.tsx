@@ -11,7 +11,7 @@ import {
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import { Camera, FlipHorizontal, Zap } from 'lucide-react-native';
-import { GlassmorphismCard } from '../../components/GlassmorphismCard';
+import GlassmorphismCard from '../../components/GlassmorphismCard';
 import { useOCR } from '../../hooks/useOCR';
 
 const { width, height } = Dimensions.get('window');
