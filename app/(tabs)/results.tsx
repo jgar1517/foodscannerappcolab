@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, Shield, AlertTriangle, X, RefreshCw } from 'lucide-react-native';
+import { ArrowLeft, Shield, TriangleAlert as AlertTriangle, X, RefreshCw } from 'lucide-react-native';
 import { GlassmorphismCard } from '../../components/GlassmorphismCard';
 import { CircularProgress } from '../../components/CircularProgress';
 import type { OCRResult, ProcessedIngredient } from '../../hooks/useOCR';
