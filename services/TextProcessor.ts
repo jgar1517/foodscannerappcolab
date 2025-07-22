@@ -161,3 +161,5 @@ export class TextProcessor {
     return noiseWords.includes(ingredient.toLowerCase()) || ingredient.length < 2;
   }
 }
+
+export default TextProcessor
