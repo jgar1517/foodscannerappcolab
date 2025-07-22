@@ -7,7 +7,8 @@
 - ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
 - ✅ Camera integration with permissions handling
 - ✅ UI component system with GlassmorphismCard, animations
-import { View, Text } from 'react-native';
+import { View, Text } from 'react-native'
+import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 ### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
 - ✅ Professional landing page with hero section and animations
 - ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
@@ -147,7 +148,12 @@ import { View, Text } from 'react-native';
 
 ## **Resources & References**
 - [Expo Documentation](https://docs.expo.dev/)
+)
 - [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
+)
 - [Supabase Documentation](https://supabase.com/docs)
+)
 - [Open Food Facts API](https://world.openfoodfacts.org/data)
+)
 - [EWG Food Scores Database](https://www.ewg.org/foodscores/)
+)
