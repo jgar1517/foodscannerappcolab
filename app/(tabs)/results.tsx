@@ -12,16 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { 
-  Search, 
-  CheckCircle, 
-  AlertTriangle, 
-  XCircle, 
-  Share2, 
-  Sparkles,
-  Info,
-  Clock
-} from 'lucide-react-native';
+import { Search, CircleCheck as CheckCircle, TriangleAlert as AlertTriangle, Circle as XCircle, Share2, Sparkles, Info, Clock } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import GlassmorphismCard from '@/components/GlassmorphismCard';
 import CircularProgress from '@/components/CircularProgress';
