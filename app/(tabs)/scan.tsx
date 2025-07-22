@@ -1,296 +1,147 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions } from 'react-native';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { Camera, FlashlightOff as FlashOff, Slash as FlashOn, RotateCcw } from 'lucide-react-native';
-import { router } from 'expo-router';
-import { useOCR } from '@/hooks/useOCR';
+# Memory Bank - Food Ingredient Safety Scanner
 
-const { width, height } = Dimensions.get('window');
+## **Previous Tasks Completed**
 
-export default function ScanScreen() {
-  const [facing, setFacing] = useState<CameraType>('back');
-  const [flash, setFlash] = useState(false);
-  const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef<CameraView>(null);
-  const { processImage, isProcessing, error } = useOCR();
+### **Phase 1: Landing Page & Core Infrastructure (✅ COMPLETED)**
+- ✅ Professional landing page with hero section and animations
+- ✅ Tab-based navigation structure (Home, Scan, Results, Profile)
+- ✅ Camera integration with permissions handling
+- ✅ UI component system with GlassmorphismCard, animations
+- ✅ Consistent header styling with purple gradients and glow effects
+- ✅ Responsive design with proper mobile optimization
+- ✅ Font system integration (Inter + Poppins)
+- ✅ Color system and spacing consistency
 
-  if (!permission) {
-    return <View style={styles.container} />;
-  }
+---
 
-  if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.permissionContainer}>
-          <Camera size={64} color="#8B5CF6" style={styles.permissionIcon} />
-          <Text style={styles.permissionTitle}>Camera Access Required</Text>
-          <Text style={styles.permissionText}>
-            We need camera access to scan ingredient labels and analyze food safety.
-          </Text>
-          <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
-            <Text style={styles.permissionButtonText}>Grant Permission</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
+## **Current Task**
+**Phase 2: OCR & Ingredient Analysis Development**
 
-  const toggleCameraFacing = () => {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  };
+### **Current Focus**
+- Implementing text extraction from captured images
+- Creating ingredient parsing and identification system
+- Building basic safety rating logic and database
+- Developing results display interface
 
-  const toggleFlash = () => {
-    setFlash(current => !current);
-  };
+### **Current Progress**
+- ⏳ OCR service integration pending
+- ⏳ Text processing and ingredient parsing pending
+- ⏳ Safety rating database setup pending
+- ⏳ Results display enhancement pending
 
-  const takePicture = async () => {
-    if (!cameraRef.current) return;
+### **Current Challenges**
+- Achieving high OCR accuracy across different label formats
+- Parsing ingredient lists with various formatting styles
+- Building comprehensive ingredient safety database
+- Creating reliable ingredient matching algorithms
 
-    try {
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
-        base64: false,
-      });
+### **Current Decisions Made**
+- OCR: Google ML Kit (primary) with Tesseract fallback
+- Database: Supabase PostgreSQL with comprehensive schemas
+- Text Processing: Custom parsing algorithms for ingredient lists
+- Safety Data: Integration with FDA, EWG, and Open Food Facts APIs
 
-      if (photo?.uri) {
-        const result = await processImage(photo.uri);
-        if (result) {
-          // Navigate to results with the processed data
-          router.push({
-            pathname: '/results',
-            params: {
-              ingredients: JSON.stringify(result.ingredients),
-              confidence: result.confidence.toString(),
-            },
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error taking picture:', error);
-      Alert.alert('Error', 'Failed to capture image. Please try again.');
-    }
-  };
+---
 
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Scan Ingredient Label</Text>
-        <Text style={styles.headerSubtitle}>
-          Position the ingredient list within the frame
-        </Text>
-      </View>
+## **Next Tasks (Phase 2 Implementation)**
 
-      {/* Camera */}
-      <View style={styles.cameraContainer}>
-        <CameraView
-          ref={cameraRef}
-          style={styles.camera}
-          facing={facing}
-          flash={flash ? 'on' : 'off'}
-        >
-          {/* Overlay Frame */}
-          <View style={styles.overlay}>
-            <View style={styles.scanFrame} />
-          </View>
+### **Immediate Next Steps**
+1. **OCR Service Integration**
+   - Set up Google ML Kit or Tesseract for text extraction
+   - Implement image preprocessing for better accuracy
+   - Add error handling for poor image quality
+   - Create fallback mechanisms for OCR failures
 
-          {/* Controls */}
-          <View style={styles.controls}>
-            <TouchableOpacity style={styles.controlButton} onPress={toggleFlash}>
-              {flash ? (
-                <FlashOn size={24} color="#FFFFFF" />
-              ) : (
-                <FlashOff size={24} color="#FFFFFF" />
-              )}
-            </TouchableOpacity>
+2. **Text Processing System**
+   - Build ingredient list parser for various formats
+   - Create text cleaning and normalization functions
+   - Implement ingredient boundary detection
+   - Handle common label formatting variations
 
-            <TouchableOpacity 
-              style={[styles.captureButton, isProcessing && styles.captureButtonDisabled]} 
-              onPress={takePicture}
-              disabled={isProcessing}
-            >
-              <View style={styles.captureButtonInner}>
-                {isProcessing ? (
-                  <Text style={styles.processingText}>Processing...</Text>
-                ) : (
-                  <Camera size={32} color="#8B5CF6" />
-                )}
-              </View>
-            </TouchableOpacity>
+3. **Safety Rating Database**
+   - Set up Supabase tables for ingredients and ratings
+   - Import initial ingredient safety data from trusted sources
+   - Create data update and synchronization mechanisms
+   - Implement caching for performance optimization
 
-            <TouchableOpacity style={styles.controlButton} onPress={toggleCameraFacing}>
-              <RotateCcw size={24} color="#FFFFFF" />
-            </TouchableOpacity>
-          </View>
-        </CameraView>
-      </View>
+4. **Results Display Enhancement**
+   - Enhance results screen with parsed ingredient data
+   - Display safety ratings with color-coded indicators
+   - Add detailed explanations and source attributions
+   - Implement loading states during processing
 
-      {/* Instructions */}
-      <View style={styles.instructions}>
-        <Text style={styles.instructionTitle}>Tips for Best Results:</Text>
-        <Text style={styles.instructionText}>• Ensure good lighting</Text>
-        <Text style={styles.instructionText}>• Hold camera steady</Text>
-        <Text style={styles.instructionText}>• Keep text clearly visible</Text>
-        <Text style={styles.instructionText}>• Avoid shadows and glare</Text>
-      </View>
+### **Phase 2 Success Criteria**
+- [ ] OCR accurately extracts text from ingredient labels (>90% accuracy)
+- [ ] Ingredient parsing correctly identifies individual ingredients
+- [ ] Safety ratings display with proper color coding and explanations
+- [ ] Results screen shows comprehensive analysis within 5 seconds
+- [ ] Error handling gracefully manages OCR and parsing failures
 
-      {/* Error Display */}
-      {error && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      )}
-    </View>
-  );
-}
+---
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
-  header: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#A1A1AA',
-    textAlign: 'center',
-  },
-  cameraContainer: {
-    flex: 1,
-    margin: 20,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  camera: {
-    flex: 1,
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scanFrame: {
-    width: width * 0.8,
-    height: height * 0.3,
-    borderWidth: 2,
-    borderColor: '#8B5CF6',
-    borderRadius: 12,
-    backgroundColor: 'transparent',
-  },
-  controls: {
-    position: 'absolute',
-    bottom: 40,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingHorizontal: 40,
-  },
-  controlButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  captureButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  captureButtonDisabled: {
-    opacity: 0.6,
-  },
-  captureButtonInner: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  processingText: {
-    fontSize: 12,
-    color: '#8B5CF6',
-    fontWeight: '600',
-  },
-  instructions: {
-    padding: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-  },
-  instructionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginBottom: 12,
-  },
-  instructionText: {
-    fontSize: 14,
-    color: '#A1A1AA',
-    marginBottom: 4,
-  },
-  permissionContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 40,
-  },
-  permissionIcon: {
-    marginBottom: 24,
-  },
-  permissionTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  permissionText: {
-    fontSize: 16,
-    color: '#A1A1AA',
-    textAlign: 'center',
-    lineHeight: 24,
-    marginBottom: 32,
-  },
-  permissionButton: {
-    backgroundColor: '#8B5CF6',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 12,
-  },
-  permissionButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  errorContainer: {
-    padding: 16,
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    margin: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(239, 68, 68, 0.3)',
-  },
-  errorText: {
-    color: '#EF4444',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-});
+## **Future Phases Overview**
+
+### **Phase 2: OCR & Ingredient Analysis**
+- Text extraction from ingredient label photos
+- Ingredient parsing and identification
+- Basic safety rating system implementation
+- Results display interface
+
+### **Phase 3: Dietary Profiles & Personalization**
+- User dietary profile management
+- Personalized safety rating adjustments
+- Custom ingredient avoidance features
+- Preference management UI
+
+### **Phase 4: Recommendations & Recipes**
+- Alternative product suggestions
+- Recipe recommendations with images
+- Retailer integration and links
+- Enhanced results display
+
+### **Phase 5: Testing & Launch**
+- Comprehensive testing across devices
+- Performance optimization
+- App store preparation
+- Launch marketing execution
+
+---
+
+## **Key Technical Decisions**
+
+### **Architecture Decisions**
+- **Frontend:** React Native with Expo SDK 52
+- **Backend:** Supabase for database and authentication
+- **OCR:** Google ML Kit (primary) with Tesseract fallback
+- **State Management:** React Context with local storage
+- **Navigation:** Expo Router with tab-based navigation
+
+### **Design Decisions**
+- **Color System:** Health-focused green primary with safety-coded colors
+- **Typography:** Modern, readable font system with proper hierarchy
+- **Icons:** Lucide React Native for consistent iconography
+- **Layout:** Mobile-first responsive design with 8px spacing system
+
+### **Data Strategy**
+- **Ingredient Database:** Open Food Facts + EWG Food Scores + FDA lists
+- **User Data:** Encrypted local storage with optional cloud sync
+- **Caching:** Aggressive caching for ingredient data and scan results
+- **Offline Support:** Core functionality available offline
+
+---
+
+## **Questions & Decisions Pending**
+- Final color palette selection for safety ratings
+- Specific wording for safety explanations
+- Integration details for retailer APIs
+- Subscription model pricing structure
+- App store category and keywords strategy
+
+---
+
+## **Resources & References**
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Camera Guide](https://docs.expo.dev/versions/latest/sdk/camera/)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Open Food Facts API](https://world.openfoodfacts.org/data)
+- [EWG Food Scores Database](https://www.ewg.org/foodscores/)
