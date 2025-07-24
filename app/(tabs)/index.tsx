@@ -403,6 +403,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
+    marginTop: -8,
     marginBottom: 24,
     letterSpacing: 0.5,
     textShadowColor: '#8B5CF6',
